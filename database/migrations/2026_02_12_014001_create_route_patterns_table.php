@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('longitude', 10, 7)->nullable();
 
             $table->boolean('is_bus_terminal')->default(false);
-            $table->string('bus_terminal_name')->nullable();
+            $table->boolean('is_active')->default(true);
 
             $table->timestamps();
 

@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
 @section('content')
-    <x-admin.page-header title="Menu" :breadcrumb="[['label' => 'Dashboard', 'link' => route('backend.dashboard')], ['label' => 'Menu']]" />
+    <x-admin.page-header title="Stop" :breadcrumb="[['label' => 'Dashboard', 'link' => route('backend.dashboard')], ['label' => 'Stop']]" />
 
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <button onclick="CRUD.open()" class="btn btn-primary btn-sm add-btn">Add Menu</button>
-                    <x-admin.table :headers="['#', 'Name', 'Slug', 'Active', 'Actions']"></x-admin.table>
+                    <button onclick="CRUD.open()" class="btn btn-primary btn-sm add-btn">Add Stop</button>
+                    <x-admin.table :headers="['#', 'Name', 'Code', 'Bus Station', 'Status', 'Actions']"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
 
 @push('scripts')
     <script>
-        CRUD.setResource("menu");
+        CRUD.setResource("stop");
 
         const tableColumns = [{
                 data: "id"
@@ -26,8 +26,10 @@
                 data: "name"
             },
             {
-                data: "slug"
+                data: "code"
             },
+
+            CRUD.columnToggleStatus("is_bus_terminal"),
 
             CRUD.columnToggleStatus(),
             CRUD.columnActions(true, false),

@@ -51,11 +51,9 @@
         <div class="navbar-wrapper">
             <div class="m-header d-flex justify-content-center">
                 <a href="{{ route('backend.dashboard') }}" class="b-brand text-primary">
-                    {{-- <div class="fw-bold fs-2">
-                        <span class="text-success">AL</span>-<span class="text-danger">AQSA</span>
-                    </div> --}}
-                    <img src="{{ asset('img/logo.png') }}" alt="{{ config('app.name') }}" class="logo logo-lg"
-                        width="100" />
+                    <div class="fw-bold fs-2">
+                        <span class="text-success">{{ config('app.name') }}</span>
+                    </div>
                 </a>
             </div>
 
@@ -70,60 +68,20 @@
 
                     <li
                         class="pc-item pc-hasmenu
-                        {{ Str::is('admin.menu.*', Route::currentRouteName()) ||
-                        Str::is('admin.govt-center.*', Route::currentRouteName()) ||
-                        Str::is('admin.service.*', Route::currentRouteName()) ||
-                        Str::is('admin.document-group.*', Route::currentRouteName()) ||
-                        Str::is('admin.document.*', Route::currentRouteName())
-                            ? 'active pc-trigger'
-                            : '' }}">
+                        {{ Str::is('backend.stop.*', Route::currentRouteName()) ? 'active pc-trigger' : '' }}">
                         <a href="javascript:void(0)" class="pc-link">
                             <span class="pc-micon"><i class="ti ti-package"></i></span>
-                            <span class="pc-mtext">Service Config</span>
-                            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                        </a>
-                        <ul class="pc-submenu">
-                            <li class="pc-item {{ Route::currentRouteName() == 'admin.menu.index' ? 'active' : '' }}">
-                                <a class="pc-link" href="{{ route('backend.menu.index') }}">Menus</a>
-                            </li>
-                            <li
-                                class="pc-item {{ Route::currentRouteName() == 'admin.govt-center.index' ? 'active' : '' }}">
-                                <a class="pc-link" href="{{ route('backend.govt-center.index') }}">Govt. Centers</a>
-                            </li>
-                            <li
-                                class="pc-item {{ Str::is('admin.service.*', Route::currentRouteName()) ||
-                                Str::is('admin.document-group.*', Route::currentRouteName()) ||
-                                Str::is('admin.document.*', Route::currentRouteName())
-                                    ? 'active'
-                                    : '' }}">
-                                <a class="pc-link" href="{{ route('backend.service.index') }}">Services</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li
-                        class="pc-item pc-hasmenu
-                        {{ Str::is('admin.poster.*', Route::currentRouteName()) ||
-                        Str::is('admin.settings.*', Route::currentRouteName()) ||
-                        Str::is('admin.partners.*', Route::currentRouteName())
-                            ? 'active pc-trigger'
-                            : '' }}">
-                        <a href="javascript:void(0)" class="pc-link">
-                            <span class="pc-micon"><i class="ti ti-settings"></i></span>
-                            <span class="pc-mtext">Website Config</span>
+                            <span class="pc-mtext">Stops & Routes</span>
                             <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                         </a>
                         <ul class="pc-submenu">
                             <li
-                                class="pc-item {{ Route::currentRouteName() == 'admin.poster.index' ? 'active' : '' }}">
-                                <a class="pc-link" href="{{ route('backend.poster.index') }}">Poster</a>
+                                class="pc-item {{ Route::currentRouteName() == 'backend.stop.index' ? 'active' : '' }}">
+                                <a class="pc-link" href="{{ route('backend.stop.index') }}">Stops</a>
                             </li>
                             <li
-                                class="pc-item {{ Str::is('admin.partners.*', Route::currentRouteName()) ? 'active' : '' }}">
-                                <a class="pc-link" href="{{ route('backend.partners.index') }}">Partners</a>
-                            </li>
-                            <li class="pc-item {{ Route::currentRouteName() == 'admin.settings.*' ? 'active' : '' }}">
-                                <a class="pc-link" href="{{ route('backend.settings.index') }}">Settings</a>
+                                class="pc-item {{ Route::currentRouteName() == 'backend.stop.index' ? 'active' : '' }}">
+                                <a class="pc-link" href="{{ route('backend.stop.index') }}">Routes</a>
                             </li>
                         </ul>
                     </li>
@@ -132,7 +90,7 @@
         </div>
     </nav>
 
-    <header class="pc-header">
+    <header class="pc-header d-none">
         <div class="header-wrapper">
             <div class="me-auto pc-mob-drp">
                 <ul class="list-unstyled">
@@ -227,7 +185,7 @@
 
     {{-- Global CRUD Modal --}}
     <div class="modal fade" id="crudModal">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
 
                 <div class="modal-header">

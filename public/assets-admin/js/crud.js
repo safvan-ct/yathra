@@ -16,7 +16,7 @@ class CRUD {
             responsive: true,
 
             ajax: {
-                url: `/admin/${resource}/datatable`,
+                url: `/backend/${resource}/datatable`,
                 data: function (d) {
                     d.filter = $("#getFilter").length
                         ? $("#getFilter").val()
@@ -49,8 +49,8 @@ class CRUD {
 
         // Load fields partial from controller
         let formUrl = attributeId
-            ? `/admin/${resource}/form/${id}/${attributeId}`
-            : `/admin/${resource}/form/${id}`;
+            ? `/backend/${resource}/form/${id}/${attributeId}`
+            : `/backend/${resource}/form/${id}`;
 
         $("#crudBody").load(formUrl, function () {
             let img = $("#imagePreview");
@@ -80,9 +80,9 @@ class CRUD {
         let id = formData.get("id");
 
         let createUrl = attributeId
-            ? `/admin/${resource}/${attributeId}`
-            : `/admin/${resource}`;
-        let url = id && id > 0 ? `/admin/${resource}/${id}` : createUrl;
+            ? `/backend/${resource}/${attributeId}`
+            : `/backend/${resource}`;
+        let url = id && id > 0 ? `/backend/${resource}/${id}` : createUrl;
 
         formData.append("_method", id && id > 0 ? "PUT" : "POST");
 
@@ -130,7 +130,7 @@ class CRUD {
 
         if (!confirm("Are you sure?")) return;
 
-        fetch(`/admin/${resource}/${id}`, {
+        fetch(`/backend/${resource}/${id}`, {
             method: "DELETE",
             headers: {
                 Accept: "application/json",
@@ -154,7 +154,7 @@ class CRUD {
 
         showLoader();
 
-        fetch(`/admin/${resource}/${id}/toggle-status`, {
+        fetch(`/backend/${resource}/${id}/toggle-status`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

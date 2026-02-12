@@ -19,6 +19,6 @@ class Stop extends Model
         'longitude',
 
         'is_bus_terminal',
-        'bus_terminal_name',
+        'is_active',
     ];
 }

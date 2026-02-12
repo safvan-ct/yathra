@@ -43,7 +43,7 @@ class StopSeeder extends Seeder
         ];
 
         foreach ($stops as $key => $stop) {
-            Stop::create(['name' => $stop, 'code' => 'KLBS' . ++$key]);
+            Stop::create(['name' => $stop, 'code' => 'BWC' . ++$key]);
         }
     }
 }
