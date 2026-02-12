@@ -19,6 +19,12 @@ class Trip extends Model
         'service_type' => TripServiceType::class,
         'is_active'    => 'boolean',
     ];
+
+    public function bus()
+    {
+        return $this->belongsTo(Bus::class);
+    }
+
     public function routePattern()
     {
         return $this->belongsTo(RoutePattern::class);

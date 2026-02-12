@@ -27,6 +27,15 @@ class TripSeeder extends Seeder
                 'created_at'       => $time,
                 'updated_at'       => $time,
             ],
+            [
+                'route_pattern_id' => RoutePattern::where('name', 'AMBALAPPARA to MKD')->first()->id,
+                'bus_id'           => Bus::Where('bus_number', 'KL 50 A 1024')->first()->id,
+                'start_time'       => '09:15:00',
+                'final_stop_id'    => Stop::where('name', 'Nellippuzha')->first()->id,
+                'service_type'     => TripServiceType::ORDINARY,
+                'created_at'       => $time,
+                'updated_at'       => $time,
+            ],
         ];
 
         Trip::insert($trips);
