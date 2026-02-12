@@ -24,7 +24,9 @@ class RoutePatternStopController extends Controller
             })
             ->values(); // reset indexes
 
-        return view('backend.route-pattern-stop.index', compact('routePattern', 'stops'));
+        $allPatterns = RoutePattern::select('id', 'name')->where('id', '!=', $routePattern->id)->get();
+
+        return view('backend.route-pattern-stop.index', compact('routePattern', 'stops', 'allPatterns'));
     }
 
     public function store(Request $request)

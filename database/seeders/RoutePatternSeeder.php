@@ -20,7 +20,7 @@ class RoutePatternSeeder extends Seeder
                 'name'                => 'AP to MKD',
                 'info'                => 'Ambalappara to Mannarkkad',
                 'origin_stop_id'      => Stop::where('name', 'Ambalappara')->first()->id,
-                'destination_stop_id' => Stop::where('name', 'Nellippuzha')->first()->id,
+                'destination_stop_id' => Stop::where('name', 'MKD KSRTC Station')->first()->id,
                 'created_at'          => $time,
                 'updated_at'          => $time,
             ],
@@ -28,7 +28,7 @@ class RoutePatternSeeder extends Seeder
                 'name'                => 'TVK to MKD',
                 'info'                => 'Thiruvizhamkunnu to Mannarkkad',
                 'origin_stop_id'      => Stop::where('name', 'Thiruvizhamkunnu')->first()->id,
-                'destination_stop_id' => Stop::where('name', 'Nellippuzha')->first()->id,
+                'destination_stop_id' => Stop::where('name', 'MKD KSRTC Station')->first()->id,
                 'created_at'          => $time,
                 'updated_at'          => $time,
             ],
@@ -38,44 +38,24 @@ class RoutePatternSeeder extends Seeder
             RoutePattern::create($route);
         }
 
-        $routeStopes = [
-            [
-                'route_pattern_id'           => RoutePattern::where('name', 'AP to MKD')->first()->id,
-                'stop_id'                    => Stop::where('name', 'Ambalappara')->first()->id,
-                'stop_order'                 => 1,
-                'minutes_from_previous_stop' => 0,
-                'default_offset_minutes'     => 0,
-            ],
-            [
-                'route_pattern_id'           => RoutePattern::where('name', 'AP to MKD')->first()->id,
-                'stop_id'                    => Stop::where('name', 'Thiruvizhamkunnu')->first()->id,
-                'stop_order'                 => 2,
-                'minutes_from_previous_stop' => 10,
-                'default_offset_minutes'     => 10,
-            ],
-            [
-                'route_pattern_id'           => RoutePattern::where('name', 'AP to MKD')->first()->id,
-                'stop_id'                    => Stop::where('name', 'Nellippuzha')->first()->id,
-                'stop_order'                 => 3,
-                'minutes_from_previous_stop' => 20,
-                'default_offset_minutes'     => 30,
-            ],
+        $stops       = Stop::all();
+        $routeStopes = [];
 
-            [
-                'route_pattern_id'           => RoutePattern::where('name', 'TVK to MKD')->first()->id,
-                'stop_id'                    => Stop::where('name', 'Thiruvizhamkunnu')->first()->id,
-                'stop_order'                 => 1,
-                'minutes_from_previous_stop' => 0,
-                'default_offset_minutes'     => 0,
-            ],
-            [
-                'route_pattern_id'           => RoutePattern::where('name', 'TVK to MKD')->first()->id,
-                'stop_id'                    => Stop::where('name', 'Nellippuzha')->first()->id,
-                'stop_order'                 => 2,
-                'minutes_from_previous_stop' => 10,
-                'default_offset_minutes'     => 10,
-            ],
-        ];
+        $minutes = 0;
+        $offset  = 0;
+
+        foreach ($stops as $key => $stop) {
+            $minutes = $key == 0 ? 0 : 2;
+            $offset = $key == 0 ? 0 : $offset + $minutes;
+
+            $routeStopes[] = [
+                'route_pattern_id'           => RoutePattern::where('name', 'AP to MKD')->first()->id,
+                'stop_id'                    => $stop->id,
+                'stop_order'                 => ++$key,
+                'minutes_from_previous_stop' => $minutes,
+                'default_offset_minutes'     => $offset,
+            ];
+        }
 
         RoutePatternStop::insert($routeStopes);
     }

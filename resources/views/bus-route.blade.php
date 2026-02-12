@@ -237,6 +237,10 @@
         <div class="timeline-progress" style="height: 100%;"></div>
 
         @foreach ($stops as $index => $stop)
+            @if (!$stop->is_in_between)
+                @continue;
+            @endif
+
             <div class="stop-row {{ $stop->is_selected_segment ? 'active' : 'completed' }}">
                 <div class="stop-node">
                     @if ($stop->is_selected_segment)

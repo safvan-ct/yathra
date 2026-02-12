@@ -27,6 +27,7 @@ Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middlew
 
 Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function () {
     Route::get('stops', [DashboardController::class, 'stops']);
+    Route::get('route-stops/{id}', [DashboardController::class, 'getPatternStops'])->name('route-stops');
 
     Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 

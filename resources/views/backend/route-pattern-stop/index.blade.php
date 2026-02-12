@@ -4,12 +4,10 @@
     <style>
         .route-scroll {
             max-height: 500px;
-            /* adjust as needed */
             overflow-y: auto;
             padding-right: 5px;
         }
 
-        /* Nice scrollbar (optional) */
         .route-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -20,7 +18,11 @@
         }
     </style>
 
-    <x-admin.page-header :title="'Route Builder - ' . $routePattern->name" />
+    <x-admin.page-header :title="'Route Builder - ' . $routePattern->name" :breadcrumb="[
+        ['label' => 'Dashboard', 'link' => route('backend.dashboard')],
+        ['label' => 'Route Pattern', 'link' => route('backend.route-pattern.index')],
+        ['label' => 'Route Builder'],
+    ]" />
 
     <form method="POST" action="{{ route('backend.route-pattern-stop.store') }}" class="mt-3">
         @csrf
@@ -30,6 +32,29 @@
 
             {{-- LEFT: STOP SEARCH --}}
             <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+
+                        <label class="fw-bold">Import From Route Pattern</label>
+
+                        <select id="import-pattern" class="form-select">
+                            <option value="">Select Route Pattern</option>
+
+                            @foreach ($allPatterns as $pattern)
+                                <option value="{{ $pattern->id }}">
+                                    {{ $pattern->name }}
+                                </option>
+                            @endforeach
+
+                        </select>
+
+                        <button class="btn btn-warning mt-3 w-100" id="import-btn" type="button">
+                            Import Stops
+                        </button>
+
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header fw-bold">Search Stops</div>
                     <div class="card-body">
@@ -273,6 +298,7 @@
 
         document.getElementById('clear-draft').onclick = () => {
             if (!confirm("Clear saved draft?")) return;
+            document.getElementById('import-pattern').value = '';
             localStorage.removeItem(STORAGE_KEY);
             routeStops = window.initialRouteStops.length > 0 ? window.initialRouteStops : [];
             renderRoute();
@@ -294,6 +320,37 @@
                 routeStops = window.initialRouteStops;
             }
             //routeStops = window.initialRouteStops;
+
+            renderRoute();
+        };
+
+        /* =========================================================
+           IMPORT ROUTE
+        ========================================================= */
+        document.getElementById('import-btn').onclick = async function() {
+
+            const patternId = document.getElementById('import-pattern').value;
+
+            if (!patternId) {
+                alert("Select a route pattern to import");
+                return;
+            }
+
+            if (!confirm("Import stops from this route? Current builder will be replaced.")) {
+                return;
+            }
+
+            let url = "{{ route('backend.route-stops', ':id') }}";
+            url = url.replace(':id', patternId);
+
+            const res = await fetch(url);
+            const data = await res.json();
+
+            routeStops = data.map(stop => ({
+                id: stop.id,
+                name: stop.name,
+                offset: stop.offset
+            }));
 
             renderRoute();
         };

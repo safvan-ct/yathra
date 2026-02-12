@@ -39,7 +39,7 @@ class StopSeeder extends Seeder
             'MKD Bus Station',
             'MKD Police Station',
             'MKD Hospital Jn.',
-            'Nellippuzha',
+            'MKD KSRTC Station',
         ];
 
         foreach ($stops as $key => $stop) {
