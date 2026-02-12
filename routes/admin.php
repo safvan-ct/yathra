@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetController;
 use App\Http\Controllers\Admin\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\Route\RoutePatternController;
 use App\Http\Controllers\Admin\Route\StopController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,8 @@ Route::middleware('guest')->prefix('backend')->name('backend.')->group(function 
 Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('backend.dashboard');
 
 Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function () {
+    Route::get('stops', [DashboardController::class, 'stops']);
+
     Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,6 +45,20 @@ Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function
             Route::get('/', 'index')->name('index');
             Route::post('/', 'store')->name('store');
             Route::put('/{stop}', 'update')->name('update');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+
+            Route::get('/form/{id?}', 'form')->name('form');
+            Route::get('/datatable', 'dataTable')->name('datatable');
+            Route::patch('/{id}/toggle-status', 'toggleStatus')->name('toggle-status');
+        });
+
+    Route::prefix('route-pattern')
+        ->name('route-pattern.')
+        ->controller(RoutePatternController::class)
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
+            Route::put('/{routePattern}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
 
             Route::get('/form/{id?}', 'form')->name('form');

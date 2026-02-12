@@ -17,14 +17,16 @@ class RoutePatternSeeder extends Seeder
 
         $routes = [
             [
-                'Name'                => 'AMBALAPPARA to MKD',
+                'name'                => 'AP to MKD',
+                'info'                => 'Ambalappara to Mannarkkad',
                 'origin_stop_id'      => Stop::where('name', 'Ambalappara')->first()->id,
                 'destination_stop_id' => Stop::where('name', 'Nellippuzha')->first()->id,
                 'created_at'          => $time,
                 'updated_at'          => $time,
             ],
             [
-                'Name'                => 'TVK to MKD',
+                'name'                => 'TVK to MKD',
+                'info'                => 'Thiruvizhamkunnu to Mannarkkad',
                 'origin_stop_id'      => Stop::where('name', 'Thiruvizhamkunnu')->first()->id,
                 'destination_stop_id' => Stop::where('name', 'Nellippuzha')->first()->id,
                 'created_at'          => $time,

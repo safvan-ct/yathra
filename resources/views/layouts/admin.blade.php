@@ -68,7 +68,7 @@
 
                     <li
                         class="pc-item pc-hasmenu
-                        {{ Str::is('backend.stop.*', Route::currentRouteName()) ? 'active pc-trigger' : '' }}">
+                        {{ Str::is('backend.stop.*', Route::currentRouteName()) || Str::is('backend.route-pattern.*', Route::currentRouteName()) ? 'active pc-trigger' : '' }}">
                         <a href="javascript:void(0)" class="pc-link">
                             <span class="pc-micon"><i class="ti ti-package"></i></span>
                             <span class="pc-mtext">Stops & Routes</span>
@@ -80,8 +80,8 @@
                                 <a class="pc-link" href="{{ route('backend.stop.index') }}">Stops</a>
                             </li>
                             <li
-                                class="pc-item {{ Route::currentRouteName() == 'backend.stop.index' ? 'active' : '' }}">
-                                <a class="pc-link" href="{{ route('backend.stop.index') }}">Routes</a>
+                                class="pc-item {{ Route::currentRouteName() == 'backend.route-pattern.index' ? 'active' : '' }}">
+                                <a class="pc-link" href="{{ route('backend.route-pattern.index') }}">Routes</a>
                             </li>
                         </ul>
                     </li>

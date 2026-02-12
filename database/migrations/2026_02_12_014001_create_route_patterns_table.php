@@ -38,9 +38,12 @@ return new class extends Migration
         Schema::create('route_patterns', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
+            $table->string('info')->nullable()->index();
 
             $table->foreignId('origin_stop_id')->constrained('stops')->onDelete('cascade');
             $table->foreignId('destination_stop_id')->constrained('stops')->onDelete('cascade');
+
+            $table->boolean('is_active')->default(true);
 
             $table->timestamps();
         });
