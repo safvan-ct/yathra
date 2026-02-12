@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\Route\RoutePatternController;
+use App\Http\Controllers\Admin\Route\RoutePatternStopController;
 use App\Http\Controllers\Admin\Route\StopController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,5 +65,13 @@ Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function
             Route::get('/form/{id?}', 'form')->name('form');
             Route::get('/datatable', 'dataTable')->name('datatable');
             Route::patch('/{id}/toggle-status', 'toggleStatus')->name('toggle-status');
+        });
+
+    Route::prefix('route-pattern-stop')
+        ->name('route-pattern-stop.')
+        ->controller(RoutePatternStopController::class)
+        ->group(function () {
+            Route::get('/{routePattern}', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
         });
 });

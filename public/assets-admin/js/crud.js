@@ -44,7 +44,11 @@ class CRUD {
         toastr.clear();
         let resource = this.resource;
 
-        $("#crudTitle").text(id ? `Edit ${resource}` : `Create ${resource}`);
+        $("#crudTitle").html(
+            id
+                ? `Edit ${resource} <span id="infoMore"></span>`
+                : `Create ${resource} <span id="infoMore"></span>`,
+        );
         $("#crudBody").html("Loading...");
 
         // Load fields partial from controller
@@ -95,7 +99,7 @@ class CRUD {
             headers: {
                 Accept: "application/json",
                 "X-CSRF-TOKEN": document.querySelector(
-                    "meta[name='csrf-token']"
+                    "meta[name='csrf-token']",
                 ).content,
             },
             success: function (res) {
@@ -114,7 +118,7 @@ class CRUD {
                 } else {
                     toastr.error(
                         xhr.responseJSON?.message ||
-                            "Server error. Please try again."
+                            "Server error. Please try again.",
                     );
                 }
             },
@@ -135,7 +139,7 @@ class CRUD {
             headers: {
                 Accept: "application/json",
                 "X-CSRF-TOKEN": document.querySelector(
-                    "meta[name='csrf-token']"
+                    "meta[name='csrf-token']",
                 ).content,
             },
         })
@@ -160,7 +164,7 @@ class CRUD {
                 "Content-Type": "application/json",
                 Accept: "application/json",
                 "X-CSRF-TOKEN": document.querySelector(
-                    "meta[name='csrf-token']"
+                    "meta[name='csrf-token']",
                 ).content,
             },
             body: JSON.stringify({
@@ -196,7 +200,7 @@ class CRUD {
         edit = true,
         del = true,
         table = "dataTable",
-        attributeId = ""
+        attributeId = "",
     ) {
         return {
             data: null, // action is not from DB

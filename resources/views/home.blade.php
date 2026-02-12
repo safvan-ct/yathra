@@ -25,7 +25,7 @@
         }
 
         .time-badge {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
         }
     </style>
@@ -102,36 +102,36 @@
                 ]) }}"
                     class="text-decoration-none text-dark">
 
-                    <div class="bus-card card mb-3">
-                        <div class="card-body">
+                    <div class="bus-card card mb-2">
+                        <div class="card-body" style="padding: 7px;">
 
                             <div class="row align-items-center">
 
-                                <div class="col-md-4">
-                                    <h6 class="fw-bold mb-1">{{ $bus->bus_name }}</h6>
-                                    <small class="text-muted">
-                                        {{ $bus->bus_number }} • {{ $bus->operator }}
-                                    </small>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center w-100">
+
+                                    <div class="flex-grow-1 me-3">
+                                        <h6 class="fw-bold mb-0 d-inline-block">{{ $bus->bus_name }}</h6>
+                                        <small class="text-muted ms-1">{{ $bus->bus_number }}</small>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <span class="badge bg-secondary text-white">
+                                            {{ ucfirst($bus->service_type) }}
+                                        </span>
+                                    </div>
+
                                 </div>
 
-                                <div class="col-md-6 text-md-center my-3 my-md-0">
-                                    <span class="time-badge text-primary">
+                                <div class="text-nowrap mt-1">
+                                    <span class="time-badge text-primary fw-bold">
                                         {{ \Carbon\Carbon::parse($bus->departure_time)->format('h:i A') }}
                                     </span>
                                     <span class="mx-2 text-muted">→</span>
-                                    <span class="time-badge text-success">
+                                    <span class="time-badge text-success fw-bold">
                                         {{ \Carbon\Carbon::parse($bus->arrival_time)->format('h:i A') }}
                                     </span>
                                 </div>
-
-                                <div class="col-md-2 text-md-end">
-                                    <span class="badge bg-info text-dark">
-                                        {{ ucfirst($bus->service_type) }}
-                                    </span>
-                                </div>
-
                             </div>
-
                         </div>
                     </div>
                 </a>

@@ -38,7 +38,7 @@
         /* The Main Vertical Line */
         .timeline-line {
             position: absolute;
-            left: 35px;
+            left: 31px;
             top: 0;
             bottom: 0;
             width: 4px;
@@ -49,7 +49,7 @@
         /* Progress Fill (Changes based on bus location) */
         .timeline-progress {
             position: absolute;
-            left: 35px;
+            left: 31px;
             top: 0;
             width: 4px;
             background: var(--primary-blue);
@@ -61,22 +61,22 @@
         .stop-row {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 3;
         }
 
         /* The Node (Dot) */
         .stop-node {
-            width: 44px;
-            height: 44px;
+            width: 35px;
+            height: 35px;
             background: white;
             border: 4px solid #dee2e6;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 20px;
+            margin-right: 12px;
             flex-shrink: 0;
             transition: all 0.3s ease;
         }
@@ -96,29 +96,29 @@
         }
 
         /* Info Card */
-        .stop-card {
+        /* .stop-card {
             background: white;
             border-radius: 12px;
             padding: 16px;
             width: 100%;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid transparent;
-        }
+        } */
 
         .stop-row.active .stop-card {
             border-color: rgb(228 5 5);
         }
 
         .stop-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 4px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0px;
             display: flex;
             justify-content: space-between;
         }
 
         .distance-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #6c757d;
             font-weight: 500;
         }
@@ -133,14 +133,14 @@
         }
 
         .time-item {
-            line-height: 1.2;
+            line-height: 1;
         }
 
         .time-label {
             font-size: 0.6rem;
             text-transform: uppercase;
             color: #999;
-            display: block;
+            display: none;
         }
 
         /* Actions */
@@ -226,6 +226,10 @@
             </div>
 
         </div>
+
+        <div class="text-danger small d-block m-0 text-center">
+            *Times are estimated and subject to change
+        </div>
     </div>
 
     <div class="timeline-wrapper">
@@ -253,14 +257,21 @@
                     </div> --}}
 
                     <div class="time-group">
-                        <div class="time-item">
-                            <span class="time-label small">Arrival (ETA)</span>
-                            <span class="fw-bold small text-success">{{ $stop->arrival_time }}</span>
-                        </div>
-                        <div class="time-item">
-                            <span class="time-label small">Departure (ETD)</span>
-                            <span class="fw-bold small text-danger">{{ $stop->departure_time }}</span>
-                        </div>
+                        @if (!$loop->first)
+                            <div class="time-item">
+                                <span class="time-label small">Arrival (ETA)</span>
+                                <span class="fw-bold small text-success">{{ $stop->arrival_time }}</span>
+                            </div>
+                        @endif
+
+                        @if (!$loop->last)
+                            <div class="time-item">
+                                <span class="time-label small">Departure (ETD)</span>
+                                <span class="fw-bold small text-danger">
+                                    {{ $loop->first ? $stop->start_time : $stop->departure_time }}
+                                </span>
+                            </div>
+                        @endif
                     </div>
 
                     {{-- <div class="stop-actions">

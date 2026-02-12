@@ -28,7 +28,7 @@ class TripSeeder extends Seeder
                 'updated_at'       => $time,
             ],
             [
-                'route_pattern_id' => RoutePattern::where('name', 'AMBALAPPARA to MKD')->first()->id,
+                'route_pattern_id' => RoutePattern::where('name', 'AP to MKD')->first()->id,
                 'bus_id'           => Bus::Where('bus_number', 'KL 50 A 1024')->first()->id,
                 'start_time'       => '09:15:00',
                 'final_stop_id'    => Stop::where('name', 'Nellippuzha')->first()->id,

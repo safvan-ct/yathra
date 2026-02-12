@@ -56,6 +56,7 @@ return new class extends Migration
             $table->foreignId('stop_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('stop_order')->default(0);
 
+            $table->unsignedInteger('minutes_from_previous_stop')->default(2);
             $table->unsignedInteger('default_offset_minutes')->default(5);
 
             $table->unique(['route_pattern_id', 'stop_order']);

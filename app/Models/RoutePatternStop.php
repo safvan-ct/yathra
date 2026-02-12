@@ -9,6 +9,7 @@ class RoutePatternStop extends Model
         'route_pattern_id',
         'stop_id',
         'stop_order',
+        'minutes_from_previous_stop',
         'default_offset_minutes',
     ];
 

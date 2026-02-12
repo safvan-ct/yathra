@@ -124,6 +124,7 @@ class HomeController extends Controller
             $time = \Carbon\Carbon::parse($trip->start_time)
                 ->addMinutes($stop->offset);
 
+            $stop->start_time     = \Carbon\Carbon::parse($trip->start_time)->format('h:i A');
             $stop->arrival_time   = $time->format('h:i A');
             $stop->departure_time = $time->copy()->addMinutes(1)->format('h:i A');
 

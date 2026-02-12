@@ -8,7 +8,16 @@
             <div class="card">
                 <div class="card-body">
                     <button onclick="CRUD.open()" class="btn btn-primary btn-sm add-btn">Add Route</button>
-                    <x-admin.table :headers="['#', 'Name', 'Info', 'Origin Stop', 'Destination Stop', 'Status', 'Actions']"></x-admin.table>
+                    <x-admin.table :headers="[
+                        '#',
+                        'Name',
+                        'Info',
+                        'Origin Stop',
+                        'Destination Stop',
+                        'Status',
+                        'Actions',
+                        'Add Stop',
+                    ]"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -39,6 +48,17 @@
 
             CRUD.columnToggleStatus(),
             CRUD.columnActions(true, false),
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: (data, type, row) => {
+                    let route = "{{ route('backend.route-pattern-stop.index', ':id') }}";
+                    return `
+                        <a class="btn btn-link text-danger" href="${route.replace(':id', row.id)}">Add Stop</a>
+                    `;
+                },
+            }
         ];
 
         window.crudTable = CRUD.loadDataTable(tableColumns);
