@@ -44,6 +44,9 @@ Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function
         ->name('stop.')
         ->controller(StopController::class)
         ->group(function () {
+            Route::post('/import/confirm', 'importConfirm')->name('import.confirm');
+            Route::post('/import/preview', 'importPreview')->name('import.preview');
+
             Route::get('/', 'index')->name('index');
             Route::post('/', 'store')->name('store');
             Route::put('/{stop}', 'update')->name('update');

@@ -6,9 +6,20 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
+
                 <div class="card-body">
-                    <button onclick="CRUD.open()" class="btn btn-primary btn-sm add-btn">Add Stop</button>
-                    <x-admin.table :headers="['#', 'Name', 'Code', 'Bus Station', 'Status', 'Actions']"></x-admin.table>
+                    <div class="mb-2 d-flex justify-content-end">
+                        <form action="{{ route('backend.stop.import.preview') }}" method="POST" enctype="multipart/form-data"
+                            class="d-inline border p-2">
+                            @csrf
+                            <input type="file" name="file" required>
+                            <button class="btn btn-success btn-sm">Preview Import</button>
+                            <button onclick="CRUD.open()" class="btn btn-primary btn-sm" type="button">Add Stop</button>
+                        </form>
+                    </div>
+
+                    <button onclick="CRUD.open()" class="btn btn-primary btn-sm add-btn d-none">Add Stop</button>
+                    <x-admin.table :headers="['#', 'Name', 'Code', 'Status', 'Actions']"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -28,8 +39,6 @@
             {
                 data: "code"
             },
-
-            CRUD.columnToggleStatus("is_bus_terminal"),
 
             CRUD.columnToggleStatus(),
             CRUD.columnActions(true, false),

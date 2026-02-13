@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('code')->unique();
 
             // If stop have same name then ideantify use this
-            $table->string('local_governing_body')->nullable();
-            $table->string('legislative_assembly')->nullable();
+            $table->string('local_body')->nullable();
+            $table->string('assembly')->nullable();
             $table->string('district')->nullable();
             $table->string('state')->nullable();
             $table->string('pincode', 10)->nullable();

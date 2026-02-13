@@ -30,7 +30,7 @@ class DashboardController extends Controller
     {
         $q = $request->q;
 
-        $users = Stop::select('id', 'name', 'code', 'local_governing_body', 'legislative_assembly', 'district', 'state', 'pincode')
+        $users = Stop::select('id', 'name', 'code', 'local_body', 'assembly', 'district', 'state', 'pincode')
             ->where('name', 'LIKE', "%$q%")
             ->limit(20)
             ->get();

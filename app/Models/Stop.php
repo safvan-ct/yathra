@@ -9,8 +9,8 @@ class Stop extends Model
         'name',
         'code',
 
-        'local_governing_body',
-        'legislative_assembly',
+        'local_body',
+        'assembly',
         'district',
         'state',
         'pincode',
@@ -20,5 +20,10 @@ class Stop extends Model
 
         'is_bus_terminal',
         'is_active',
+    ];
+
+    protected $casts = [
+        'is_bus_terminal' => 'boolean',
+        'is_active'       => 'boolean',
     ];
 }
