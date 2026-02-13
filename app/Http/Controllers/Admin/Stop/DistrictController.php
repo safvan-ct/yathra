@@ -158,7 +158,7 @@ class DistrictController extends Controller
         return redirect()->route('district.index')->with('success', "Districts of {$state->name} imported successfully.");
     }
 
-    public function districts(Request $request)
+    public function search(Request $request)
     {
         $q = $request->q;
 

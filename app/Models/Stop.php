@@ -5,15 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stop extends Model
 {
+    //use SoftDeletes;
+
     protected $fillable = [
         'name',
+        'slug',
 
         'locality',
-        'city',
-        'district',
-        'state',
-
-        'code',
+        'city_id',
 
         'latitude',
         'longitude',
@@ -26,4 +25,9 @@ class Stop extends Model
         'is_bus_terminal' => 'boolean',
         'is_active'       => 'boolean',
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 }

@@ -7,9 +7,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\Route\RoutePatternController;
 use App\Http\Controllers\Admin\Route\RoutePatternStopController;
-use App\Http\Controllers\Admin\Route\StopController;
 use App\Http\Controllers\Admin\Stop\CityController;
 use App\Http\Controllers\Admin\Stop\DistrictController;
+use App\Http\Controllers\Admin\Stop\StopController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('login', [LoginController::class, 'create'])->name('login');
@@ -28,6 +28,7 @@ Route::middleware('guest')->prefix('backend')->name('backend.')->group(function 
 Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('backend.dashboard');
 
 // District Routes
+Route::get('districts', [DistrictController::class, 'search']);
 Route::prefix('district')->name('district.')->group(function () {
     Route::get('/form/{id}', [DistrictController::class, 'form'])->name('form');
     Route::get('/datatable', [DistrictController::class, 'dataTable'])->name('datatable');
@@ -39,15 +40,26 @@ Route::prefix('district')->name('district.')->group(function () {
 Route::resource('district', DistrictController::class)->only(['index', 'store', 'update']);
 
 // Cities Routes
+Route::get('cities', [CityController::class, 'search']);
 Route::prefix('city')->name('city.')->group(function () {
     Route::get('/form/{id}', [CityController::class, 'form'])->name('form');
     Route::get('/datatable', [CityController::class, 'dataTable'])->name('datatable');
-    Route::patch('/toggle-status/{district}', [CityController::class, 'toggleStatus'])->name('toggle-status');
+    Route::patch('/toggle-status/{city}', [CityController::class, 'toggleStatus'])->name('toggle-status');
 
     Route::post('/import/confirm', [CityController::class, 'importConfirm'])->name('import.confirm');
 });
-Route::get('districts', [DistrictController::class, 'districts']);
 Route::resource('city', CityController::class)->only(['index', 'store', 'update']);
+
+// Stop Routes
+Route::get('stops', [StopController::class, 'search']);
+Route::prefix('stop')->name('stop.')->group(function () {
+    Route::get('/form/{id}', [StopController::class, 'form'])->name('form');
+    Route::get('/datatable', [StopController::class, 'dataTable'])->name('datatable');
+    Route::patch('/toggle-status/{stop}', [StopController::class, 'toggleStatus'])->name('toggle-status');
+
+    Route::post('/import/confirm', [StopController::class, 'importConfirm'])->name('import.confirm');
+});
+Route::resource('stop', StopController::class)->only(['index', 'store', 'update']);
 
 Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function () {
     Route::get('stops', [DashboardController::class, 'stops']);

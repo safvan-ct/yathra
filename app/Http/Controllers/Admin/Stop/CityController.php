@@ -81,4 +81,16 @@ class CityController extends Controller
 
         return redirect()->route('city.index')->with('success', "Cities imported successfully.");
     }
+
+    public function search(Request $request)
+    {
+        $q = $request->q;
+
+        $cities = City::select('id', 'name')
+            ->where('name', 'LIKE', "%$q%")
+            ->limit(20)
+            ->get();
+
+        return response()->json($cities);
+    }
 }

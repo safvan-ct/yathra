@@ -24,29 +24,23 @@ class StopCreateRequest extends FormRequest
         $stop = $this->route('stop');
 
         $rules = [
-            'name'       => "required|string|max:255",
-            'code'       => [
-                'required', 'string', 'max:255',
-                Rule::unique('stops', 'code')->ignore($stop),
-            ],
+            'name'      => "required|string|max:255",
 
-            'local_body' => "nullable|string|max:255",
-            'assembly'   => "nullable|string|max:255",
-            'district'   => "nullable|string|max:255",
-            'state'      => "nullable|string|max:255",
-            'pincode'    => "nullable|integer",
+            'locality'  => "nullable|string|max:255",
 
-            'latitude'   => "nullable|numeric",
-            'longitude'  => "nullable|numeric",
+            'latitude'  => "nullable|numeric",
+            'longitude' => "nullable|numeric",
         ];
+
+        if (! $stop) {
+            $rules['city_id'] = 'required|string|max:50|exists:cities,id';
+        }
 
         return $rules;
     }
 
     public function messages()
     {
-        return [
-            'code.unique' => 'The code has already been taken.',
-        ];
+        return [];
     }
 }

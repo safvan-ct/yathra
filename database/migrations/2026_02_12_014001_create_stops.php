@@ -37,7 +37,6 @@ return new class extends Migration
             $table->foreignId('district_id')->constrained()->cascadeOnDelete();
 
             $table->string('name', 120);
-            $table->string('code', 10);
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
@@ -48,11 +47,10 @@ return new class extends Migration
         Schema::create('stops', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
+            $table->string('slug')->unique();
 
             $table->string('locality', 120)->default('');
             $table->foreignId('city_id')->constrained()->cascadeOnDelete();
-
-            $table->string('code')->unique();
 
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
@@ -61,8 +59,10 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unique(['name', 'locality', 'city_id'], 'unique_stop_identity');
+            $table->index(['city_id', 'is_active']);
         });
     }
 

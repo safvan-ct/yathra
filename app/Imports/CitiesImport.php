@@ -13,7 +13,7 @@ class CitiesImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
-        $states    = State::pluck('id', 'code');
+        $states    = State::pluck('id', 'code')->toArray();
         $districts = District::all()
             ->groupBy('state_id')
             ->map(function ($items) {return $items->pluck('id', 'name');})
