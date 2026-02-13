@@ -45,9 +45,9 @@ class DatabaseSeeder extends Seeder
             \App\Models\User::factory()->create($user);
         }
 
-        $this->call([BusSeeder::class]);
-        $this->call([StopSeeder::class]);
-        $this->call([RoutePatternSeeder::class]);
-        $this->call([TripSeeder::class]);
+        // $this->call([BusSeeder::class]);
+        // $this->call([StopSeeder::class]);
+        // $this->call([RoutePatternSeeder::class]);
+        // $this->call([TripSeeder::class]);
     }
 }

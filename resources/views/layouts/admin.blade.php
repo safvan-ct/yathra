@@ -75,6 +75,33 @@
                             : '' }}">
                         <a href="javascript:void(0)" class="pc-link">
                             <span class="pc-micon"><i class="ti ti-package"></i></span>
+                            <span class="pc-mtext">Stops</span>
+                            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                        </a>
+                        <ul class="pc-submenu">
+                            <li
+                                class="pc-item {{ Route::currentRouteName() == 'district.index' ? 'active' : '' }}">
+                                <a class="pc-link" href="{{ route('district.index') }}">Districts</a>
+                            </li>
+                            <li
+                                class="pc-item {{ Str::is('backend.route-pattern.*', Route::currentRouteName()) ||
+                                Str::is('backend.route-pattern-stop.*', Route::currentRouteName())
+                                    ? 'active'
+                                    : '' }}">
+                                <a class="pc-link" href="{{ route('backend.route-pattern.index') }}">Routes</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li
+                        class="pc-item pc-hasmenu
+                        {{ Str::is('backend.stop.*', Route::currentRouteName()) ||
+                        Str::is('backend.route-pattern.*', Route::currentRouteName()) ||
+                        Str::is('backend.route-pattern-stop.*', Route::currentRouteName())
+                            ? 'active pc-trigger'
+                            : '' }}">
+                        <a href="javascript:void(0)" class="pc-link">
+                            <span class="pc-micon"><i class="ti ti-package"></i></span>
                             <span class="pc-mtext">Stops & Routes</span>
                             <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                         </a>

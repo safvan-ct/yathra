@@ -3,16 +3,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RoutePattern extends Model
+class District extends Model
 {
     protected $fillable = [
+        'state_id',
         'name',
         'code',
         'is_active',
     ];
 
-    public function directions()
+    public function state()
     {
-        return $this->hasMany(RouteDirection::class);
+        return $this->belongsTo(State::class);
     }
 }

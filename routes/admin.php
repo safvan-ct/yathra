@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\Route\RoutePatternController;
 use App\Http\Controllers\Admin\Route\RoutePatternStopController;
 use App\Http\Controllers\Admin\Route\StopController;
+use App\Http\Controllers\Admin\Stop\DistrictController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('login', [LoginController::class, 'create'])->name('login');
@@ -24,6 +25,16 @@ Route::middleware('guest')->prefix('backend')->name('backend.')->group(function 
 });
 
 Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('backend.dashboard');
+
+Route::prefix('district')->name('district.')->group(function () {
+    Route::get('/form/{id}', [DistrictController::class, 'form'])->name('form');
+    Route::get('/datatable', [DistrictController::class, 'dataTable'])->name('datatable');
+    Route::patch('/toggle-status/{district}', [DistrictController::class, 'toggleStatus'])->name('toggle-status');
+
+    Route::post('/import/{state}/preview', [DistrictController::class, 'importPreview'])->name('import.preview');
+    Route::post('/import/{state}/confirm', [DistrictController::class, 'importConfirm'])->name('import.confirm');
+});
+Route::resource('district', DistrictController::class)->only(['index', 'store', 'update']);
 
 Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function () {
     Route::get('stops', [DashboardController::class, 'stops']);

@@ -7,13 +7,13 @@ class Stop extends Model
 {
     protected $fillable = [
         'name',
-        'code',
 
-        'local_body',
-        'assembly',
+        'locality',
+        'city',
         'district',
         'state',
-        'pincode',
+
+        'code',
 
         'latitude',
         'longitude',
