@@ -14,7 +14,7 @@ class DistrictController extends Controller
 {
     public function index()
     {
-        return view('backend.stop.index');
+        return view('backend.district.index');
     }
 
     public function store(Request $request)
@@ -156,5 +156,17 @@ class DistrictController extends Controller
         Session::forget("district_import_preview_{$state->id}");
 
         return redirect()->route('district.index')->with('success', "Districts of {$state->name} imported successfully.");
+    }
+
+    public function districts(Request $request)
+    {
+        $q = $request->q;
+
+        $districts = District::select('id', 'name')
+            ->where('name', 'LIKE', "%$q%")
+            ->limit(20)
+            ->get();
+
+        return response()->json($districts);
     }
 }

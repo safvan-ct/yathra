@@ -68,7 +68,7 @@
 
                     <li
                         class="pc-item pc-hasmenu
-                        {{ Str::is('backend.stop.*', Route::currentRouteName()) ||
+                        {{ Str::is('district.*', Route::currentRouteName()) ||
                         Str::is('backend.route-pattern.*', Route::currentRouteName()) ||
                         Str::is('backend.route-pattern-stop.*', Route::currentRouteName())
                             ? 'active pc-trigger'
@@ -79,9 +79,11 @@
                             <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
                         </a>
                         <ul class="pc-submenu">
-                            <li
-                                class="pc-item {{ Route::currentRouteName() == 'district.index' ? 'active' : '' }}">
+                            <li class="pc-item {{ Str::is('district.*', Route::currentRouteName()) ? 'active' : '' }}">
                                 <a class="pc-link" href="{{ route('district.index') }}">Districts</a>
+                            </li>
+                            <li class="pc-item {{ Str::is('city.*', Route::currentRouteName()) ? 'active' : '' }}">
+                                <a class="pc-link" href="{{ route('city.index') }}">Cities</a>
                             </li>
                             <li
                                 class="pc-item {{ Str::is('backend.route-pattern.*', Route::currentRouteName()) ||

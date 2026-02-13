@@ -9,4 +9,9 @@ class State extends Model
         'name',
         'code',
     ];
+
+    public function districts()
+    {
+        return $this->hasMany(District::class);
+    }
 }
