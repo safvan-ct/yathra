@@ -13,25 +13,40 @@ return new class extends Migration
     {
         Schema::create('route_patterns', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->index();
-            $table->string('code')->nullable();
+
+            $table->string('name', 120)->index();
+            $table->string('code', 120)->nullable();
+
+            $table->foreignId('origin_stop_id')->constrained('stops');
+            $table->foreignId('destination_stop_id')->constrained('stops');
+
+            $table->decimal('distance_km', 8, 2)->nullable();
 
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
+
+            $table->index(['origin_stop_id', 'destination_stop_id']);
+
+            $table->unique(['origin_stop_id', 'destination_stop_id'], 'unique_rp_identity');
         });
 
         Schema::create('route_directions', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('route_pattern_id')->constrained()->cascadeOnDelete();
-            $table->string('name'); // UP / DOWN
-            $table->string('info')->nullable();
-            $table->foreignId('origin_stop_id')->constrained('stops');
-            $table->foreignId('destination_stop_id')->constrained('stops');
+
+            $table->string('name', 120)->default('');
+            $table->string('direction', 120); // UP / DOWN
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
+
+            $table->unique(['route_pattern_id', 'name', 'direction'], 'unique_rd_identity');
+            $table->index(['route_pattern_id', 'direction']);
         });
 
-        Schema::create('route_pattern_stops', function (Blueprint $table) {
+        Schema::create('route_direction_stops', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('route_direction_id')->constrained()->onDelete('cascade');
@@ -41,6 +56,9 @@ return new class extends Migration
 
             $table->unsignedInteger('minutes_from_previous_stop')->default(2);
             $table->unsignedInteger('default_offset_minutes')->default(5);
+
+            $table->decimal('distance_from_origin', 8, 2)->nullable();
+            $table->boolean('is_active')->default(true);
 
             $table->unique(['route_direction_id', 'stop_order']);
             $table->unique(['route_direction_id', 'stop_id']);
@@ -54,7 +72,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('route_pattern_stops');
+        Schema::dropIfExists('route_direction_stops');
         Schema::dropIfExists('route_directions');
         Schema::dropIfExists('route_patterns');
     }

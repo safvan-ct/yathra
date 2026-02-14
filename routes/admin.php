@@ -5,8 +5,9 @@ use App\Http\Controllers\Admin\Auth\PasswordResetController;
 use App\Http\Controllers\Admin\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\Route\RouteDirectionController;
+use App\Http\Controllers\Admin\Route\RouteDirectionStopController;
 use App\Http\Controllers\Admin\Route\RoutePatternController;
-use App\Http\Controllers\Admin\Route\RoutePatternStopController;
 use App\Http\Controllers\Admin\Stop\CityController;
 use App\Http\Controllers\Admin\Stop\DistrictController;
 use App\Http\Controllers\Admin\Stop\StopController;
@@ -27,7 +28,7 @@ Route::middleware('guest')->prefix('backend')->name('backend.')->group(function 
 
 Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('backend.dashboard');
 
-// District Routes
+// District
 Route::get('districts', [DistrictController::class, 'search']);
 Route::prefix('district')->name('district.')->group(function () {
     Route::get('/form/{id}', [DistrictController::class, 'form'])->name('form');
@@ -39,7 +40,7 @@ Route::prefix('district')->name('district.')->group(function () {
 });
 Route::resource('district', DistrictController::class)->only(['index', 'store', 'update']);
 
-// Cities Routes
+// Cities
 Route::get('cities', [CityController::class, 'search']);
 Route::prefix('city')->name('city.')->group(function () {
     Route::get('/form/{id}', [CityController::class, 'form'])->name('form');
@@ -50,7 +51,7 @@ Route::prefix('city')->name('city.')->group(function () {
 });
 Route::resource('city', CityController::class)->only(['index', 'store', 'update']);
 
-// Stop Routes
+// Stops
 Route::get('stops', [StopController::class, 'search']);
 Route::prefix('stop')->name('stop.')->group(function () {
     Route::get('/form/{id}', [StopController::class, 'form'])->name('form');
@@ -61,9 +62,41 @@ Route::prefix('stop')->name('stop.')->group(function () {
 });
 Route::resource('stop', StopController::class)->only(['index', 'store', 'update']);
 
+// Route Pattern
+Route::get('route-patterns', [RoutePatternController::class, 'search']);
+Route::prefix('route-pattern')->name('route-pattern.')->group(function () {
+    Route::get('/form/{id}', [RoutePatternController::class, 'form'])->name('form');
+    Route::get('/datatable', [RoutePatternController::class, 'dataTable'])->name('datatable');
+    Route::patch('/toggle-status/{routePattern}', [RoutePatternController::class, 'toggleStatus'])->name('toggle-status');
+
+    Route::post('/import/preview', [RoutePatternController::class, 'importPreview'])->name('import.preview');
+    Route::post('/import/{id}/confirm', [RoutePatternController::class, 'importConfirm'])->name('import.confirm');
+});
+Route::resource('route-pattern', RoutePatternController::class)->only(['index', 'store', 'update']);
+
+// Route Direction
+Route::get('route-directions', [RouteDirectionController::class, 'search']);
+Route::prefix('route-direction')->name('route-direction.')->group(function () {
+    Route::get('/form/{id}', [RouteDirectionController::class, 'form'])->name('form');
+    Route::get('/datatable', [RouteDirectionController::class, 'dataTable'])->name('datatable');
+    Route::patch('/toggle-status/{routeDirection}', [RouteDirectionController::class, 'toggleStatus'])->name('toggle-status');
+
+    Route::post('/import/preview', [RouteDirectionController::class, 'importPreview'])->name('import.preview');
+    Route::post('/import/{id}/confirm', [RouteDirectionController::class, 'importConfirm'])->name('import.confirm');
+});
+Route::resource('route-direction', RouteDirectionController::class)->only(['index', 'store', 'update']);
+
+// Route Direction Stops
+Route::get('route-direction-stops/{id}', [RouteDirectionStopController::class, 'getStops'])->name('route-direction-stops.get');
+Route::prefix('route-direction-stop')->name('route-direction-stop.')->group(function () {
+    Route::post('/', [RouteDirectionStopController::class, 'store'])->name('store');
+    Route::post('/import/preview', [RouteDirectionStopController::class, 'importPreview'])->name('import.preview');
+    Route::post('/import/{id}/confirm', [RouteDirectionStopController::class, 'importConfirm'])->name('import.confirm');
+
+    Route::get('/{routeDirection}', [RouteDirectionStopController::class, 'index'])->name('index');
+});
+
 Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function () {
-    Route::get('stops', [DashboardController::class, 'stops']);
-    Route::get('route-stops/{id}', [DashboardController::class, 'getPatternStops'])->name('route-stops');
 
     Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
@@ -75,23 +108,6 @@ Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function
     // Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
     //     ->middleware('throttle:6,1')
     //     ->name('verification.send');
-
-    Route::prefix('stop')
-        ->name('stop.')
-        ->controller(StopController::class)
-        ->group(function () {
-            Route::post('/import/confirm', 'importConfirm')->name('import.confirm');
-            Route::post('/import/preview', 'importPreview')->name('import.preview');
-
-            Route::get('/', 'index')->name('index');
-            Route::post('/', 'store')->name('store');
-            Route::put('/{stop}', 'update')->name('update');
-            Route::delete('/{id}', 'destroy')->name('destroy');
-
-            Route::get('/form/{id?}', 'form')->name('form');
-            Route::get('/datatable', 'dataTable')->name('datatable');
-            Route::patch('/{id}/toggle-status', 'toggleStatus')->name('toggle-status');
-        });
 
     Route::prefix('route-pattern')
         ->name('route-pattern.')
@@ -105,13 +121,5 @@ Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function
             Route::get('/form/{id?}', 'form')->name('form');
             Route::get('/datatable', 'dataTable')->name('datatable');
             Route::patch('/{id}/toggle-status', 'toggleStatus')->name('toggle-status');
-        });
-
-    Route::prefix('route-pattern-stop')
-        ->name('route-pattern-stop.')
-        ->controller(RoutePatternStopController::class)
-        ->group(function () {
-            Route::get('/{routePattern}', 'index')->name('index');
-            Route::post('/', 'store')->name('store');
         });
 });

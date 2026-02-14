@@ -1,9 +1,13 @@
 <div class="row">
     <input type="hidden" name="id" value="{{ $data->id ?? 0 }}">
 
-    <x-admin.input name="name" label="Name" class="col-12 col-lg-4" value="{{ $data->name ?? '' }}" />
+    <x-admin.input name="name" label="Name" class="col-12 col-md-4" value="{{ $data->name ?? '' }}" />
+    <x-admin.input name="info" label="Info" class="col-12 col-md-8" value="{{ $data->info ?? '' }}" />
+</div>
 
-    <div class="mb-2 col-12 col-lg-4">
+<hr>
+<div class="row">
+    <div class="mb-2 col-12 col-md-6">
         <label>Route Start Stop</label>
         <select id="start-stop" name="origin_stop_id" class="form-select stop-select"
             data-selected-id="{{ $data->origin_stop_id ?? '' }}" data-selected-name="{{ $data->origin->name ?? '' }}"
@@ -11,7 +15,7 @@
         </select>
     </div>
 
-    <div class="mb-2 col-12 col-lg-4">
+    <div class="mb-2 col-12 col-md-6">
         <label>Route End Stop</label>
         <select id="end-stop" name="destination_stop_id" class="form-select stop-select"
             data-selected-id="{{ $data->destination_stop_id ?? '' }}"
@@ -61,7 +65,7 @@
 
                 if (value.length < 2) return;
 
-                const response = await fetch(`/stops?q=${value}`);
+                const response = await fetch(`/backend/stops?q=${value}`);
                 const data = await response.json();
 
                 choices.clearChoices();
@@ -69,7 +73,7 @@
                 choices.setChoices(
                     data.map(item => ({
                         value: item.id,
-                        label: `${item.name} ${item.locality ? `(${item.locality})` : ''} (${item.city.name})`
+                        label: `${item.name} (${item.code})`
                     })),
                     'value',
                     'label',

@@ -1,34 +1,30 @@
 <div class="row">
     <input type="hidden" name="id" value="{{ $data->id ?? 0 }}">
 
+    @if (!$data)
+        <div class="mb-2 col-12 col-lg-4">
+            <label>Route</label>
+            <select name="route_pattern_id" class="form-select choice-select"
+                data-selected-id="{{ $data->route_pattern_id ?? '' }}"
+                data-selected-name="{{ $data->routePattern->name ?? '' }}"
+                data-selected-code="{{ $data->routePattern->code ?? '' }}" required>
+            </select>
+        </div>
+    @endif
+
     <x-admin.input name="name" label="Name" class="col-12 col-lg-4" value="{{ $data->name ?? '' }}" />
 
-    <div class="mb-2 col-12 col-lg-4">
-        <label>Route Start Stop</label>
-        <select id="start-stop" name="origin_stop_id" class="form-select stop-select"
-            data-selected-id="{{ $data->origin_stop_id ?? '' }}" data-selected-name="{{ $data->origin->name ?? '' }}"
-            data-selected-code="{{ $data->origin->code ?? '' }}" required>
-        </select>
-    </div>
-
-    <div class="mb-2 col-12 col-lg-4">
-        <label>Route End Stop</label>
-        <select id="end-stop" name="destination_stop_id" class="form-select stop-select"
-            data-selected-id="{{ $data->destination_stop_id ?? '' }}"
-            data-selected-name="{{ $data->destination->name ?? '' }}"
-            data-selected-code="{{ $data->destination->code ?? '' }}" required>
-        </select>
-    </div>
+    <x-admin.input name="direction" label="Direction" class="col-12 col-lg-4" value="{{ $data->direction ?? '' }}" />
 </div>
 
 <script>
-    document.querySelectorAll('.stop-select').forEach(select => {
+    document.querySelectorAll('.choice-select').forEach(select => {
 
         const choices = new Choices(select, {
             searchEnabled: true,
             searchChoices: false,
             placeholder: true,
-            placeholderValue: 'Type to search stop...',
+            placeholderValue: 'Type to search route...',
             shouldSort: false,
             removeItemButton: true
         });
@@ -61,7 +57,7 @@
 
                 if (value.length < 2) return;
 
-                const response = await fetch(`/stops?q=${value}`);
+                const response = await fetch(`/route-patterns?q=${value}`);
                 const data = await response.json();
 
                 choices.clearChoices();
@@ -69,7 +65,7 @@
                 choices.setChoices(
                     data.map(item => ({
                         value: item.id,
-                        label: `${item.name} ${item.locality ? `(${item.locality})` : ''} (${item.city.name})`
+                        label: `${item.name} (${item.code})`
                     })),
                     'value',
                     'label',

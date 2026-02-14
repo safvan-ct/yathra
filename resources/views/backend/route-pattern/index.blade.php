@@ -1,23 +1,29 @@
 @extends('layouts.admin')
 
 @section('content')
-    <x-admin.page-header title="Route" :breadcrumb="[['label' => 'Dashboard', 'link' => route('backend.dashboard')], ['label' => 'Route']]" />
+    <x-admin.page-header title="Routes" :breadcrumb="[['label' => 'Dashboard', 'link' => route('backend.dashboard')], ['label' => 'Routes']]" />
 
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
+
                 <div class="card-body">
-                    <button onclick="CRUD.open()" class="btn btn-primary btn-sm add-btn">Add Route</button>
-                    <x-admin.table :headers="[
-                        '#',
-                        'Name',
-                        'Info',
-                        'Origin Stop',
-                        'Destination Stop',
-                        'Status',
-                        'Actions',
-                        'Add Stop',
-                    ]"></x-admin.table>
+                    <div class="mb-2 d-flex justify-content-end">
+                        <form action="{{ route('route-pattern.import.preview') }}" method="POST" enctype="multipart/form-data"
+                            class="d-inline border p-2 me-2">
+                            @csrf
+                            <input type="file" name="file" required>
+                            <button class="btn btn-success btn-sm">Preview Import Routes</button>
+                        </form>
+
+                        <div class="d-inline border p-2">
+                            <button onclick="CRUD.open()" class="btn btn-primary btn-sm" type="button">
+                                Add Route
+                            </button>
+                        </div>
+                    </div>
+
+                    <x-admin.table :headers="['#', 'Name', 'Code', 'Origin', 'Destination', 'Status', 'Actions']"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -35,30 +41,17 @@
                 data: "name"
             },
             {
-                data: "info"
+                data: "code"
             },
             {
-                data: "origin_stop",
-                name: "origin_stop"
+                data: "origin"
             },
             {
-                data: "destination_stop",
-                name: "destination_stop"
+                data: "destination"
             },
 
             CRUD.columnToggleStatus(),
             CRUD.columnActions(true, false),
-            {
-                data: null,
-                orderable: false,
-                searchable: false,
-                render: (data, type, row) => {
-                    let route = "{{ route('backend.route-pattern-stop.index', ':id') }}";
-                    return `
-                        <a class="btn btn-link text-danger" href="${route.replace(':id', row.id)}">Add Stop</a>
-                    `;
-                },
-            }
         ];
 
         window.crudTable = CRUD.loadDataTable(tableColumns);

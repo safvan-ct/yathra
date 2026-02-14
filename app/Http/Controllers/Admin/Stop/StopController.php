@@ -102,7 +102,7 @@ class StopController extends Controller
     {
         $q = $request->q;
 
-        $results = Stop::select('id', 'name', 'city_id', 'locality')
+        $results = Stop::select('id', 'name', 'code', 'city_id', 'locality')
             ->with('city:id,name')
             ->where('name', 'LIKE', "%$q%")
             ->limit(20)

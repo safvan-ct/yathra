@@ -18,15 +18,22 @@
         }
     </style>
 
-    <x-admin.page-header :title="'Route Builder - ' . $routePattern->name" :breadcrumb="[
+    <x-admin.page-header :title="'Route Builder for ' .
+        $routeDirection->routePattern->name .
+        ' (' .
+        $routeDirection->routePattern->code .
+        ')' .
+        $routeDirection->name .
+        ' ' .
+        $routeDirection->direction" :breadcrumb="[
         ['label' => 'Dashboard', 'link' => route('backend.dashboard')],
-        ['label' => 'Route Pattern', 'link' => route('backend.route-pattern.index')],
+        ['label' => 'Route Direction', 'link' => route('route-direction.index')],
         ['label' => 'Route Builder'],
     ]" />
 
-    <form method="POST" action="{{ route('backend.route-pattern-stop.store') }}" class="mt-3">
+    <form method="POST" action="{{ route('route-direction-stop.store') }}" class="mt-3">
         @csrf
-        <input type="hidden" name="route_pattern_id" value="{{ $routePattern->id }}">
+        <input type="hidden" name="route_direction_id" value="{{ $routeDirection->id }}">
 
         <div class="row g-4">
 
@@ -35,14 +42,15 @@
                 <div class="card mb-3">
                     <div class="card-body">
 
-                        <label class="fw-bold">Import From Route Pattern</label>
+                        <label class="fw-bold">Import From Another Route</label>
 
                         <select id="import-pattern" class="form-select">
-                            <option value="">Select Route Pattern</option>
+                            <option value="">Select Route</option>
 
-                            @foreach ($allPatterns as $pattern)
-                                <option value="{{ $pattern->id }}">
-                                    {{ $pattern->name }}
+                            @foreach ($allDirections as $item)
+                                <option value="{{ $item->id }}">
+                                    {{ $item->routePattern->name . ' (' . $item->routePattern->code . ')' }}
+                                    {{ $item->name }} {{ $item->direction }}
                                 </option>
                             @endforeach
 
@@ -78,9 +86,16 @@
                 <div class="card">
                     <div class="card-header fw-bold d-flex justify-content-between">
                         <span>Route Timeline</span>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" id="clear-draft">
-                            Clear Draft
-                        </button>
+
+                        <div>
+                            <button type="button" class="btn btn-outline-info btn-sm me-2" id="reverse-route">
+                                Reverse Order
+                            </button>
+
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="clear-draft">
+                                Clear Draft
+                            </button>
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -122,7 +137,7 @@
 
         let routeStops = []; // [{id, name, offset}]
 
-        const STORAGE_KEY = "route_builder_draft_{{ $routePattern->id }}";
+        const STORAGE_KEY = "route_builder_draft_{{ $routeDirection->id }}";
 
         /* =========================================================
            CHOICES SEARCH
@@ -141,7 +156,7 @@
             const q = e.detail.value;
             if (q.length < 2) return;
 
-            const res = await fetch(`/backend/stops?q=${encodeURIComponent(q)}`);
+            const res = await fetch(`/stops?q=${encodeURIComponent(q)}`);
             const data = await res.json();
 
             stopSearch.clearChoices();
@@ -340,7 +355,7 @@
                 return;
             }
 
-            let url = "{{ route('backend.route-stops', ':id') }}";
+            let url = "{{ route('route-direction-stops.get', ':id') }}";
             url = url.replace(':id', patternId);
 
             const res = await fetch(url);
@@ -351,6 +366,31 @@
                 name: stop.name,
                 offset: stop.offset
             }));
+
+            renderRoute();
+        };
+
+        /* =========================================================
+            REVERSE ROUTE
+        ========================================================= */
+        document.getElementById('reverse-route').onclick = function() {
+
+            if (routeStops.length < 2) {
+                alert("Need at least 2 stops to reverse.");
+                return;
+            }
+
+            if (!confirm("Reverse stop order?")) return;
+
+            // Reverse array
+            routeStops.reverse();
+
+            // Reset first stop offset to 0 (important)
+            routeStops.forEach((stop, index) => {
+                if (index === 0) {
+                    stop.offset = 0;
+                }
+            });
 
             renderRoute();
         };
