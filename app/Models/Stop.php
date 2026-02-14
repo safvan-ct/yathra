@@ -10,6 +10,7 @@ class Stop extends Model
     protected $fillable = [
         'name',
         'slug',
+        'code',
 
         'locality',
         'city_id',

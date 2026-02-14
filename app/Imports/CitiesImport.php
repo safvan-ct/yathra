@@ -13,7 +13,8 @@ class CitiesImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $rows)
     {
-        $states    = State::pluck('id', 'code')->toArray();
+        $states = State::pluck('id', 'code')->toArray();
+
         $districts = District::all()
             ->groupBy('state_id')
             ->map(function ($items) {return $items->pluck('id', 'name');})
@@ -22,7 +23,7 @@ class CitiesImport implements ToCollection, WithHeadingRow
         DB::transaction(function () use ($rows, $states, $districts) {
 
             foreach ($rows as $row) {
-                if (! $row['state_code'] || ! $row['district_name'] || ! $row['name']) {
+                if (! $row['state_code'] || ! $row['district_name'] || ! $row['city_name'] || ! $row['city_code']) {
                     continue;
                 }
 
@@ -36,7 +37,9 @@ class CitiesImport implements ToCollection, WithHeadingRow
                 }
                 $districtId = $districts[$stateId][$row['district_name']];
 
-                City::updateOrCreate(['district_id' => $districtId, 'name' => trim($row['name'])], []);
+                City::updateOrCreate(['district_id' => $districtId, 'name' => trim($row['city_name'])], [
+                    'code' => $row['city_code'],
+                ]);
             }
         });
     }

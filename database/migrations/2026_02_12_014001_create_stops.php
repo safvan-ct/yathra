@@ -37,6 +37,7 @@ return new class extends Migration
             $table->foreignId('district_id')->constrained()->cascadeOnDelete();
 
             $table->string('name', 120);
+            $table->string('code')->unique();
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
@@ -48,6 +49,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->index();
             $table->string('slug')->unique();
+            $table->string('code')->unique();
 
             $table->string('locality', 120)->default('');
             $table->foreignId('city_id')->constrained()->cascadeOnDelete();

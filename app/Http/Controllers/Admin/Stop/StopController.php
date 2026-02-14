@@ -86,7 +86,7 @@ class StopController extends Controller
 
         $header = fgetcsv($file);
 
-        $expected = ['state_code', 'district_name', 'city_name', 'stop_name'];
+        $expected = ['state_code', 'district_name', 'city_name', 'stop_code', 'stop_name'];
 
         if ($header !== $expected) {
             return back()->with('error', 'Invalid CSV header format.');
@@ -101,7 +101,7 @@ class StopController extends Controller
     {
         $q = $request->q;
 
-        $results = Stop::select('id', 'name', 'city_id')
+        $results = Stop::select('id', 'name', 'city_id', 'locality')
             ->with('city:id,name')
             ->where('name', 'LIKE', "%$q%")
             ->limit(20)

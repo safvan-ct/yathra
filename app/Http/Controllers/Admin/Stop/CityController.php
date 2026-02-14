@@ -18,7 +18,11 @@ class CityController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['district_id' => 'required|exists:districts,id', 'name' => 'required|string|max:255']);
+        $request->validate([
+            'district_id' => 'required|exists:districts,id',
+            'name'        => 'required|string|max:255',
+            'code'        => 'required|string|max:50|unique:cities,code',
+        ]);
 
         City::create(['district_id' => $request->district_id, 'name' => $request->name]);
 
@@ -46,7 +50,7 @@ class CityController extends Controller
 
     public function dataTable(Request $request)
     {
-        $query = City::select('id', 'district_id', 'name', 'is_active')->with('district:id,name');
+        $query = City::select('id', 'district_id', 'name', 'code', 'is_active')->with('district:id,name');
 
         return DataTables::of($query)
             ->addColumn('district', function ($row) {
@@ -71,7 +75,7 @@ class CityController extends Controller
 
         $header = fgetcsv($file);
 
-        $expected = ['state_code', 'district_name', 'name'];
+        $expected = ['state_code', 'district_name', 'city_name', 'city_code'];
 
         if ($header !== $expected) {
             return back()->with('error', 'Invalid CSV header format.');

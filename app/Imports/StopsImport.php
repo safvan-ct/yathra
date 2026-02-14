@@ -30,7 +30,7 @@ class StopsImport implements ToCollection, WithHeadingRow
         DB::transaction(function () use ($rows, $states, $districts, $cities) {
 
             foreach ($rows as $row) {
-                if (! $row['state_code'] || ! $row['district_name'] || ! $row['city_name'] || ! $row['stop_name']) {
+                if (! $row['state_code'] || ! $row['district_name'] || ! $row['city_name'] || ! $row['stop_code'] || ! $row['stop_name']) {
                     continue;
                 }
 
@@ -55,6 +55,7 @@ class StopsImport implements ToCollection, WithHeadingRow
                     'name'    => trim($row['stop_name']),
                     'slug'    => $slug,
                     'city_id' => $cityId,
+                    'code'    => trim($row['stop_code']),
                 ], []);
             }
         });
