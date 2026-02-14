@@ -28,6 +28,7 @@ class StopController extends Controller
         Stop::create([
             'city_id'   => $request->city_id,
             'name'      => $request->name,
+            'code'      => $request->code,
             'slug'      => $slug,
             'locality'  => $request->locality,
             'latitude'  => $request->latitude,
@@ -61,11 +62,11 @@ class StopController extends Controller
 
     public function dataTable(Request $request)
     {
-        $query = Stop::select('id', 'city_id', 'name', 'locality', 'is_active')->with('city:id,name');
+        $query = Stop::select('id', 'city_id', 'name', 'code', 'locality', 'is_active')->with('city:id,name,code');
 
         return DataTables::of($query)
             ->addColumn('city', function ($row) {
-                return $row->city ? $row->city->name : '-';
+                return $row->city ? $row->city->name . " ({$row->city->code})" : '-';
             })
             ->make(true);
     }

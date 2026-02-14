@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <x-admin.table :headers="['#', 'City', 'Name', 'Locality', 'Status', 'Actions']"></x-admin.table>
+                    <x-admin.table :headers="['#', 'City', 'Name', 'Code', 'Locality', 'Status', 'Actions']"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -41,7 +41,13 @@
                 data: "city"
             },
             {
-                data: "name"
+                data: "name",
+                render: function(data, type, row) {
+                    return data + " (" + row.code + ")";
+                }
+            },
+            {
+                data: "code"
             },
             {
                 data: "locality"

@@ -33,6 +33,7 @@ class StopCreateRequest extends FormRequest
         ];
 
         if (! $stop) {
+            $rules['code']    = 'required|string|max:50|unique:stops,code';
             $rules['city_id'] = 'required|string|max:50|exists:cities,id';
         }
 

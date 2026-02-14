@@ -3,12 +3,18 @@
 
     @if (!$data)
         <div class="mb-2 col-12 col-lg-4">
+            <label>City</label>
             <select name="city_id" class="form-select city-select" required></select>
         </div>
     @endif
 
-    <x-admin.input name="name" label="Name" class="col-12 {{ !$data ? 'col-lg-8' : '' }}"
+    <x-admin.input name="name" label="Name" class="col-12 {{ !$data ? 'col-lg-4' : '' }}"
         value="{{ $data->name ?? '' }}" />
+
+    @if (!$data)
+        <x-admin.input name="code" label="Code" class="col-12 {{ !$data ? 'col-lg-4' : '' }}"
+            value="{{ $data->code ?? '' }}" />
+    @endif
 </div>
 
 <hr>
