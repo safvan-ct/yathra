@@ -125,4 +125,28 @@ class RouteDirectionController extends Controller
 
         return redirect()->route('route-direction.index')->with('success', "Route directions imported successfully.");
     }
+
+    public function search(Request $request)
+    {
+        $q = $request->q;
+
+        $results = RouteDirection::query()
+            ->join('route_patterns', 'route_patterns.id', '=', 'route_directions.route_pattern_id')
+            ->where('route_patterns.name', 'LIKE', "%{$q}%")
+            ->select([
+                'route_directions.id',
+                DB::raw("
+                    CONCAT(
+                        route_patterns.name,
+                        ' (', route_patterns.code, ') ',
+                        route_directions.name, ' ',
+                        route_directions.direction
+                    ) as name
+                "),
+            ])
+            ->limit(20)
+            ->get();
+
+        return response()->json($results);
+    }
 }

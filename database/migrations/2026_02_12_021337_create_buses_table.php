@@ -29,37 +29,36 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('trips', function (Blueprint $table) {
-            $table->id();
+        // Schema::create('trips', function (Blueprint $table) {
+        //     $table->id();
 
-            $table->foreignId('route_pattern_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('bus_id')->nullable()->constrained()->nullOnDelete();
-            $table->time('start_time');
-            $table->foreignId('final_stop_id')->constrained('stops');
+        //     $table->foreignId('route_pattern_id')->constrained()->cascadeOnDelete();
+        //     $table->foreignId('bus_id')->nullable()->constrained()->nullOnDelete();
+        //     $table->time('start_time');
+        //     $table->foreignId('final_stop_id')->constrained('stops');
 
-            $table->enum('service_type', ['ordinary', 'limited', 'fast', 'super_fast', 'express'])->default('ordinary');
+        //     $table->enum('service_type', ['ordinary', 'limited', 'fast', 'super_fast', 'express'])->default('ordinary');
 
-            $table->boolean('is_active')->default(true);
+        //     $table->boolean('is_active')->default(true);
 
-            $table->timestamps();
+        //     $table->timestamps();
 
-            $table->index(['route_pattern_id', 'start_time']);
-            $table->index(['final_stop_id']);
-        });
+        //     $table->index(['route_pattern_id', 'start_time']);
+        //     $table->index(['final_stop_id']);
+        // });
 
-        Schema::create('trip_stop_overrides', function (Blueprint $table) {
-            $table->id();
+        // Schema::create('trip_stop_overrides', function (Blueprint $table) {
+        //     $table->id();
 
-            $table->foreignId('trip_id')->constrained()->cascadeOnDelete();
+        //     $table->foreignId('trip_id')->constrained()->cascadeOnDelete();
 
-            $table->foreignId('stop_id')->constrained()->cascadeOnDelete();
+        //     $table->foreignId('stop_id')->constrained()->cascadeOnDelete();
 
-            $table->boolean('is_skipped')->default(false);
-            $table->unsignedInteger('custom_offset_minutes')->nullable();
+        //     $table->boolean('is_skipped')->default(false);
+        //     $table->unsignedInteger('custom_offset_minutes')->nullable();
 
-            $table->unique(['trip_id', 'stop_id']);
-        });
-
+        //     $table->unique(['trip_id', 'stop_id']);
+        // });
     }
 
     /**
@@ -67,8 +66,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trip_stop_overrides');
-        Schema::dropIfExists('trips');
+        // Schema::dropIfExists('trip_stop_overrides');
+        // Schema::dropIfExists('trips');
         Schema::dropIfExists('buses');
         Schema::dropIfExists('operators');
     }

@@ -7,6 +7,7 @@ use App\Models\Bus;
 use App\Models\District;
 use App\Models\Stop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -106,9 +107,11 @@ class BusController extends Controller
     {
         $q = $request->q;
 
-        $results = Stop::select('id', 'name', 'code', 'city_id', 'locality')
-            ->with('city:id,name')
-            ->where('name', 'LIKE', "%$q%")
+        $results = Bus::query()
+            ->where(function ($query) use ($q) {
+                $query->where('bus_name', 'LIKE', "%{$q}%")->orWhere('bus_number', 'LIKE', "%{$q}%");
+            })
+            ->select(['id', DB::raw("CONCAT(bus_name, ' (', bus_number, ')') as name")])
             ->limit(20)
             ->get();
 

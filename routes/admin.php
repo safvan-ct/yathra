@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Route\RoutePatternController;
 use App\Http\Controllers\Admin\Stop\CityController;
 use App\Http\Controllers\Admin\Stop\DistrictController;
 use App\Http\Controllers\Admin\Stop\StopController;
+use App\Http\Controllers\Admin\Trip\TripScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('login', [LoginController::class, 'create'])->name('login');
@@ -78,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('route-pattern', RoutePatternController::class)->only(['index', 'store', 'update']);
 
     // Route Direction
-    Route::get('route-directions', [RouteDirectionController::class, 'search']);
+    Route::get('route-directions', [RouteDirectionController::class, 'search'])->name('route-directions.search');
     Route::prefix('route-direction')->name('route-direction.')->group(function () {
         Route::get('/form/{id}', [RouteDirectionController::class, 'form'])->name('form');
         Route::get('/datatable', [RouteDirectionController::class, 'dataTable'])->name('datatable');
@@ -111,7 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('operator', OperatorController::class)->only(['index', 'store', 'update']);
 
     // Bus
-    Route::get('buses', [BusController::class, 'search']);
+    Route::get('buses', [BusController::class, 'search'])->name('buses.search');
     Route::prefix('bus')->name('bus.')->group(function () {
         Route::get('/form/{id}', [BusController::class, 'form'])->name('form');
         Route::get('/datatable', [BusController::class, 'dataTable'])->name('datatable');
@@ -120,6 +121,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/import/confirm', [BusController::class, 'importConfirm'])->name('import.confirm');
     });
     Route::resource('bus', BusController::class)->only(['index', 'store', 'update']);
+
+    // Trip Schedule
+    Route::get('trip-schedules', [TripScheduleController::class, 'search']);
+    Route::prefix('trip-schedule')->name('trip-schedule.')->group(function () {
+        Route::get('/form/{id}', [TripScheduleController::class, 'form'])->name('form');
+        Route::get('/datatable', [TripScheduleController::class, 'dataTable'])->name('datatable');
+        Route::patch('/toggle-status/{tripSchedule}', [TripScheduleController::class, 'toggleStatus'])->name('toggle-status');
+
+        Route::post('/import/confirm', [TripScheduleController::class, 'importConfirm'])->name('import.confirm');
+    });
+    Route::resource('trip-schedule', TripScheduleController::class)->only(['index', 'store', 'update']);
 });
 
 Route::prefix('backend')->name('backend.')->middleware(['auth'])->group(function () {

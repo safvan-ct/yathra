@@ -117,7 +117,9 @@
 
                     <li
                         class="pc-item pc-hasmenu
-                        {{ Str::is('operator.*', Route::currentRouteName()) || Str::is('bus.*', Route::currentRouteName())
+                        {{ Str::is('operator.*', Route::currentRouteName()) ||
+                        Str::is('bus.*', Route::currentRouteName()) ||
+                        Str::is('trip-schedule.*', Route::currentRouteName())
                             ? 'active pc-trigger'
                             : '' }}">
                         <a href="javascript:void(0)" class="pc-link">
@@ -131,6 +133,10 @@
                             </li>
                             <li class="pc-item {{ Str::is('bus.*', Route::currentRouteName()) ? 'active' : '' }}">
                                 <a class="pc-link" href="{{ route('bus.index') }}">Bus</a>
+                            </li>
+                            <li
+                                class="pc-item {{ Str::is('trip-schedule.*', Route::currentRouteName()) ? 'active' : '' }}">
+                                <a class="pc-link" href="{{ route('trip-schedule.index') }}">Trips</a>
                             </li>
                         </ul>
                     </li>
