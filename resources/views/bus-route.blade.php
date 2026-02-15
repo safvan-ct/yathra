@@ -114,7 +114,7 @@
             font-size: 1rem;
             margin-bottom: 0px;
             display: flex;
-            justify-content: space-between;
+            /* justify-content: space-between; */
         }
 
         .distance-label {
@@ -254,7 +254,7 @@
 
                 <div class="stop-card">
                     <div class="stop-name">
-                        {{ $stop->name }}
+                        {{ $stop->code }}:&nbsp;<small class="text-muted">({{ $stop->name }})</small>
                     </div>
                     {{-- <div class="distance-label">
                         <i class="bi bi-geo-alt-fill"></i> {{ $index * 4.2 }} km from origin
@@ -272,7 +272,7 @@
                             <div class="time-item">
                                 <span class="time-label small">Departure (ETD)</span>
                                 <span class="fw-bold small text-danger">
-                                    {{ $loop->first ? $stop->start_time : $stop->departure_time }}
+                                    {{ $loop->first ? $stop->trip_start_time : $stop->departure_time }}
                                 </span>
                             </div>
                         @endif

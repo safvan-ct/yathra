@@ -8,6 +8,7 @@
     <title>Bus Timings</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
     <style>
         body {
@@ -43,43 +44,26 @@
         {{-- SEARCH FORM --}}
         <form method="GET" action="{{ route('home') }}">
             <div class="card shadow-sm mb-4">
-                <div class="card-body">
+                <div class="card-body p-2">
 
-                    <div class="row g-3">
-
+                    <div class="row g-2">
                         <div class="col-md-5">
-                            <label class="form-label">From Stop</label>
-                            <select class="form-select" name="from_stop_id" required>
-                                <option value="">Select Stop</option>
-                                @foreach ($stops as $stop)
-                                    <option value="{{ $stop->id }}"
-                                        {{ request('from_stop_id') == $stop->id ? 'selected' : '' }}>
-                                        {{ $stop->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <select name="from_stop_id" class="form-select choice-select"
+                                data-selected-id="{{ $fromStop->id ?? '' }}"
+                                data-selected-name="{{ $fromStop->name ?? '' }}"
+                                data-selected-code="{{ $fromStop->code ?? '' }}" required></select>
                         </div>
 
                         <div class="col-md-5">
-                            <label class="form-label">To Stop</label>
-                            <select class="form-select" name="to_stop_id" required>
-                                <option value="">Select Stop</option>
-                                @foreach ($stops as $stop)
-                                    <option value="{{ $stop->id }}"
-                                        {{ request('to_stop_id') == $stop->id ? 'selected' : '' }}>
-                                        {{ $stop->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <select name="to_stop_id" class="form-select choice-select"
+                                data-selected-id="{{ $toStop->id ?? '' }}"
+                                data-selected-name="{{ $toStop->name ?? '' }}"
+                                data-selected-code="{{ $toStop->code ?? '' }}" required></select>
                         </div>
 
                         <div class="col-md-2 d-grid">
-                            <label class="form-label invisible">Search</label>
-                            <button class="btn btn-primary fw-semibold">
-                                Search
-                            </button>
+                            <button class="btn btn-primary fw-semibold">Search</button>
                         </div>
-
                     </div>
 
                 </div>
@@ -114,11 +98,11 @@
                                         <small class="text-muted ms-1">{{ $bus->bus_number }}</small>
                                     </div>
 
-                                    <div class="text-end">
+                                    {{-- <div class="text-end">
                                         <span class="badge bg-secondary text-white">
-                                            {{ ucfirst($bus->service_type) }}
+                                            Ordinary
                                         </span>
-                                    </div>
+                                    </div> --}}
 
                                 </div>
 
@@ -144,8 +128,70 @@
             @endforelse
 
         @endif
-
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script>
+        document.querySelectorAll('.choice-select').forEach(select => {
+
+            const choices = new Choices(select, {
+                searchEnabled: true,
+                searchChoices: false,
+                placeholder: true,
+                placeholderValue: 'Type to search stop...',
+                shouldSort: false,
+                removeItemButton: true
+            });
+
+            /* ---------------- PRESELECT VALUE ---------------- */
+
+            const selectedId = select.dataset.selectedId;
+            const selectedName = select.dataset.selectedName;
+            const selectedCode = select.dataset.selectedCode;
+
+            if (selectedId) {
+                choices.setChoices([{
+                    value: selectedId,
+                    label: `${selectedName} (${selectedCode})`,
+                    selected: true
+                }], 'value', 'label', true);
+            }
+
+            /* ---------------- AJAX SEARCH ---------------- */
+
+            let debounceTimer;
+
+            select.addEventListener('search', function(e) {
+
+                clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(async () => {
+
+                    const value = e.detail.value;
+
+                    if (value.length < 2) return;
+
+                    const response = await fetch(`/stops?q=${value}`);
+                    const data = await response.json();
+
+                    choices.clearChoices();
+
+                    choices.setChoices(
+                        data.map(item => ({
+                            value: item.id,
+                            label: `${item.name} ${item.locality ? `(${item.locality})` : ''} (${item.code}) - ${item.city.name}`
+                        })),
+                        'value',
+                        'label',
+                        true
+                    );
+
+                }, 400); // debounce
+            });
+
+        });
+    </script>
 
 </body>
 

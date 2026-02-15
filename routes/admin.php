@@ -31,6 +31,8 @@ Route::middleware('guest')->prefix('backend')->name('backend.')->group(function 
 
 Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('backend.dashboard');
 
+Route::get('stops', [StopController::class, 'search']);
+
 Route::middleware(['auth'])->group(function () {
     // District
     Route::get('districts', [DistrictController::class, 'search']);
@@ -56,7 +58,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('city', CityController::class)->only(['index', 'store', 'update']);
 
     // Stops
-    Route::get('stops', [StopController::class, 'search']);
     Route::prefix('stop')->name('stop.')->group(function () {
         Route::get('/form/{id}', [StopController::class, 'form'])->name('form');
         Route::get('/datatable', [StopController::class, 'dataTable'])->name('datatable');

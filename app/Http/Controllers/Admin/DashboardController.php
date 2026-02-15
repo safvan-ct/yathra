@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Bus;
 use App\Models\RoutePattern;
 use App\Models\Stop;
-use App\Models\Trip;
+use App\Models\TripSchedule;
 
 class DashboardController extends Controller
 {
@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $totalBuses  = Bus::count();
         $totalStops  = Stop::count();
         $totalRoutes = RoutePattern::count();
-        $totalTrips  = Trip::count();
+        $totalTrips  = TripSchedule::count();
 
         return view('backend.dashboard', [
             'totalBuses'  => $totalBuses,
