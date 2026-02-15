@@ -1,0 +1,48 @@
+state_code,district_name,city_name,stop_code,stop_name
+KL,Palakkad,Mannarkkad,AMB,Ambalappara
+KL,Palakkad,Mannarkkad,KPR,Kaappuparambu Rd.
+KL,Palakkad,Mannarkkad,THK,Thaanikkunnu
+KL,Palakkad,Mannarkkad,IRV,Irattavaari
+KL,Palakkad,Mannarkkad,KTK,Kottakkunnu
+KL,Palakkad,Mannarkkad,VLP,Valiyapaara
+KL,Palakkad,Mannarkkad,TVK,Thiruvizhamkunnu
+KL,Palakkad,Mannarkkad,TVKPO,Thiruvizhamkunnu P.O
+KL,Palakkad,Mannarkkad,TVKGS,GLPS Thiruvizhamkunnu
+KL,Palakkad,Mannarkkad,KBP,Kambanippadi
+KL,Palakkad,Mannarkkad,MLK,Maalikkunnu
+KL,Palakkad,Mannarkkad,MLK2,Maalikkunnu 2
+KL,Palakkad,Mannarkkad,BSR,Bheemanad School Rd.
+KL,Palakkad,Mannarkkad,PRP,Paarappuram
+KL,Palakkad,Mannarkkad,BNR,Bheemanad Rd.
+KL,Palakkad,Mannarkkad,KPMSJ,Kottoppadam School Jn.
+KL,Palakkad,Mannarkkad,KPM,Kottoppadam
+KL,Palakkad,Mannarkkad,ABR,AB Rd.
+KL,Palakkad,Mannarkkad,VNG,Venga
+KL,Palakkad,Mannarkkad,ARY,Ariyoor
+KL,Palakkad,Mannarkkad,KLK,Kalyanakaappu
+KL,Palakkad,Mannarkkad,CGM,Chungam
+KL,Palakkad,Mannarkkad,KMP,Kumaramputhur
+KL,Palakkad,Mannarkkad,MES,MES Collage
+KL,Palakkad,Mannarkkad,KTP,Kunthippuzha
+KL,Palakkad,Mannarkkad,MKDKP,Mannarkkad Kodathippadi
+KL,Palakkad,Mannarkkad,MKDBS,Mannarkkad Bus Station
+KL,Palakkad,Mannarkkad,MKDPS,Mannarkkad Police Station
+KL,Palakkad,Mannarkkad,MKDTR,Mannarkkad Tippusulthan Rd.
+KL,Palakkad,Mannarkkad,MKDHJ,Mannarkkad Hospital Jn.
+KL,Palakkad,Mannarkkad,MKDKS,Mannarkkad KSRTC Station
+KL,Palakkad,Mannarkkad,KMK,Koomanchherikkunnu.
+KL,Palakkad,Mannarkkad,BMD,Bheemanad
+KL,Palakkad,Mannarkkad,ATP,Athaanippadi
+KL,Palakkad,Mannarkkad,KTKM,Kaattukulam
+KL,Palakkad,Mannarkkad,ALRAK,Alanallur Ayyappankaavu
+KL,Palakkad,Mannarkkad,ALRBS,Alanallur Bus Station
+KL,Palakkad,Mannarkkad,ALRCP,Alanallur Chanthappadi
+KL,Palakkad,Mannarkkad,ALRHJ,Alanallur Hospital Jn
+KL,Malappuram,Perinthalmanna,VTR,Vettathur
+KL,Malappuram,Perinthalmanna,TLK,Thelakkad
+KL,Malappuram,Perinthalmanna,KP,Kaappu
+KL,Malappuram,Perinthalmanna,KVM,Kaaryavattam.
+KL,Malappuram,Perinthalmanna,PTK,Pattikkad.
+KL,Malappuram,Perinthalmanna,PMNA,Perinthalmanna
+KL,Malappuram,Perinthalmanna,PMNABS,Perinthalmanna Bus Station
+KL,Malappuram,Perinthalmanna,PMNAGS,Perinthalmanna GOVT. Hospital

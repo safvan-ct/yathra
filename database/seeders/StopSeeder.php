@@ -1,8 +1,12 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\Stop;
+use App\Imports\CitiesImport;
+use App\Imports\DistrictsImport;
+use App\Imports\StopsImport;
+use App\Models\State;
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StopSeeder extends Seeder
 {
@@ -11,39 +15,15 @@ class StopSeeder extends Seeder
      */
     public function run(): void
     {
-        $stops = [
-            'Ambalappara',
-            'Kaappuparambu Rd.',
-            'Thaanikkunnu School Jn.',
-            'Irattavaari',
-            'Kottakkunnu',
-            'Valiyapaara',
-            'Thiruvizhamkunnu',
-            'Thiruvizhamkunnu P.O',
-            'GLPS Thiruvizhamkunnu',
-            'Kambanippadi',
-            'Maalikkunnu',
-            'Bheemanad School Rd.',
-            'Paarappuram',
-            'Bheemanad Rd.',
-            'Kottoppadam School Jn.',
-            'Kottoppadam',
-            'AB Rd.',
-            'Venga',
-            'Ariyoor',
-            'Kalyanakaappu',
-            'Chungam',
-            'MES Collage',
-            'Kunthippuzha',
-            'Kodathippadi',
-            'MKD Bus Station',
-            'MKD Police Station',
-            'MKD Hospital Jn.',
-            'MKD KSRTC Station',
-        ];
+        State::create(['name' => 'Kerala', 'code' => 'KL']);
 
-        foreach ($stops as $key => $stop) {
-            Stop::create(['name' => $stop, 'code' => 'BWC' . ++$key]);
-        }
+        $districts = database_path('seeders/files/districts.txt');
+        Excel::import(new DistrictsImport, $districts);
+
+        $cities = database_path('seeders/files/cities.txt');
+        Excel::import(new CitiesImport, $cities);
+
+        $stops = database_path('seeders/files/stops.txt');
+        Excel::import(new StopsImport, $stops);
     }
 }

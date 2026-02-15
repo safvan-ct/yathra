@@ -1,10 +1,11 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\RoutePattern;
-use App\Models\RoutePatternStop;
-use App\Models\Stop;
+use App\Imports\RouteDirectionImport;
+use App\Imports\RouteDirectionStopImport;
+use App\Imports\RoutePatternImport;
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RoutePatternSeeder extends Seeder
 {
@@ -13,50 +14,13 @@ class RoutePatternSeeder extends Seeder
      */
     public function run(): void
     {
-        $time = now();
+        $routes = database_path('seeders/files/route.txt');
+        Excel::import(new RoutePatternImport(), $routes);
 
-        $routes = [
-            [
-                'name'                => 'AP to MKD',
-                'info'                => 'Ambalappara to Mannarkkad',
-                'origin_stop_id'      => Stop::where('name', 'Ambalappara')->first()->id,
-                'destination_stop_id' => Stop::where('name', 'MKD KSRTC Station')->first()->id,
-                'created_at'          => $time,
-                'updated_at'          => $time,
-            ],
-            [
-                'name'                => 'TVK to MKD',
-                'info'                => 'Thiruvizhamkunnu to Mannarkkad',
-                'origin_stop_id'      => Stop::where('name', 'Thiruvizhamkunnu')->first()->id,
-                'destination_stop_id' => Stop::where('name', 'MKD KSRTC Station')->first()->id,
-                'created_at'          => $time,
-                'updated_at'          => $time,
-            ],
-        ];
+        $directions = database_path('seeders/files/route-directions.txt');
+        Excel::import(new RouteDirectionImport(), $directions);
 
-        foreach ($routes as $route) {
-            RoutePattern::create($route);
-        }
-
-        $stops       = Stop::all();
-        $routeStopes = [];
-
-        $minutes = 0;
-        $offset  = 0;
-
-        foreach ($stops as $key => $stop) {
-            $minutes = $key == 0 ? 0 : 2;
-            $offset = $key == 0 ? 0 : $offset + $minutes;
-
-            $routeStopes[] = [
-                'route_pattern_id'           => RoutePattern::where('name', 'AP to MKD')->first()->id,
-                'stop_id'                    => $stop->id,
-                'stop_order'                 => ++$key,
-                'minutes_from_previous_stop' => $minutes,
-                'default_offset_minutes'     => $offset,
-            ];
-        }
-
-        RoutePatternStop::insert($routeStopes);
+        $directionStops = database_path('seeders/files/route-direction-stops.txt');
+        Excel::import(new RouteDirectionStopImport(), $directionStops);
     }
 }

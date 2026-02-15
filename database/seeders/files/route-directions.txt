@@ -1,0 +1,6 @@
+route_pattern_code,name,direction
+AMB-MKDKS,,up
+AMB-MKDKS,,down
+TVK-MKDKS,,up
+TVK-MKDKS,,down
+

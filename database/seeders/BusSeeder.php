@@ -38,21 +38,21 @@ class BusSeeder extends Seeder
         $buses = [
             [
                 'operator_id' => Operator::where('name', 'KSRTC')->first()->id,
-                'bus_number'  => 'KL 15 A 1022',
+                'bus_number'  => 'KL 15 K 1022',
                 'bus_name'    => 'KSRTC',
                 'created_at'  => $time,
                 'updated_at'  => $time,
             ],
             [
                 'operator_id' => Operator::where('name', 'MRL Pvt Ltd.')->first()->id,
-                'bus_number'  => 'KL 50 A 1023',
+                'bus_number'  => 'KL 50 M 1023',
                 'bus_name'    => 'MRL',
                 'created_at'  => $time,
                 'updated_at'  => $time,
             ],
             [
                 'operator_id' => Operator::where('name', 'Shastha Pvt Ltd.')->first()->id,
-                'bus_number'  => 'KL 50 A 1024',
+                'bus_number'  => 'KL 50 S 1024',
                 'bus_name'    => 'Shastha',
                 'created_at'  => $time,
                 'updated_at'  => $time,

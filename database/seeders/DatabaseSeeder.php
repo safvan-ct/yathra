@@ -1,9 +1,6 @@
 <?php
 namespace Database\Seeders;
 
-use App\Enums\UserRoleType;
-use App\Models\State;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,11 +20,9 @@ class DatabaseSeeder extends Seeder
         //     'role'     => UserRoleType::SUPER_ADMIN,
         // ]);
 
-        State::create(['name' => 'Kerala', 'code' => 'KL']);
-
-        // $this->call([BusSeeder::class]);
-        // $this->call([StopSeeder::class]);
-        // $this->call([RoutePatternSeeder::class]);
+        $this->call([StopSeeder::class]);
+        $this->call([RoutePatternSeeder::class]);
+        $this->call([BusSeeder::class]);
         // $this->call([TripSeeder::class]);
     }
 }
