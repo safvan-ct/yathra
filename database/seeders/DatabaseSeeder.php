@@ -1,6 +1,8 @@
 <?php
 namespace Database\Seeders;
 
+use App\Enums\UserRoleType;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,12 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory()->create([
-        //     'name'     => 'super_admin',
-        //     'email'    => 'super_admin@localhost',
-        //     'password' => 'super_admin',
-        //     'role'     => UserRoleType::SUPER_ADMIN,
-        // ]);
+        User::factory()->create([
+            'name'     => 'super_admin',
+            'email'    => 'super_admin@localhost',
+            'password' => 'super_admin',
+            'role'     => UserRoleType::SUPER_ADMIN,
+        ]);
 
         $this->call([StopSeeder::class]);
         $this->call([RoutePatternSeeder::class]);
