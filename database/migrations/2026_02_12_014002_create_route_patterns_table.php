@@ -26,6 +26,16 @@ return new class extends Migration
 
             $table->timestamps();
 
+            // Generated columns
+            $table->unsignedBigInteger('stop_min')
+                ->storedAs('LEAST(origin_stop_id, destination_stop_id)');
+
+            $table->unsignedBigInteger('stop_max')
+                ->storedAs('GREATEST(origin_stop_id, destination_stop_id)');
+
+            // Unique normalized pair
+            $table->unique(['stop_min', 'stop_max'], 'unique_route_pair');
+
             $table->index(['origin_stop_id', 'destination_stop_id']);
 
             $table->unique(['origin_stop_id', 'destination_stop_id'], 'unique_rp_identity');

@@ -9,8 +9,9 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class RouteDirectionStopImport implements ToModel, WithHeadingRow
 {
-    protected int $offset      = 0;
-    protected bool $isFirstRow = true;
+    protected int $offset           = 0;
+    protected bool $isFirstRow      = true;
+    protected int $routeDirectionId = 0;
 
     public function model(array $row)
     {
@@ -19,6 +20,10 @@ class RouteDirectionStopImport implements ToModel, WithHeadingRow
 
         if (! $routeDirection || ! $stop) {
             return null; // skip invalid
+        }
+
+        if ($this->routeDirectionId == 0 || $routeDirection->id != $this->routeDirectionId) {
+            $this->offset = 0;
         }
 
         // First row → offset = 0
@@ -31,6 +36,8 @@ class RouteDirectionStopImport implements ToModel, WithHeadingRow
             $this->offset  += $minutes;
             $currentOffset  = $this->offset;
         }
+
+        $this->routeDirectionId = $routeDirection->id;
 
         return RouteDirectionStop::updateOrCreate(
             [

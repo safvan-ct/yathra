@@ -1,4 +1,17 @@
 route_direction_id,bus_number,departure_time,days_of_week,effective_from
+1,KL 50 S 1024,07:00,mon|tue|wed|thu|fri|sat,2026-02-01
+1,KL 50 MD 1027,09:25,mon|tue|wed|thu|fri|sat,2026-02-01
+1,KL 50 F 1025,10:45,mon|tue|wed|thu|fri|sat,2026-02-01
+1,KL 50 S 1024,15:25,mon|tue|wed|thu|fri|sat,2026-02-01
+1,KL 15 K 1022,16:25,mon|tue|wed|thu|fri|sat,2026-02-01
+2,KL 50 F 1025,07:35,mon|tue|wed|thu|fri|sat,2026-02-01
 2,KL 50 S 1024,09:00,mon|tue|wed|thu|fri|sat,2026-02-01
+2,KL 50 G 1026,09:20,mon|tue|wed|thu|fri|sat,2026-02-01
+2,KL 50 MD 1027,10:50,mon|tue|wed|thu|fri|sat,2026-02-01
+2,KL 50 F 1025,11:55,mon|tue|wed|thu|fri|sat,2026-02-01
+2,KL 50 S 1024,16:35,mon|tue|wed|thu|fri|sat,2026-02-01
+2,KL 15 K 1022,17:35,mon|tue|wed|thu|fri|sat,2026-02-01
 3,KL 50 M 1023,07:28,mon|tue|wed|thu|fri|sat,2026-02-01
+3,KL 50 A 1028,10:15,mon|tue|wed|thu|fri|sat,2026-02-01
 4,KL 50 M 1023,08:15,mon|tue|wed|thu|fri|sat,2026-02-01
+4,KL 50 A 1028,11:35,mon|tue|wed|thu|fri|sat,2026-02-01
