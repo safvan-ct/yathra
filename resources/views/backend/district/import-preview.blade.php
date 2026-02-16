@@ -18,8 +18,8 @@
                 <tbody>
                     @foreach ($preview as $row)
                         <tr class="{{ $row['valid'] ? 'table-success' : 'table-danger' }}">
-                            <td>{{ $row['data']['name'] }}</td>
-                            <td>{{ $row['data']['code'] }}</td>
+                            <td>{{ $row['data']['district_name'] }}</td>
+                            <td>{{ $row['data']['district_code'] }}</td>
                             <td>
                                 @if ($row['valid'])
                                     ✅ Valid

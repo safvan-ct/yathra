@@ -25,6 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call([StopSeeder::class]);
         $this->call([RoutePatternSeeder::class]);
         $this->call([BusSeeder::class]);
-        // $this->call([TripSeeder::class]);
+        $this->call([TripSeeder::class]);
     }
 }

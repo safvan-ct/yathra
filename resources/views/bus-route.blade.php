@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.web')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+@push('styles')
     <style>
         :root {
             --primary-blue: #0d6efd;
@@ -97,13 +92,13 @@
 
         /* Info Card */
         /* .stop-card {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            width: 100%;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid transparent;
-        } */
+                    background: white;
+                    border-radius: 12px;
+                    padding: 16px;
+                    width: 100%;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                    border: 1px solid transparent;
+                } */
 
         .stop-row.active .stop-card {
             border-color: rgb(228 5 5);
@@ -189,10 +184,9 @@
             letter-spacing: 0.5px;
         }
     </style>
-</head>
+@endpush
 
-<body>
-
+@section('content')
     <div class="trip-summary shadow-sm py-3 px-3 bg-white border-bottom sticky-top">
         <div class="d-flex align-items-center justify-content-between">
 
@@ -286,7 +280,4 @@
             </div>
         @endforeach
     </div>
-
-</body>
-
-</html>
+@endsection

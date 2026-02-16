@@ -82,7 +82,7 @@ class DistrictController extends Controller
 
         $header = fgetcsv($file);
 
-        $expected = ['id', 'code', 'name', 'headquarters'];
+        $expected = ['state_code', 'district_code', 'district_name'];
 
         if ($header !== $expected) {
             return back()->with('error', 'Invalid CSV header format.');
@@ -112,19 +112,20 @@ class DistrictController extends Controller
 
         fclose($file);
 
-        Session::put("district_import_preview_{$state->id}", $preview);
+        Session::put("district_import_preview", $preview);
 
         return view('backend.district.import-preview', compact('preview', 'state'));
     }
 
     public function importConfirm(State $state)
     {
-        $preview = Session::get("district_import_preview_{$state->id}");
+        $preview = Session::get("district_import_preview");
 
         if (! $preview) {
             return redirect()->route('district.index')->with('error', 'No import session found.');
         }
 
+        $states     = State::pluck('id', 'code')->toArray();
         $insertData = [];
 
         foreach ($preview as $row) {
@@ -133,12 +134,17 @@ class DistrictController extends Controller
                 continue;
             }
 
+            if (! isset($states[$row['state_code']])) {
+                continue;
+            }
+            $stateId = $states[$row['state_code']];
+
             $data = $row['data'];
 
             $insertData[] = [
-                'state_id'   => $state->id,
-                'name'       => $data['name'],
-                'code'       => $data['code'],
+                'state_id'   => $stateId,
+                'name'       => $data['district_name'],
+                'code'       => $data['district_code'],
                 'is_active'  => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -153,7 +159,7 @@ class DistrictController extends Controller
             return redirect()->route('district.index')->with('error', 'Import failed: ' . $e->getMessage());
         }
 
-        Session::forget("district_import_preview_{$state->id}");
+        Session::forget("district_import_preview");
 
         return redirect()->route('district.index')->with('success', "Districts of {$state->name} imported successfully.");
     }

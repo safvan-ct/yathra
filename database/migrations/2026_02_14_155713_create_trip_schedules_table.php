@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date('effective_to')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->unique(['route_direction_id', 'bus_id', 'departure_time'], 'unique_ts_identity');
         });
 
         Schema::create('trip_instances', function (Blueprint $table) {

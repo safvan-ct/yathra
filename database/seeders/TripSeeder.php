@@ -1,12 +1,9 @@
 <?php
 namespace Database\Seeders;
 
-use App\Enums\TripServiceType;
-use App\Models\Bus;
-use App\Models\RoutePattern;
-use App\Models\Stop;
-use App\Models\Trip;
+use App\Imports\TripSchedulesImport;
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TripSeeder extends Seeder
 {
@@ -15,29 +12,7 @@ class TripSeeder extends Seeder
      */
     public function run(): void
     {
-        $time = now();
-
-        $trips = [
-            [
-                'route_pattern_id' => RoutePattern::where('name', 'TVK to MKD')->first()->id,
-                'bus_id'           => Bus::Where('bus_number', 'KL 50 A 1023')->first()->id,
-                'start_time'       => '08:15:00',
-                'final_stop_id'    => Stop::where('name', 'MKD KSRTC Station')->first()->id,
-                'service_type'     => TripServiceType::ORDINARY,
-                'created_at'       => $time,
-                'updated_at'       => $time,
-            ],
-            [
-                'route_pattern_id' => RoutePattern::where('name', 'AP to MKD')->first()->id,
-                'bus_id'           => Bus::Where('bus_number', 'KL 50 A 1024')->first()->id,
-                'start_time'       => '09:15:00',
-                'final_stop_id'    => Stop::where('name', 'MKD KSRTC Station')->first()->id,
-                'service_type'     => TripServiceType::ORDINARY,
-                'created_at'       => $time,
-                'updated_at'       => $time,
-            ],
-        ];
-
-        Trip::insert($trips);
+        $trips = database_path('seeders/files/trips.txt');
+        Excel::import(new TripSchedulesImport, $trips);
     }
 }

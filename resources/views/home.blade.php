@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.web')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Bus Timings</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-
+@push('styles')
     <style>
         body {
             background: #f5f7fa;
@@ -30,10 +21,48 @@
             font-weight: 600;
         }
     </style>
-</head>
 
-<body>
+    <style>
+        .btn-swap-creative {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            color: #0d6efd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            /* Centers the circle on mobile */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
 
+        .btn-swap-creative:hover {
+            background-color: #f8f9fa;
+            color: #0a58ca;
+            /* transform: rotate(180deg); */
+            /* Creative spin */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-color: #0d6efd;
+        }
+
+        .btn-swap-creative:active {
+            transform: rotate(180deg);
+            /* Squish effect when clicked */
+        }
+
+        .choice-select,
+        .choices {
+            width: 100% !important;
+            margin-bottom: 0 !important;
+        }
+    </style>
+@endpush
+
+@section('content')
     <div class="container py-4">
 
         <div class="text-center mb-4">
@@ -46,23 +75,30 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-body p-2">
 
-                    <div class="row g-2">
-                        <div class="col-md-5">
-                            <select name="from_stop_id" class="form-select choice-select"
+                    <div class="row g-2 align-items-center">
+                        <div class="col-12 col-md">
+                            <select id="from-stop" name="from_stop_id" class="form-select choice-select"
                                 data-selected-id="{{ $fromStop->id ?? '' }}"
                                 data-selected-name="{{ $fromStop->name ?? '' }}"
                                 data-selected-code="{{ $fromStop->code ?? '' }}" required></select>
                         </div>
 
-                        <div class="col-md-5">
-                            <select name="to_stop_id" class="form-select choice-select"
-                                data-selected-id="{{ $toStop->id ?? '' }}"
-                                data-selected-name="{{ $toStop->name ?? '' }}"
+                        <div class="col-12 col-md-auto text-center d-grid">
+                            <button type="button" class="btn btn-swap-creative" id="swap-stops" title="Swap Directions">
+                                <i class="bi bi-arrow-left-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="col-12 col-md">
+                            <select id="to-stop" name="to_stop_id" class="form-select choice-select"
+                                data-selected-id="{{ $toStop->id ?? '' }}" data-selected-name="{{ $toStop->name ?? '' }}"
                                 data-selected-code="{{ $toStop->code ?? '' }}" required></select>
                         </div>
 
-                        <div class="col-md-2 d-grid">
-                            <button class="btn btn-primary fw-semibold">Search</button>
+                        <div class="col-12 col-md-auto d-grid">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-search"></i> Find Bus
+                            </button>
                         </div>
                     </div>
 
@@ -72,7 +108,6 @@
 
         {{-- RESULTS --}}
         @if (request()->filled(['from_stop_id', 'to_stop_id']))
-
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">Available Buses</h5>
                 <small class="text-muted">Sorted by ETA</small>
@@ -126,13 +161,15 @@
                     <small>Try different stops</small>
                 </div>
             @endforelse
-
         @endif
     </div>
+@endsection
 
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
+@push('scripts')
     <script>
+        const choiceInstances = {};
+        const selects = {};
+
         document.querySelectorAll('.choice-select').forEach(select => {
 
             const choices = new Choices(select, {
@@ -143,6 +180,13 @@
                 shouldSort: false,
                 removeItemButton: true
             });
+
+            choiceInstances[select.name] = choices;
+
+            // Store reference by ID
+            if (select.id) {
+                selects[select.id] = choices;
+            }
 
             /* ---------------- PRESELECT VALUE ---------------- */
 
@@ -157,6 +201,29 @@
                     selected: true
                 }], 'value', 'label', true);
             }
+
+            /* ---------- AUTO-FOCUS TO STOP ---------- */
+
+            if (select.id === 'from-stop') {
+                select.addEventListener('choice', function() {
+                    const toChoices = selects['to-stop'];
+
+                    if (!toChoices) return;
+
+                    // Check if "To Stop" already has a value
+                    const toValue = toChoices.getValue(true); // returns value or null
+
+                    if (toValue) {
+                        // Do nothing if already selected
+                        return;
+                    }
+
+                    // Otherwise focus and open dropdown
+                    toChoices.showDropdown();
+                    toChoices.input.element.focus();
+                });
+            }
+
 
             /* ---------------- AJAX SEARCH ---------------- */
 
@@ -191,8 +258,39 @@
             });
 
         });
+
+        document.getElementById('swap-stops').addEventListener('click', function() {
+            const fromInstance = choiceInstances['from_stop_id'];
+            const toInstance = choiceInstances['to_stop_id'];
+
+            const fromData = fromInstance.getValue();
+            const toData = toInstance.getValue();
+
+            if (!fromData && !toData) return;
+
+            fromInstance.removeActiveItems();
+            toInstance.removeActiveItems();
+
+            if (toData) {
+                fromInstance.setChoices([{
+                    value: toData.value,
+                    label: toData.label,
+                    selected: true
+                }], 'value', 'label', true);
+            }
+
+            if (fromData) {
+                toInstance.setChoices([{
+                    value: fromData.value,
+                    label: fromData.label,
+                    selected: true
+                }], 'value', 'label', true);
+            }
+
+            // Auto-submit form after short delay
+            // setTimeout(() => {
+            //     document.querySelector('form').submit();
+            // }, 500);
+        });
     </script>
-
-</body>
-
-</html>
+@endpush
