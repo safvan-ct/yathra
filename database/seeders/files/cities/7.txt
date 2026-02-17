@@ -1,0 +1,26 @@
+state_code,district_code,city_name,city_code
+KL,EKM,Aluva,ALV
+KL,EKM,Angamaly,AMY
+KL,EKM,Eloor,ELR
+KL,EKM,Kalamassery,KLY
+KL,EKM,Kochi,COK
+KL,EKM,Kothamangalam,KMM
+KL,EKM,Maradu,MRD
+KL,EKM,Muvattupuzha,MVPA
+KL,EKM,North Paravur,NPR
+KL,EKM,Perumbavoor,PBR
+KL,EKM,Piravom,PVM
+KL,EKM,Thrikkakara,TKA
+KL,EKM,Thripunithura,TPRA
+KL,EKM,Kakkanad,KKD
+KL,EKM,Nedumbassery,NBY
+KL,EKM,Kalady,KLD
+KL,EKM,Edathala,EDL
+KL,EKM,Choornikkara,CKA
+KL,EKM,Cheranallur,CRL
+KL,EKM,Kunnathunad,KTD
+KL,EKM,Vazhakkala,VZK
+KL,EKM,Varappuzha,VZP
+KL,EKM,Kadamakkudy,KDMK
+KL,EKM,Mulavukad,MVD
+KL,EKM,Kumbalangy,KBG

@@ -19,18 +19,23 @@ class StopsImport implements ToCollection, WithHeadingRow
 
         $districts = District::all()
             ->groupBy('state_id')
-            ->map(function ($items) {return $items->pluck('id', 'name');})
+            ->map(function ($items) {return $items->pluck('id', 'code');})
             ->toArray();
 
         $cities = City::all()
             ->groupBy('district_id')
-            ->map(function ($items) {return $items->pluck('id', 'name');})
+            ->map(function ($items) {return $items->pluck('id', 'code');})
             ->toArray();
 
-        DB::transaction(function () use ($rows, $states, $districts, $cities) {
+        $stop = Stop::select('code')->orderBy('id', 'desc')->first();
+
+        DB::transaction(function () use ($rows, $states, $districts, $cities, $stop) {
+
+            $stops    = [];
+            $stopCode = $stop ? explode('-', $stop->code)[1] : 10000;
 
             foreach ($rows as $row) {
-                if (! $row['state_code'] || ! $row['district_name'] || ! $row['city_name'] || ! $row['stop_code'] || ! $row['stop_name']) {
+                if (! $row['state_code'] || ! $row['district_code'] || ! $row['city_code'] || ! $row['stop_name']) {
                     continue;
                 }
 
@@ -39,25 +44,29 @@ class StopsImport implements ToCollection, WithHeadingRow
                 }
                 $stateId = $states[$row['state_code']];
 
-                if (! isset($districts[$stateId][$row['district_name']])) {
+                if (! isset($districts[$stateId][$row['district_code']])) {
                     continue;
                 }
-                $districtId = $districts[$stateId][$row['district_name']];
+                $districtId = $districts[$stateId][$row['district_code']];
 
-                if (! isset($cities[$districtId][$row['city_name']])) {
+                if (! isset($cities[$districtId][$row['city_code']])) {
                     continue;
                 }
-                $cityId = $cities[$districtId][$row['city_name']];
+                $cityId = $cities[$districtId][$row['city_code']];
 
-                $slug = Str::slug(trim($row['stop_name']) . '-' . trim($row['city_name']));
+                $slug = Str::slug(trim($row['stop_name']) . '-' . trim($row['city_code']));
 
-                Stop::updateOrCreate([
+                $stops[] = [
                     'name'    => trim($row['stop_name']),
                     'slug'    => $slug,
                     'city_id' => $cityId,
-                    'code'    => trim($row['stop_code']),
-                ], []);
+                    'code'    => 'S-' . ++$stopCode,
+                ];
             }
+
+            // Stop::insertOrIgnore($stops);
+
+            Stop::upsert($stops, ['code']);
         });
     }
 }

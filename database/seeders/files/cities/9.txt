@@ -1,0 +1,16 @@
+state_code,district_code,city_name,city_code
+KL,PKD,Palakkad,PKD
+KL,PKD,Ottapalam,OTP
+KL,PKD,Shoranur,SRR
+KL,PKD,Chittur-Thathamangalam,CTM
+KL,PKD,Pattambi,PTB
+KL,PKD,Cherpulassery,CPY
+KL,PKD,Mannarkkad,MKD
+KL,PKD,Alathur,ALR
+KL,PKD,Kollengode,KGD
+KL,PKD,Nenmara,NMR
+KL,PKD,Vadakkencherry,VKY
+KL,PKD,Koduvayur,KVR
+KL,PKD,Thrithala,TTL
+KL,PKD,Pudussery,PSY
+KL,PKD,Kuzhalmannam,KZM

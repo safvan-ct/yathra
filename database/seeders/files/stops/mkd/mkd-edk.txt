@@ -1,0 +1,13 @@
+state_code,district_code,city_code,stop_name
+KL,PKD,MKD,Kumancherikkunnu.
+KL,PKD,MKD,Bheemanad
+KL,PKD,MKD,Athaanippadi
+KL,PKD,MKD,Kaattukulam
+KL,PKD,MKD,Alanallur Ayyappankaavu
+KL,PKD,MKD,Alanallur Bus Station
+KL,PKD,MKD,Alanallur Chanthappadi
+KL,PKD,MKD,Alanallur Hospital Jn
+KL,PKD,MKD,Kannankund
+KL,PKD,MKD,Kairali Jn.
+KL,PKD,MKD,Yatheem Khana
+KL,PKD,MKD,Edathanattukara

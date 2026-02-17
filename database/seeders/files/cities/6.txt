@@ -1,0 +1,17 @@
+state_code,district_code,city_name,city_code
+KL,IDK,Kattappana,KPN
+KL,IDK,Thodupuzha,TDZ
+KL,IDK,Munnar,MNR
+KL,IDK,Adimali,ADL
+KL,IDK,Kumily,KMY
+KL,IDK,Nedumkandam,NDM
+KL,IDK,Peermade,PMD
+KL,IDK,Vagamon,VGM
+KL,IDK,Painavu,PNV
+KL,IDK,Devikulam,DKL
+KL,IDK,Udumbanchola,UBC
+KL,IDK,Vandiperiyar,VPR
+KL,IDK,Rajakkad,RJD
+KL,IDK,Cheruthoni,CTN
+KL,IDK,Marayoor,MYR
+KL,IDK,Murickassery,MSY

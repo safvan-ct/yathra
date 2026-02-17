@@ -1,0 +1,11 @@
+state_code,district_code,city_code,stop_name
+KL,MLP,PMNA,Perinthalmanna Manayil Bus Station
+KL,MLP,PMNA,Perinthalmanna GOVT. Hospital
+KL,MLP,PMNA,Perinthalmanna KSRTC Station
+KL,MLP,PMNA,Perinthalmanna AL-SHIFA Hospital
+KL,MLP,PMNA,Pattikkad
+KL,MLP,PMNA,Kaaryavattam
+KL,MLP,PMNA,Kaappu
+KL,MLP,PMNA,Thelakkad
+KL,MLP,PMNA,Vettathur
+KL,PKD,MKD,Chavalithod

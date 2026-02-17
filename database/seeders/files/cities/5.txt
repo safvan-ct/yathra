@@ -1,0 +1,15 @@
+state_code,district_code,city_name,city_code
+KL,KTM,Kottayam,KTM
+KL,KTM,Changanassery,CHY
+KL,KTM,Pala,PLA
+KL,KTM,Ettumanoor,ETR
+KL,KTM,Vaikom,VKM
+KL,KTM,Erattupetta,ETP
+KL,KTM,Kanjirappally,KJY
+KL,KTM,Pampady,PMP
+KL,KTM,Athirampuzha,ATP
+KL,KTM,Puthuppally,PPL
+KL,KTM,Kumarakom,KMK
+KL,KTM,Kaduthuruthy,KDT
+KL,KTM,Ponkunnam,PKM
+KL,KTM,Mundakayam,MDK

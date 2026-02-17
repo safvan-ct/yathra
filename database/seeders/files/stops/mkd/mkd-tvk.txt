@@ -1,0 +1,32 @@
+state_code,district_code,city_code,stop_name
+KL,PKD,MKD,Ambalappara
+KL,PKD,MKD,Kaappuparambu Rd.
+KL,PKD,MKD,Thaanikkunnu
+KL,PKD,MKD,Irattavaari
+KL,PKD,MKD,Kottakkunnu
+KL,PKD,MKD,Valiyapaara
+KL,PKD,MKD,Thiruvizhamkunnu
+KL,PKD,MKD,Thiruvizhamkunnu P.O
+KL,PKD,MKD,GLPS Thiruvizhamkunnu
+KL,PKD,MKD,Kambanippadi
+KL,PKD,MKD,Maalikkunnu
+KL,PKD,MKD,Maalikkunnu 2
+KL,PKD,MKD,Bheemanad School Rd.
+KL,PKD,MKD,Paarappuram
+KL,PKD,MKD,Bheemanad Rd.
+KL,PKD,MKD,Kottoppadam School Jn.
+KL,PKD,MKD,Kottoppadam
+KL,PKD,MKD,AB Rd.
+KL,PKD,MKD,Venga
+KL,PKD,MKD,Ariyoor
+KL,PKD,MKD,Kalyanakaappu
+KL,PKD,MKD,Chungam
+KL,PKD,MKD,Kumaramputhur
+KL,PKD,MKD,MES Collage
+KL,PKD,MKD,Kunthippuzha
+KL,PKD,MKD,Mannarkkad Kodathippadi
+KL,PKD,MKD,Mannarkkad Bus Station
+KL,PKD,MKD,Mannarkkad Police Station
+KL,PKD,MKD,Mannarkkad Tippusulthan Rd.
+KL,PKD,MKD,Mannarkkad Hospital Jn.
+KL,PKD,MKD,Mannarkkad KSRTC Station

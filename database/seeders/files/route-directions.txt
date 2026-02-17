@@ -1,6 +1,6 @@
 route_pattern_code,name,direction
-MKDKS-AMB,,up
-MKDKS-AMB,,down
-MKDKS-TVK,,up
-MKDKS-TVK,,down
+S-10031-S-10001,,up
+S-10031-S-10001,,down
+S-10031-S-10007,,up
+S-10031-S-10007,,down
 

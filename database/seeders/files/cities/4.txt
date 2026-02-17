@@ -1,0 +1,13 @@
+state_code,district_code,city_name,city_code
+KL,ALP,Alappuzha,ALP
+KL,ALP,Cherthala,CTL
+KL,ALP,Kayamkulam,KYM
+KL,ALP,Mavelikkara,MVK
+KL,ALP,Chengannur,CGR
+KL,ALP,Haripad,HPD
+KL,ALP,Ambalappuzha,AMP
+KL,ALP,Aroor,ARR
+KL,ALP,Mannar,MNAR
+KL,ALP,Kuttanad,KTND
+KL,ALP,Vallikunnam,VKNM
+KL,ALP,Thaneermukkam,TKM

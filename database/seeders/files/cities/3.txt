@@ -1,0 +1,15 @@
+state_code,district_code,city_name,city_code
+KL,PTA,Pathanamthitta,PTA
+KL,PTA,Thiruvalla,TVL
+KL,PTA,Adoor,ADR
+KL,PTA,Ranni,RNI
+KL,PTA,Konni,KNI
+KL,PTA,Kozhencherry,KZY
+KL,PTA,Mallappally,MLPY
+KL,PTA,Aranmula,AML
+KL,PTA,Pandalam,PDL
+KL,PTA,Kulanada,KND
+KL,PTA,Vadaserikara,VSK
+KL,PTA,Chittar,CTR
+KL,PTA,Kumbanad,KBD
+KL,PTA,Pullad,PLD

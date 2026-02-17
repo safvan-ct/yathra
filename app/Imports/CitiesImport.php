@@ -17,13 +17,14 @@ class CitiesImport implements ToCollection, WithHeadingRow
 
         $districts = District::all()
             ->groupBy('state_id')
-            ->map(function ($items) {return $items->pluck('id', 'name');})
+            ->map(function ($items) {return $items->pluck('id', 'code');})
             ->toArray();
 
         DB::transaction(function () use ($rows, $states, $districts) {
 
+            $cities = [];
             foreach ($rows as $row) {
-                if (! $row['state_code'] || ! $row['district_name'] || ! $row['city_name'] || ! $row['city_code']) {
+                if (! $row['state_code'] || ! $row['district_code'] || ! $row['city_name'] || ! $row['city_code']) {
                     continue;
                 }
 
@@ -32,15 +33,19 @@ class CitiesImport implements ToCollection, WithHeadingRow
                 }
                 $stateId = $states[$row['state_code']];
 
-                if (! isset($districts[$stateId][$row['district_name']])) {
+                if (! isset($districts[$stateId][$row['district_code']])) {
                     continue;
                 }
-                $districtId = $districts[$stateId][$row['district_name']];
+                $districtId = $districts[$stateId][$row['district_code']];
 
-                City::updateOrCreate(['district_id' => $districtId, 'name' => trim($row['city_name'])], [
-                    'code' => $row['city_code'],
-                ]);
+                $cities[] = [
+                    'district_id' => $districtId,
+                    'name'        => trim($row['city_name']),
+                    'code'        => $row['city_code'],
+                ];
             }
+
+            City::upsert($cities, ['district_id', 'name']);
         });
     }
 }

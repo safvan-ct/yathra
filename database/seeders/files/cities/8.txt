@@ -1,0 +1,16 @@
+state_code,district_code,city_name,city_code
+KL,TCR,Thrissur,TCR
+KL,TCR,Guruvayur,GVR
+KL,TCR,Chalakudy,CKY
+KL,TCR,Kunnamkulam,KKM
+KL,TCR,Kodungallur,KDR
+KL,TCR,Chavakkad,CKD
+KL,TCR,Irinjalakuda,IJK
+KL,TCR,Wadakkanchery,WKY
+KL,TCR,Punnayurkulam,PNK
+KL,TCR,Triprayar,TPR
+KL,TCR,Pudukkad,PDK
+KL,TCR,Mala,MLA
+KL,TCR,Cherpu,CRP
+KL,TCR,Kechery,KCY
+KL,TCR,Pavaratty,PVT

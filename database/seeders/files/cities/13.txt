@@ -1,0 +1,16 @@
+state_code,district_code,city_name,city_code
+KL,KNR,Kannur,KNR
+KL,KNR,Thalassery,TLY
+KL,KNR,Payyanur,PYR
+KL,KNR,Taliparamba,TBA
+KL,KNR,Mattanur,MTN
+KL,KNR,Iritty,IRT
+KL,KNR,Kuthuparamba,KBA
+KL,KNR,Panoor,PNR
+KL,KNR,Sreekandapuram,SKP
+KL,KNR,Anthoor,ATR
+KL,KNR,Chakkarakkal,CKL
+KL,KNR,Pappinisseri,PPI
+KL,KNR,Cherukunnu,CKU
+KL,KNR,Kalliasseri,KLI
+KL,KNR,Alakode,ALD

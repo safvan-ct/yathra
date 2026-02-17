@@ -1,0 +1,9 @@
+state_code,district_code,city_name,city_code
+KL,WYD,Kalpetta,KPT
+KL,WYD,Sultan Bathery,SBY
+KL,WYD,Mananthavady,MDY
+KL,WYD,Meenangadi,MGI
+KL,WYD,Panamaram,PNM
+KL,WYD,Vythiri,VTR
+KL,WYD,Pulpally,PLY
+KL,WYD,Padinjarathara,PDT

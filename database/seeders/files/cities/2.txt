@@ -1,0 +1,16 @@
+state_code,district_code,city_name,city_code
+KL,KLM,Kollam,KLM
+KL,KLM,Karunagappally,KPY
+KL,KLM,Punalur,PLR
+KL,KLM,Paravur,PVR
+KL,KLM,Kottarakkara,KTR
+KL,KLM,Chavara,CHV
+KL,KLM,Kundara,KNDR
+KL,KLM,Anchal,ACL
+KL,KLM,Pathanapuram,PPM
+KL,KLM,Kottiyam,KTYM
+KL,KLM,Oachira,OCR
+KL,KLM,Sasthamkotta,STK
+KL,KLM,Chathannoor,CTNR
+KL,KLM,Mayyanad,MYD
+KL,KLM,Kadakkal,KKL

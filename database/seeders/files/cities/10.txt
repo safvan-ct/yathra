@@ -1,0 +1,16 @@
+state_code,district_code,city_name,city_code
+KL,MLP,Malappuram,MLP
+KL,MLP,Manjeri,MJR
+KL,MLP,Ponnani,PNI
+KL,MLP,Perinthalmanna,PMNA
+KL,MLP,Tirur,TIR
+KL,MLP,Kottakkal,KTK
+KL,MLP,Nilambur,NLR
+KL,MLP,Kondotty,KDY
+KL,MLP,Valanchery,VLY
+KL,MLP,Parappanangadi,PPG
+KL,MLP,Tanur,TNR
+KL,MLP,Tirurangadi,TRG
+KL,MLP,Edappal,EDP
+KL,MLP,Kuttippuram,KTP
+KL,MLP,Wandoor,WDR

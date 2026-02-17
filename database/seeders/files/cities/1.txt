@@ -1,0 +1,16 @@
+state_code,district_code,city_name,city_code
+KL,TVM,Thiruvananthapuram,TVM
+KL,TVM,Neyyattinkara,NYA
+KL,TVM,Varkala,VKL
+KL,TVM,Attingal,ATL
+KL,TVM,Nedumangad,NDD
+KL,TVM,Kazhakoottam,KZT
+KL,TVM,Kattakada,KTKD
+KL,TVM,Kilimanoor,KLR
+KL,TVM,Kovalam,KVM
+KL,TVM,Vizhinjam,VZM
+KL,TVM,Balaramapuram,BPM
+KL,TVM,Parassala,PRL
+KL,TVM,Chirayinkeezhu,CYZ
+KL,TVM,Kaniyapuram,KPM
+KL,TVM,Vattiyoorkavu,VTK

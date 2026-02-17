@@ -20,10 +20,19 @@ class StopSeeder extends Seeder
         $districts = database_path('seeders/files/districts.txt');
         Excel::import(new DistrictsImport, $districts);
 
-        $cities = database_path('seeders/files/cities.txt');
-        Excel::import(new CitiesImport, $cities);
+        for ($i = 1; $i <= 14; $i++) {
+            $cities = database_path('seeders/files/cities/' . $i . '.txt');
+            Excel::import(new CitiesImport, $cities);
+        }
 
-        $stops = database_path('seeders/files/stops.txt');
-        Excel::import(new StopsImport, $stops);
+        $stopPaths = [
+            'seeders/files/stops/mkd/mkd-tvk.txt',
+            'seeders/files/stops/mkd/mkd-edk.txt',
+            'seeders/files/stops/pmna/pmna-tvk.txt',
+        ];
+
+        foreach ($stopPaths as $stopPath) {
+            Excel::import(new StopsImport, database_path($stopPath));
+        }
     }
 }
