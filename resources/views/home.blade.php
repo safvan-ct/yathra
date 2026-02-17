@@ -320,7 +320,8 @@
             const choices = new Choices(select, {
                 searchEnabled: true,
                 shouldSort: false,
-                removeItemButton: true
+                removeItemButton: true,
+                placeholderValue: 'Search stops...',
             });
             choiceInstances[select.id] = choices;
 
