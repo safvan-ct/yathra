@@ -87,12 +87,12 @@ class HomeController extends Controller
         $fromOrder = $stops->firstWhere('stop_id', $fromStopId)?->stop_order;
         $toOrder   = $stops->firstWhere('stop_id', $toStopId)?->stop_order;
 
-        $stops = $stops->map(function ($stop) use ($trip, $fromOrder, $toOrder, $fromStopId, $toStopId) {
+        $stops = $stops->map(function ($stop, $key) use ($trip, $fromOrder, $toOrder, $fromStopId, $toStopId) {
 
             $startTime = \Carbon\Carbon::parse($trip->departure_time);
 
             $arrivalTime   = $startTime->copy()->addMinutes($stop->offset);
-            $departureTime = $arrivalTime->copy()->addMinutes(1); // 1 min halt
+            $departureTime = $key == 0 ? $startTime : $arrivalTime->copy()->addMinutes(1); // 1 min halt
 
             $stop->trip_start_time = $startTime->format('h:i A');
             $stop->arrival_time    = $arrivalTime->format('h:i A');

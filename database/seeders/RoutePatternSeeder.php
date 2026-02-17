@@ -20,7 +20,9 @@ class RoutePatternSeeder extends Seeder
         $directions = database_path('seeders/files/route-directions.txt');
         Excel::import(new RouteDirectionImport(), $directions);
 
-        $directionStops = database_path('seeders/files/route-direction-stops.txt');
-        Excel::import(new RouteDirectionStopImport(), $directionStops);
+        for ($i = 1; $i <= 4; $i++) {
+            $directionStops = database_path('seeders/files/route-stops/' . $i . '.txt');
+            Excel::import(new RouteDirectionStopImport(), $directionStops);
+        }
     }
 }

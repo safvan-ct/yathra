@@ -219,9 +219,10 @@
                             @if (!$loop->first)
                                 <div class="time-entry t-arr">{{ $stop->arrival_time }}</div>
                             @endif
+
                             @if (!$loop->last)
                                 <div class="time-entry t-dep">
-                                    {{ $loop->first ? $stop->trip_start_time : $stop->departure_time }}
+                                    {{ $stop->departure_time }}
                                 </div>
                             @endif
                         </div>

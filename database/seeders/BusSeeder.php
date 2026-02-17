@@ -79,6 +79,20 @@ class BusSeeder extends Seeder
                 'created_at'  => $time,
                 'updated_at'  => $time,
             ],
+            [
+                'operator_id' => Operator::where('name', 'Pvt Ltd.')->first()->id,
+                'bus_number'  => 'KL 50 AL 1029',
+                'bus_name'    => 'Al-Ameen',
+                'created_at'  => $time,
+                'updated_at'  => $time,
+            ],
+            [
+                'operator_id' => Operator::where('name', 'Pvt Ltd.')->first()->id,
+                'bus_number'  => 'KL 50 SK 1030',
+                'bus_name'    => 'Sundharikutty',
+                'created_at'  => $time,
+                'updated_at'  => $time,
+            ],
         ];
 
         Bus::insert($buses);
