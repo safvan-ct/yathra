@@ -2,165 +2,311 @@
 
 @push('styles')
     <style>
+        :root {
+            --primary-grad: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
         body {
-            background: #f5f7fa;
+            background: #f0f2f5;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- THE FIX: Dropdown Layering --- */
+        .search-section-wrapper {
+            position: relative;
+            z-index: 1050;
+        }
+
+        .search-header {
+            background: var(--primary-grad);
+            padding: 40px 0 80px;
+            margin-bottom: -60px;
+            color: white;
+            border-radius: 0 0 2rem 2rem;
+        }
+
+        .search-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: visible !important;
+            /* Critical for dropdowns */
+        }
+
+        .search-card .card-body {
+            overflow: visible !important;
+        }
+
+        /* --- Choices.js Layering --- */
+        .choices {
+            z-index: 1000 !important;
+            overflow: visible !important;
+        }
+
+        .choices__list--dropdown {
+            z-index: 9999 !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+            background-color: #fff !important;
+        }
+
+        /* --- Bus Cards (Mobile Optimized) --- */
+        .results-section {
+            position: relative;
+            z-index: 1;
         }
 
         .bus-card {
-            border-left: 5px solid #0d6efd;
-            transition: .2s;
+            border: none;
+            border-radius: 1rem;
+            transition: transform 0.2s;
+            background: white;
+            margin-bottom: 12px;
         }
 
         .bus-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
         }
 
-        .time-badge {
-            font-size: 1rem;
-            font-weight: 600;
+        .time-display {
+            font-size: 1.1rem;
+            font-weight: 800;
         }
-    </style>
 
-    <style>
+        .route-line {
+            position: relative;
+            height: 2px;
+            background: #e9ecef;
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        .route-line::before,
+        .route-line::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .route-line::before {
+            left: 0;
+            background: #0d6efd;
+        }
+
+        .route-line::after {
+            right: 0;
+            background: #198754;
+        }
+
+        /* --- Buttons --- */
         .btn-swap-creative {
             width: 42px;
             height: 42px;
             border-radius: 50%;
-            background: #ffffff;
+            background: white;
             border: 1px solid #e0e0e0;
             color: #0d6efd;
+            transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
-            /* Centers the circle on mobile */
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            cursor: pointer;
         }
 
         .btn-swap-creative:hover {
-            background-color: #f8f9fa;
-            color: #0a58ca;
-            /* transform: rotate(180deg); */
-            /* Creative spin */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border-color: #0d6efd;
-        }
-
-        .btn-swap-creative:active {
             transform: rotate(180deg);
-            /* Squish effect when clicked */
         }
 
-        .choice-select,
-        .choices {
-            width: 100% !important;
-            margin-bottom: 0 !important;
+        @media (max-width: 767.98px) {
+            .journey-inputs-container {
+                padding-left: 20px;
+                position: relative;
+            }
+
+            .mobile-connector {
+                position: absolute;
+                left: 4px;
+                top: 20px;
+                bottom: 20px;
+                width: 2px;
+                background: #dee2e6;
+            }
+
+            .stop-dot {
+                position: absolute;
+                left: -20px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: white;
+                border: 2px solid #0d6efd;
+            }
+
+            .stop-dot.end {
+                border-color: #198754;
+            }
+
+            .btn-swap-floating {
+                position: absolute;
+                right: 5px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                background: white;
+                border: 1px solid #eee;
+                color: #0d6efd;
+                z-index: 10000;
+            }
         }
     </style>
 @endpush
 
 @section('content')
-    <div class="container py-4">
-
-        <div class="text-center mb-4">
-            <h3 class="fw-bold">Bus Timings</h3>
-            <small class="text-muted">Find buses between stops</small>
+    <div class="search-header text-center">
+        <div class="container">
+            <h2 class="fw-bold">Bus Timings</h2>
+            <p class="opacity-75">Find your next journey</p>
         </div>
+    </div>
 
-        {{-- SEARCH FORM --}}
-        <form method="GET" action="{{ route('home') }}">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body p-2">
+    <div class="container pb-5">
+        <div class="search-section-wrapper">
+            <form method="GET" action="{{ route('home') }}" id="bus-search-form">
+                <div class="card search-card mb-4">
+                    <div class="card-body p-3 p-md-4">
 
-                    <div class="row g-2 align-items-center">
-                        <div class="col-12 col-md">
-                            <select id="from-stop" name="from_stop_id" class="form-select choice-select"
-                                data-selected-id="{{ $fromStop->id ?? '' }}"
-                                data-selected-name="{{ $fromStop->name ?? '' }}"
-                                data-selected-code="{{ $fromStop->code ?? '' }}" required></select>
+                        {{-- DESKTOP VIEW --}}
+                        <div class="d-none d-md-flex row g-3 align-items-center" id="desktop-inputs">
+                            <div class="col">
+                                <label class="small fw-bold text-muted mb-1">From</label>
+                                <select name="from_stop_id" class="choice-select" id="from-desktop"
+                                    data-selected-id="{{ $fromStop->id ?? '' }}"
+                                    data-selected-name="{{ $fromStop->name ?? '' }}"
+                                    data-selected-code="{{ $fromStop->code ?? '' }}"></select>
+                            </div>
+                            <div class="col-auto pt-4">
+                                <button type="button" class="btn btn-swap-creative shadow-sm" data-view="desktop">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                </button>
+                            </div>
+                            <div class="col">
+                                <label class="small fw-bold text-muted mb-1">To</label>
+                                <select name="to_stop_id" class="choice-select" id="to-desktop"
+                                    data-selected-id="{{ $toStop->id ?? '' }}"
+                                    data-selected-name="{{ $toStop->name ?? '' }}"
+                                    data-selected-code="{{ $toStop->code ?? '' }}"></select>
+                            </div>
+                            <div class="col-auto pt-4">
+                                <button type="submit" class="btn btn-primary px-4 fw-bold h-100">SEARCH</button>
+                            </div>
                         </div>
 
-                        <div class="col-12 col-md-auto text-center d-grid">
-                            <button type="button" class="btn btn-swap-creative" id="swap-stops" title="Swap Directions">
-                                <i class="bi bi-arrow-left-right"></i>
-                            </button>
-                        </div>
-
-                        <div class="col-12 col-md">
-                            <select id="to-stop" name="to_stop_id" class="form-select choice-select"
-                                data-selected-id="{{ $toStop->id ?? '' }}" data-selected-name="{{ $toStop->name ?? '' }}"
-                                data-selected-code="{{ $toStop->code ?? '' }}" required></select>
-                        </div>
-
-                        <div class="col-12 col-md-auto d-grid">
-                            <button class="btn btn-primary">
-                                <i class="bi bi-search"></i> Find Bus
-                            </button>
+                        {{-- MOBILE VIEW --}}
+                        <div class="d-block d-md-none" id="mobile-inputs">
+                            <div class="journey-inputs-container">
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="position-relative">
+                                        <span class="stop-dot start"></span>
+                                        <select name="from_stop_id" class="choice-select" id="from-mobile"
+                                            data-selected-id="{{ $fromStop->id ?? '' }}"
+                                            data-selected-name="{{ $fromStop->name ?? '' }}"
+                                            data-selected-code="{{ $fromStop->code ?? '' }}"></select>
+                                    </div>
+                                    <div class="mobile-connector"></div>
+                                    <div class="position-relative">
+                                        <span class="stop-dot end"></span>
+                                        <select name="to_stop_id" class="choice-select" id="to-mobile"
+                                            data-selected-id="{{ $toStop->id ?? '' }}"
+                                            data-selected-name="{{ $toStop->name ?? '' }}"
+                                            data-selected-code="{{ $toStop->code ?? '' }}"></select>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-swap-floating shadow-sm" data-view="mobile">
+                                    <i class="bi bi-arrow-down-up"></i>
+                                </button>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3 mt-3 fw-bold shadow-sm">FIND
+                                BUS</button>
                         </div>
                     </div>
-
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
 
         {{-- RESULTS --}}
         @if (request()->filled(['from_stop_id', 'to_stop_id']))
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">Available Buses</h5>
-                <small class="text-muted">Sorted by ETA</small>
-            </div>
+            <div class="results-section">
+                <div class="row g-1">
+                    @forelse ($buses as $bus)
+                        <div class="col-12">
+                            <a href="{{ route('trip.show', ['id' => $bus->trip_id, 'from_stop_id' => request('from_stop_id'), 'to_stop_id' => request('to_stop_id')]) }}"
+                                class="text-decoration-none text-dark">
+                                <div class="bus-card card shadow-sm">
+                                    <div class="card-body p-3">
+                                        {{-- Mobile Bus Header --}}
+                                        <div class="d-flex align-items-center mb-2 d-md-none border-bottom pb-2">
+                                            <div class="bg-primary bg-opacity-10 p-2 rounded me-2 text-primary">
+                                                <i class="bi bi-bus-front"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">{{ $bus->bus_name }}</div>
+                                                <small class="text-muted">{{ $bus->bus_number }}</small>
+                                            </div>
+                                        </div>
 
-            @forelse ($buses as $bus)
-                <a href="{{ route('trip.show', [
-                    'id' => $bus->trip_id,
-                    'from_stop_id' => request('from_stop_id') ?? 1,
-                    'to_stop_id' => request('to_stop_id') ?? 28,
-                ]) }}"
-                    class="text-decoration-none text-dark">
+                                        <div class="row align-items-center">
+                                            {{-- Desktop Bus Info --}}
+                                            <div class="col-md-3 d-none d-md-block">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3 text-primary"><i
+                                                            class="bi bi-bus-front fs-4"></i></div>
+                                                    <div>
+                                                        <div class="fw-bold lh-1 mb-1">{{ $bus->bus_name }}</div>
+                                                        <small class="text-muted">{{ $bus->bus_number }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                    <div class="bus-card card mb-2">
-                        <div class="card-body" style="padding: 7px;">
+                                            {{-- Times Timeline --}}
+                                            <div class="col-12 col-md-7">
+                                                <div class="d-flex align-items-center justify-content-between px-md-4">
+                                                    <div class="text-primary time-display">
+                                                        {{ \Carbon\Carbon::parse($bus->departure_time)->format('h:i A') }}
+                                                    </div>
+                                                    <div class="route-line"></div>
+                                                    <div class="text-success time-display">
+                                                        {{ \Carbon\Carbon::parse($bus->arrival_time)->format('h:i A') }}
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                            <div class="row align-items-center">
-
-                                <div class="d-flex flex-wrap justify-content-between align-items-center w-100">
-
-                                    <div class="flex-grow-1 me-3">
-                                        <h6 class="fw-bold mb-0 d-inline-block">{{ $bus->bus_name }}</h6>
-                                        <small class="text-muted ms-1">{{ $bus->bus_number }}</small>
+                                            <div class="col-md-2 text-end d-none d-md-block">
+                                                <span
+                                                    class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">Details</span>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    {{-- <div class="text-end">
-                                        <span class="badge bg-secondary text-white">
-                                            Ordinary
-                                        </span>
-                                    </div> --}}
-
                                 </div>
-
-                                <div class="text-nowrap mt-1">
-                                    <span class="time-badge text-primary fw-bold">
-                                        {{ \Carbon\Carbon::parse($bus->departure_time)->format('h:i A') }}
-                                    </span>
-                                    <span class="mx-2 text-muted">→</span>
-                                    <span class="time-badge text-success fw-bold">
-                                        {{ \Carbon\Carbon::parse($bus->arrival_time)->format('h:i A') }}
-                                    </span>
-                                </div>
-                            </div>
+                            </a>
                         </div>
-                    </div>
-                </a>
-            @empty
-
-                <div class="text-center py-5 text-muted">
-                    <h6>No buses found</h6>
-                    <small>Try different stops</small>
+                    @empty
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-emoji-frown fs-1 d-block mb-3"></i>
+                            <h5>No buses found for this route.</h5>
+                            <p>Try swapping the directions or searching for another stop.</p>
+                        </div>
+                    @endforelse
                 </div>
-            @endforelse
+            </div>
         @endif
     </div>
 @endsection
@@ -168,129 +314,76 @@
 @push('scripts')
     <script>
         const choiceInstances = {};
-        const selects = {};
 
+        // 1. Initialize Choices with Search
         document.querySelectorAll('.choice-select').forEach(select => {
-
             const choices = new Choices(select, {
                 searchEnabled: true,
-                searchChoices: false,
-                placeholder: true,
-                placeholderValue: 'Type to search stop...',
                 shouldSort: false,
                 removeItemButton: true
             });
+            choiceInstances[select.id] = choices;
 
-            choiceInstances[select.name] = choices;
-
-            // Store reference by ID
-            if (select.id) {
-                selects[select.id] = choices;
-            }
-
-            /* ---------------- PRESELECT VALUE ---------------- */
-
-            const selectedId = select.dataset.selectedId;
-            const selectedName = select.dataset.selectedName;
-            const selectedCode = select.dataset.selectedCode;
-
-            if (selectedId) {
+            if (select.dataset.selectedId) {
                 choices.setChoices([{
-                    value: selectedId,
-                    label: `${selectedName} (${selectedCode})`,
+                    value: select.dataset.selectedId,
+                    label: `${select.dataset.selectedName} (${select.dataset.selectedCode})`,
                     selected: true
                 }], 'value', 'label', true);
             }
-
-            /* ---------- AUTO-FOCUS TO STOP ---------- */
-
-            if (select.id === 'from-stop') {
-                select.addEventListener('choice', function() {
-                    const toChoices = selects['to-stop'];
-
-                    if (!toChoices) return;
-
-                    // Check if "To Stop" already has a value
-                    const toValue = toChoices.getValue(true); // returns value or null
-
-                    if (toValue) {
-                        // Do nothing if already selected
-                        return;
-                    }
-
-                    // Otherwise focus and open dropdown
-                    toChoices.showDropdown();
-                    toChoices.input.element.focus();
-                });
-            }
-
-
-            /* ---------------- AJAX SEARCH ---------------- */
 
             let debounceTimer;
-
             select.addEventListener('search', function(e) {
-
                 clearTimeout(debounceTimer);
-
                 debounceTimer = setTimeout(async () => {
-
-                    const value = e.detail.value;
-
-                    if (value.length < 2) return;
-
-                    const response = await fetch(`/stops?q=${value}`);
-                    const data = await response.json();
-
+                    const val = e.detail.value;
+                    if (val.length < 2) return;
+                    const res = await fetch(`/stops?q=${val}`);
+                    const data = await res.json();
                     choices.clearChoices();
-
-                    choices.setChoices(
-                        data.map(item => ({
-                            value: item.id,
-                            label: `${item.name} ${item.locality ? `(${item.locality})` : ''} (${item.code}) - ${item.city.name}`
-                        })),
-                        'value',
-                        'label',
-                        true
-                    );
-
-                }, 400); // debounce
+                    choices.setChoices(data.map(i => ({
+                        value: i.id,
+                        label: `${i.name} (${i.code})`
+                    })), 'value', 'label', true);
+                }, 300);
             });
-
         });
 
-        document.getElementById('swap-stops').addEventListener('click', function() {
-            const fromInstance = choiceInstances['from_stop_id'];
-            const toInstance = choiceInstances['to_stop_id'];
+        // 2. Prevent Duplicate Params on Submit
+        const form = document.getElementById('bus-search-form');
+        form.addEventListener('submit', function(e) {
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) {
+                document.getElementById('from-desktop').removeAttribute('name');
+                document.getElementById('to-desktop').removeAttribute('name');
+            } else {
+                document.getElementById('from-mobile').removeAttribute('name');
+                document.getElementById('to-mobile').removeAttribute('name');
+            }
+        });
 
-            const fromData = fromInstance.getValue();
-            const toData = toInstance.getValue();
+        // 3. Swap Functionality
+        document.querySelectorAll('[data-view]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const view = this.dataset.view;
+                const f = choiceInstances[`from-${view}`];
+                const t = choiceInstances[`to-${view}`];
+                const fVal = f.getValue();
+                const tVal = t.getValue();
 
-            if (!fromData && !toData) return;
-
-            fromInstance.removeActiveItems();
-            toInstance.removeActiveItems();
-
-            if (toData) {
-                fromInstance.setChoices([{
-                    value: toData.value,
-                    label: toData.label,
+                f.removeActiveItems();
+                t.removeActiveItems();
+                if (tVal) f.setChoices([{
+                    value: tVal.value,
+                    label: tVal.label,
                     selected: true
                 }], 'value', 'label', true);
-            }
-
-            if (fromData) {
-                toInstance.setChoices([{
-                    value: fromData.value,
-                    label: fromData.label,
+                if (fVal) t.setChoices([{
+                    value: fVal.value,
+                    label: fVal.label,
                     selected: true
                 }], 'value', 'label', true);
-            }
-
-            // Auto-submit form after short delay
-            // setTimeout(() => {
-            //     document.querySelector('form').submit();
-            // }, 500);
+            });
         });
     </script>
 @endpush

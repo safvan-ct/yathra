@@ -233,7 +233,7 @@ class HomeController extends Controller
             return $stop;
         });
 
-        return view('bus-route', compact('trip', 'stops'));
+        return view('bus-route', compact('trip', 'stops', 'fromStopId', 'toStopId'));
     }
 
 }

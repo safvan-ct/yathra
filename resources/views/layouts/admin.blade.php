@@ -145,7 +145,7 @@
         </div>
     </nav>
 
-    <header class="pc-header d-none">
+    <header class="pc-header">
         <div class="header-wrapper">
             <div class="me-auto pc-mob-drp">
                 <ul class="list-unstyled">
