@@ -100,11 +100,13 @@ class StopController extends Controller
 
     public function search(Request $request)
     {
-        $q = $request->q;
+        $search = $request->q;
 
         $results = Stop::select('id', 'name', 'code', 'city_id', 'locality')
-            ->with('city:id,name')
-            ->where('name', 'LIKE', "%$q%")
+            ->with('city.district')
+            ->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")->orWhere('code', 'LIKE', "%$search%");
+            })
             ->limit(20)
             ->get();
 

@@ -40,12 +40,6 @@
             overflow: visible !important;
         }
 
-        /* --- Choices.js Layering --- */
-        .choices {
-            z-index: 1000 !important;
-            overflow: visible !important;
-        }
-
         .choices__list--dropdown {
             z-index: 9999 !important;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
@@ -164,7 +158,7 @@
                 background: white;
                 border: 1px solid #eee;
                 color: #0d6efd;
-                z-index: 10000;
+                z-index: 9998;
             }
         }
     </style>
@@ -184,14 +178,26 @@
                 <div class="card search-card mb-4">
                     <div class="card-body p-3 p-md-4">
 
+                        @php
+                            $fromName = '';
+                            $toName = '';
+
+                            if ($fromStop) {
+                                $fromName = "{$fromStop->code} {$fromStop->name} - ({$fromStop->city->code}, {$fromStop->city->district->code})";
+                            }
+
+                            if ($toStop) {
+                                $toName = "{$toStop->code} {$toStop->name} - ({$toStop->city->code}, {$toStop->city->district->code})";
+                            }
+                        @endphp
+
                         {{-- DESKTOP VIEW --}}
                         <div class="d-none d-md-flex row g-3 align-items-center" id="desktop-inputs">
                             <div class="col">
                                 <label class="small fw-bold text-muted mb-1">From</label>
-                                <select name="from_stop_id" class="choice-select" id="from-desktop"
-                                    data-selected-id="{{ $fromStop->id ?? '' }}"
-                                    data-selected-name="{{ $fromStop->name ?? '' }}"
-                                    data-selected-code="{{ $fromStop->code ?? '' }}"></select>
+                                <select name="from" class="choice-select" id="from-desktop"
+                                    data-selected-id="{{ $fromStop->code ?? '' }}"
+                                    data-selected-name="{{ $fromName ?? '' }}"></select>
                             </div>
                             <div class="col-auto pt-4">
                                 <button type="button" class="btn btn-swap-creative shadow-sm" data-view="desktop">
@@ -200,10 +206,9 @@
                             </div>
                             <div class="col">
                                 <label class="small fw-bold text-muted mb-1">To</label>
-                                <select name="to_stop_id" class="choice-select" id="to-desktop"
-                                    data-selected-id="{{ $toStop->id ?? '' }}"
-                                    data-selected-name="{{ $toStop->name ?? '' }}"
-                                    data-selected-code="{{ $toStop->code ?? '' }}"></select>
+                                <select name="to" class="choice-select" id="to-desktop"
+                                    data-selected-id="{{ $toStop->code ?? '' }}"
+                                    data-selected-name="{{ $toName ?? '' }}"></select>
                             </div>
                             <div class="col-auto pt-4">
                                 <button type="submit" class="btn btn-primary px-4 fw-bold h-100">SEARCH</button>
@@ -216,26 +221,25 @@
                                 <div class="d-flex flex-column gap-2">
                                     <div class="position-relative">
                                         <span class="stop-dot start"></span>
-                                        <select name="from_stop_id" class="choice-select" id="from-mobile"
-                                            data-selected-id="{{ $fromStop->id ?? '' }}"
-                                            data-selected-name="{{ $fromStop->name ?? '' }}"
-                                            data-selected-code="{{ $fromStop->code ?? '' }}"></select>
+                                        <select name="from" class="choice-select" id="from-mobile"
+                                            data-selected-id="{{ $fromStop->code ?? '' }}"
+                                            data-selected-name="{{ $fromName ?? '' }}"></select>
                                     </div>
                                     <div class="mobile-connector"></div>
                                     <div class="position-relative">
                                         <span class="stop-dot end"></span>
-                                        <select name="to_stop_id" class="choice-select" id="to-mobile"
-                                            data-selected-id="{{ $toStop->id ?? '' }}"
-                                            data-selected-name="{{ $toStop->name ?? '' }}"
-                                            data-selected-code="{{ $toStop->code ?? '' }}"></select>
+                                        <select name="to" class="choice-select" id="to-mobile"
+                                            data-selected-id="{{ $toStop->code ?? '' }}"
+                                            data-selected-name="{{ $toName ?? '' }}"></select>
                                     </div>
                                 </div>
                                 <button type="button" class="btn btn-swap-floating shadow-sm" data-view="mobile">
                                     <i class="bi bi-arrow-down-up"></i>
                                 </button>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 py-3 mt-3 fw-bold shadow-sm">FIND
-                                BUS</button>
+                            <button type="submit" class="btn btn-primary w-100 py-3 mt-3 fw-bold shadow-sm">
+                                FIND BUS
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -243,12 +247,25 @@
         </div>
 
         {{-- RESULTS --}}
-        @if (request()->filled(['from_stop_id', 'to_stop_id']))
+        @if (request()->filled(['from', 'to']))
             <div class="results-section">
                 <div class="row g-1">
                     @forelse ($buses as $bus)
+                        @php
+                            $now = \Carbon\Carbon::now();
+                            $dep = \Carbon\Carbon::today()->setTimeFromTimeString($bus->departure_time);
+                            $arr = \Carbon\Carbon::today()->setTimeFromTimeString($bus->arrival_time);
+
+                            $status = 'scheduled';
+                            if ($now->greaterThan($arr)) {
+                                $status = 'completed';
+                            } elseif ($now->between($dep, $arr)) {
+                                $status = 'running';
+                            }
+                        @endphp
+
                         <div class="col-12">
-                            <a href="{{ route('trip.show', ['id' => $bus->trip_id, 'from_stop_id' => request('from_stop_id'), 'to_stop_id' => request('to_stop_id')]) }}"
+                            <a href="{{ route('trip.show', ['id' => $bus->trip_id, 'from' => request('from'), 'to' => request('to')]) }}"
                                 class="text-decoration-none text-dark">
                                 <div class="bus-card card shadow-sm">
                                     <div class="card-body p-3">
@@ -257,10 +274,16 @@
                                             <div class="bg-primary bg-opacity-10 p-2 rounded me-2 text-primary">
                                                 <i class="bi bi-bus-front"></i>
                                             </div>
-                                            <div>
+                                            <div class="flex-grow-1">
                                                 <div class="fw-bold">{{ $bus->bus_name }}</div>
                                                 <small class="text-muted">{{ $bus->bus_number }}</small>
                                             </div>
+
+                                            @if ($status === 'completed')
+                                                <span class="badge bg-secondary">Completed</span>
+                                            @elseif($status === 'running')
+                                                <span class="badge bg-success">Running</span>
+                                            @endif
                                         </div>
 
                                         <div class="row align-items-center">
@@ -289,7 +312,18 @@
                                                 </div>
                                             </div>
 
+                                            {{-- Replace the "Details" col or add this inside the bus-card --}}
                                             <div class="col-md-2 text-end d-none d-md-block">
+                                                @if ($status === 'completed')
+                                                    <span class="badge bg-secondary mb-2 d-inline-block">Completed</span>
+                                                @elseif($status === 'running')
+                                                    <span class="badge bg-success mb-2 d-inline-block shadow-sm">
+                                                        <span class="spinner-grow spinner-grow-sm me-1"
+                                                            role="status"></span>
+                                                        Running
+                                                    </span>
+                                                @endif
+
                                                 <span
                                                     class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">Details</span>
                                             </div>
@@ -328,7 +362,7 @@
             if (select.dataset.selectedId) {
                 choices.setChoices([{
                     value: select.dataset.selectedId,
-                    label: `${select.dataset.selectedName} (${select.dataset.selectedCode})`,
+                    label: `${select.dataset.selectedName}`,
                     selected: true
                 }], 'value', 'label', true);
             }
@@ -341,10 +375,13 @@
                     if (val.length < 2) return;
                     const res = await fetch(`/stops?q=${val}`);
                     const data = await res.json();
-                    choices.clearChoices();
+
+                    console.log(data);
+
+                    choices.clearStore();
                     choices.setChoices(data.map(i => ({
-                        value: i.id,
-                        label: `${i.name} (${i.code})`
+                        value: i.code,
+                        label: `${i.code} ${i.name} - (${i.city.code}, ${i.city.district.code})`
                     })), 'value', 'label', true);
                 }, 300);
             });
