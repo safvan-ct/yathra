@@ -15,12 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::create([
-        //     'name'     => 'super_admin',
-        //     'email'    => 'super_admin@localhost',
-        //     'password' => 'super_admin',
-        //     'role'     => UserRoleType::SUPER_ADMIN,
-        // ]);
+        User::create([
+            'name'     => 'super_admin',
+            'email'    => 'super_admin@localhost',
+            'password' => 'super_admin',
+            'role'     => UserRoleType::SUPER_ADMIN,
+        ]);
 
         $this->call([StopSeeder::class]);
         $this->call([RoutePatternSeeder::class]);
