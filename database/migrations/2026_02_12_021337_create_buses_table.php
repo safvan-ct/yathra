@@ -25,6 +25,7 @@ return new class extends Migration
 
             $table->string('bus_number')->unique();
             $table->string('bus_name');
+            $table->string('bus_color')->nullable();
 
             $table->timestamps();
         });

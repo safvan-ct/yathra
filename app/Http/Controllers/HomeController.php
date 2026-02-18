@@ -40,6 +40,7 @@ class HomeController extends Controller
                 'ts.id as trip_id',
                 'b.bus_name',
                 'b.bus_number',
+                'b.bus_color',
                 'ts.departure_time',
 
                 DB::raw("ADDTIME(ts.departure_time, SEC_TO_TIME(rds_from.default_offset_minutes * 60) ) as departure_time"),

@@ -271,9 +271,11 @@
                                     <div class="card-body p-3">
                                         {{-- Mobile Bus Header --}}
                                         <div class="d-flex align-items-center mb-2 d-md-none border-bottom pb-2">
-                                            <div class="bg-primary bg-opacity-10 p-2 rounded me-2 text-primary">
-                                                <i class="bi bi-bus-front"></i>
+                                            <div
+                                                class="bg-{{ $bus->bus_color == 'white' ? 'secondary' : $bus->bus_color }} bg-opacity-{{ $bus->bus_color == 'white' ? 25 : 10 }} p-1 rounded me-2 text-{{ $bus->bus_color }}">
+                                                <i class="bi bi-bus-front fs-4"></i>
                                             </div>
+
                                             <div class="flex-grow-1">
                                                 <div class="fw-bold">{{ $bus->bus_name }}</div>
                                                 <small class="text-muted">{{ $bus->bus_number }}</small>
@@ -290,8 +292,11 @@
                                             {{-- Desktop Bus Info --}}
                                             <div class="col-md-3 d-none d-md-block">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3 text-primary"><i
-                                                            class="bi bi-bus-front fs-4"></i></div>
+                                                    <div
+                                                        class="bg-{{ $bus->bus_color == 'white' ? 'secondary' : $bus->bus_color }} bg-opacity-{{ $bus->bus_color == 'white' ? 25 : 10 }} p-2 rounded me-3 text-{{ $bus->bus_color }}">
+                                                        <i class="bi bi-bus-front fs-4"></i>
+                                                    </div>
+
                                                     <div>
                                                         <div class="fw-bold lh-1 mb-1">{{ $bus->bus_name }}</div>
                                                         <small class="text-muted">{{ $bus->bus_number }}</small>
@@ -301,18 +306,49 @@
 
                                             {{-- Times Timeline --}}
                                             <div class="col-12 col-md-7">
-                                                <div class="d-flex align-items-center justify-content-between px-md-4">
+                                                <div class="d-flex align-items-center px-md-4">
                                                     <div class="text-primary time-display">
                                                         {{ \Carbon\Carbon::parse($bus->departure_time)->format('h:i A') }}
                                                     </div>
                                                     <div class="route-line"></div>
-                                                    <div class="text-success time-display">
+                                                    <div class="text-success time-display me-3">
                                                         {{ \Carbon\Carbon::parse($bus->arrival_time)->format('h:i A') }}
+                                                    </div>
+
+                                                    <div
+                                                        class="ps-3 border-start border-2 border-dashed d-flex flex-column align-items-center">
+                                                        <small class="text-muted" style="font-size: 0.65rem;">FARE</small>
+                                                        <span class="text-dark fw-bolder"
+                                                            style="font-size: 1.1rem;">₹10.00</span>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            {{-- Replace the "Details" col or add this inside the bus-card --}}
+                                            <div class="col-12 col-md-7 d-none">
+                                                <div class="position-relative py-3">
+                                                    <div class="d-flex align-items-center justify-content-between px-md-4">
+                                                        <div class="text-primary time-display">
+                                                            {{ \Carbon\Carbon::parse($bus->departure_time)->format('h:i A') }}
+                                                        </div>
+                                                        <div class="route-line"></div>
+                                                        <div class="text-success time-display me-3">
+                                                            {{ \Carbon\Carbon::parse($bus->arrival_time)->format('h:i A') }}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="position-absolute top-100 start-50 translate-middle-x"
+                                                        style="margin-top: -8px;">
+                                                        <div class="px-3 py-1 rounded-pill shadow-sm"
+                                                            style="background: rgba(13, 110, 253, 0.08); backdrop-filter: blur(4px); border: 1px solid rgba(13, 110, 253, 0.2);">
+                                                            <span class="text-primary fw-bold" style="font-size: 0.9rem;">
+                                                                <i class="bi bi-lightning-fill me-1"></i>
+                                                                FARE ₹10.00
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-2 text-end d-none d-md-block">
                                                 @if ($status === 'completed')
                                                     <span class="badge bg-secondary mb-2 d-inline-block">Completed</span>

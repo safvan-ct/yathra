@@ -9,6 +9,7 @@ class Bus extends Model
         'operator_id',
         'bus_number',
         'bus_name',
+        'bus_color',
     ];
 
     public function operator()
