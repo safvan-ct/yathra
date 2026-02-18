@@ -111,7 +111,7 @@ class BusController extends Controller
             ->where(function ($query) use ($q) {
                 $query->where('bus_name', 'LIKE', "%{$q}%")->orWhere('bus_number', 'LIKE', "%{$q}%");
             })
-            ->select(['id', DB::raw("CONCAT(bus_name, ' (', bus_number, ')') as name")])
+            ->select(['id', DB::raw("CONCAT(bus_name, ' (', bus_number, ')') as name"), 'bus_name', 'bus_number'])
             ->limit(20)
             ->get();
 

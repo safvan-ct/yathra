@@ -183,11 +183,11 @@
                             $toName = '';
 
                             if ($fromStop) {
-                                $fromName = "{$fromStop->code} {$fromStop->name} - ({$fromStop->city->code}, {$fromStop->city->district->code})";
+                                $fromName = "<span class='badge bg-primary'>{$fromStop->code}</span> {$fromStop->name} <small class='text-muted'>({$fromStop->city->code}, {$fromStop->city->district->code})</small>";
                             }
 
                             if ($toStop) {
-                                $toName = "{$toStop->code} {$toStop->name} - ({$toStop->city->code}, {$toStop->city->district->code})";
+                                $toName = "<span class='badge bg-primary'>{$toStop->code}</span> {$toStop->name} <small class='text-muted'>({$toStop->city->code}, {$toStop->city->district->code})</small>";
                             }
                         @endphp
 
@@ -356,6 +356,7 @@
                 shouldSort: false,
                 removeItemButton: true,
                 placeholderValue: 'Search stops...',
+                allowHTML: true
             });
             choiceInstances[select.id] = choices;
 
@@ -376,12 +377,11 @@
                     const res = await fetch(`/stops?q=${val}`);
                     const data = await res.json();
 
-                    console.log(data);
-
                     choices.clearStore();
+
                     choices.setChoices(data.map(i => ({
                         value: i.code,
-                        label: `${i.code} ${i.name} - (${i.city.code}, ${i.city.district.code})`
+                        label: `<span class="badge bg-primary">${i.code}</span> ${i.name} <small class="text-muted">(${i.city.code}, ${i.city.district.code})</small>`,
                     })), 'value', 'label', true);
                 }, 300);
             });
@@ -411,6 +411,7 @@
 
                 f.removeActiveItems();
                 t.removeActiveItems();
+
                 if (tVal) f.setChoices([{
                     value: tVal.value,
                     label: tVal.label,

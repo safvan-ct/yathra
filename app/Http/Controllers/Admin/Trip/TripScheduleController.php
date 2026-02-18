@@ -59,16 +59,32 @@ class TripScheduleController extends Controller
 
     public function dataTable(Request $request)
     {
+        $busId = $request->filter ?? null;
+
         $query = TripSchedule::select('id', 'bus_id', 'route_direction_id', 'departure_time', 'days_of_week', 'effective_from', 'effective_to', 'is_active')
-            ->with(['routeDirection.routePattern', 'bus:id,bus_name,bus_number']);
+            ->with(['routeDirection.routePattern', 'bus:id,bus_name,bus_number'])
+            ->when($busId, fn($query) => $query->where('bus_id', $busId)->orderBy('departure_time'));
 
         return DataTables::of($query)
             ->addColumn('routeDirection', function ($row) {
-                return $row->routeDirection ? "{$row->routeDirection->routePattern->name} ({$row->routeDirection->routePattern->code}) {$row->routeDirection->name} {$row->routeDirection->direction}" : '-';
+                $dir = $row->routeDirection ? strtoupper($row->routeDirection->direction) : '';
+
+                if ($dir == 'UP') {
+                    $dir = '<span class="fw-bold text-success">' . $dir . '</span>';
+                } elseif ($dir == 'DOWN') {
+                    $dir = '<span class="fw-bold text-danger">' . $dir . '</span>';
+                }
+
+                $code = $row->routeDirection ? '<span class="small text-muted">' . $row->routeDirection->routePattern->code . '</span>' : '';
+
+                return $row->routeDirection ? "{$dir} : {$row->routeDirection->routePattern->name} {$code}" : '-';
             })
             ->addColumn('bus', function ($row) {
-                return $row->bus ? "{$row->bus->bus_name} ({$row->bus->bus_number})" : '-';
+                $number = $row->bus ? '<span class="small text-muted">' . $row->bus->bus_number . '</span>' : '';
+
+                return $row->bus ? "{$row->bus->bus_name} {$number}" : '-';
             })
+            ->rawColumns(['routeDirection', 'bus'])
             ->make(true);
     }
 
