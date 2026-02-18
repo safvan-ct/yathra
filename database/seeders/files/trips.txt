@@ -23,7 +23,7 @@ route_direction_id,bus_number,departure_time,days_of_week,effective_from
 3,KL 50 A 1028,17:15,mon|tue|wed|thu|fri|sat,2026-02-01
 3,KL 50 M 1023,17:45,mon|tue|wed|thu|fri|sat,2026-02-01
 3,KL 50 MD 1027,19:35,mon|tue|wed|thu|fri|sat,2026-02-01
-3,KL 15 K 1022,18:50,mon|tue|wed|thu|fri|sat,2026-02-01
+3,KL 15 K 1022,20:50,mon|tue|wed|thu|fri|sat,2026-02-01
 4,KL 50 MD 1027,6:50,mon|tue|wed|thu|fri|sat,2026-02-01
 4,KL 50 M 1023,08:15,mon|tue|wed|thu|fri|sat,2026-02-01
 4,KL 50 A 1028,11:35,mon|tue|wed|thu|fri|sat,2026-02-01
