@@ -35,6 +35,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
     <link href="{{ asset('operator/style.css') }}" rel="stylesheet">
 
@@ -55,7 +56,7 @@
             <i class="bi bi-bus-front"></i>
             Bus
         </a>
-        <a href="schedules.html" class="nav-item">
+        <a href="{{ route('operator.trip.index') }}" class="nav-item {{ Str::is('operator.trip.*', Route::currentRouteName()) ? 'active' : '' }}">
             <i class="bi bi-calendar-check"></i>
             Schedules
         </a>
@@ -93,6 +94,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <script>
         function confirmLogout(event) {

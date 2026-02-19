@@ -9,6 +9,8 @@ class RouteDirection extends Model
         'route_pattern_id',
         'name',
         'direction',
+        'origin_stop_id',
+        'destination_stop_id',
         'is_active',
     ];
 

@@ -69,10 +69,17 @@ body {
     /* Prevents iOS Zoom */
 }
 
-/* Fix for mobile modal depth */
 .choices {
-    z-index: 1051 !important;
+    margin-bottom: 0px !important;
+    width: 100% !important;
+    min-width: 250px;
+    /* border: 1px solid #0d6efd !important; */
 }
+
+/* Fix for mobile modal depth */
+/* .choices {
+    z-index: 1051 !important;
+} */
 
 .success-icon-wrapper {
     font-size: 4rem;

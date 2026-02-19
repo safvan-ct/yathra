@@ -28,7 +28,6 @@ class StopSeeder extends Seeder
         $stopPaths = [
             'seeders/files/stops/mkd/mkd-tvk.txt',
             'seeders/files/stops/mkd/mkd-edk.txt',
-            'seeders/files/stops/pmna/pmna-tvk.txt',
         ];
 
         foreach ($stopPaths as $stopPath) {

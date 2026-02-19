@@ -48,11 +48,17 @@ return new class extends Migration
 
             $table->string('name', 120)->default('');
             $table->string('direction', 120); // UP / DOWN
+
+            $table->foreignId('origin_stop_id')->constrained('stops');
+            $table->foreignId('destination_stop_id')->constrained('stops');
+
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
 
             $table->unique(['route_pattern_id', 'name', 'direction'], 'unique_rd_identity');
+            $table->unique(['origin_stop_id', 'destination_stop_id'], 'unique_rd2_identity');
+
             $table->index(['route_pattern_id', 'direction']);
         });
 

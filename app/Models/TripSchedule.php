@@ -17,7 +17,6 @@ class TripSchedule extends Model
 
     protected $casts = [
         'days_of_week'   => 'array',
-        'departure_time' => 'datetime:H:i',
     ];
 
     public function routeDirection()

@@ -66,7 +66,7 @@
 }
 
 .btn-check:checked+.day-btn {
-    background: var(--primary-gradient) !important;
+    background: #198754 !important;
     border-color: transparent !important;
     color: white !important;
     box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
