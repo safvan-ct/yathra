@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Operator\BusController;
 use App\Http\Controllers\Operator\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +15,8 @@ Route::middleware('auth:operator')->prefix('operator')->name('operator.')->group
     Route::get('dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
 
     Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
+
+    Route::get('bus', [BusController::class, 'index'])->name('bus.index');
+    Route::post('bus/store', [BusController::class, 'store'])->name('bus.store');
+    Route::put('bus/{bus}/update', [BusController::class, 'update'])->name('bus.update');
 });

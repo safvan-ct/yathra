@@ -11,6 +11,7 @@ class Operator extends Authenticatable
         'phone',
         'pin',
         'type',
+        'is_active',
     ];
 
     protected $casts = [

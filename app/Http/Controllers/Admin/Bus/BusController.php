@@ -1,36 +1,35 @@
 <?php
 namespace App\Http\Controllers\Admin\Bus;
 
+use App\Enums\BusAuthStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Bus\BusStoreRequest;
 use App\Imports\StopsImport;
 use App\Models\Bus;
 use App\Models\District;
-use App\Models\Stop;
+use App\Services\Bus\BusService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class BusController extends Controller
 {
+    public function __construct(private BusService $busService)
+    {}
+
     public function index()
     {
         return view('backend.bus.index');
     }
 
-    public function store(Request $request)
+    public function store(BusStoreRequest $request)
     {
-        $request->validate([
-            'operator_id' => 'required|exists:operators,id',
-            'bus_name'    => 'required',
-            'bus_number'  => 'required|unique:buses,bus_number',
-        ]);
-
-        Bus::create([
+        $this->busService->store([
             'operator_id' => $request->operator_id,
             'bus_name'    => $request->bus_name,
             'bus_number'  => $request->bus_number,
+            'bus_color'   => $request->bus_color,
+            'auth_status' => BusAuthStatus::APPROVED,
         ]);
 
         return response()->json(['message' => 'Bus added successfully']);
@@ -38,18 +37,11 @@ class BusController extends Controller
 
     public function update(Request $request, $bus)
     {
-        $bus = Bus::findOrFail($bus);
+        $bus = $this->busService->find($bus);
 
-        $request->validate([
-            'operator_id' => 'required|exists:operators,id',
-            'bus_name'    => 'required',
-            'bus_number'  => ['required', Rule::unique('buses', 'bus_number')->ignore($bus?->id)],
-        ]);
-
-        $bus->update([
-            'operator_id' => $request->operator_id,
-            'bus_name'    => $request->bus_name,
-            'bus_number'  => $request->bus_number,
+        $this->busService->update($bus, [
+            'operator_id' => $request->operator_id, 'bus_name' => $request->bus_name,
+            'bus_number'  => $request->bus_number, 'bus_color' => $request->bus_color,
         ]);
 
         return response()->json(['message' => 'Bus updated successfully']);
@@ -67,7 +59,7 @@ class BusController extends Controller
 
     public function dataTable(Request $request)
     {
-        $query = Bus::select('id', 'bus_name', 'bus_number', 'operator_id')->with('operator:id,name');
+        $query = Bus::select('id', 'bus_name', 'bus_number', 'operator_id', 'is_active')->with('operator:id,name');
 
         return DataTables::of($query)
             ->addColumn('operator', function ($row) {
@@ -78,61 +70,15 @@ class BusController extends Controller
 
     public function form($id, $attributeId = "")
     {
-        $data = $id ? Bus::findOrFail($id) : null;
+        $data = $id ? $this->busService->find($id) : null;
 
         return view('backend.bus.form', compact('data'));
     }
 
-    // Import Stops
-    public function importConfirm(Request $request, District $district)
-    {
-        $request->validate(['file' => 'required|mimes:csv,txt']);
-
-        $file = fopen($request->file('file')->getRealPath(), 'r');
-
-        $header = fgetcsv($file);
-
-        $expected = ['state_code', 'district_name', 'city_name', 'stop_code', 'stop_name'];
-
-        if ($header !== $expected) {
-            return back()->with('error', 'Invalid CSV header format.');
-        }
-
-        Excel::import(new StopsImport, $request->file('file'));
-
-        return redirect()->route('stop.index')->with('success', "Stops imported successfully.");
-    }
-
     public function search(Request $request)
     {
-        $q = $request->q;
-
-        $results = Bus::query()
-            ->where(function ($query) use ($q) {
-                $query->where('bus_name', 'LIKE', "%{$q}%")->orWhere('bus_number', 'LIKE', "%{$q}%");
-            })
-            ->select(['id', DB::raw("CONCAT(bus_name, ' (', bus_number, ')') as name"), 'bus_name', 'bus_number'])
-            ->limit(20)
-            ->get();
+        $results = $this->busService->search($request->q);
 
         return response()->json($results);
-    }
-
-    public function nearby($lat, $lng)
-    {
-        return Stop::selectRaw("
-            *, (
-                6371 * acos(
-                    cos(radians(?)) *
-                    cos(radians(latitude)) *
-                    cos(radians(longitude) - radians(?)) +
-                    sin(radians(?)) *
-                    sin(radians(latitude))
-                )
-            ) AS distance
-        ", [$lat, $lng, $lat])
-            ->having('distance', '<', 0.5)
-            ->orderBy('distance')
-            ->get();
     }
 }

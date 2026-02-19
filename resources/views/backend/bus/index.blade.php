@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <x-admin.table :headers="['#', 'Name', 'Number', 'Operator', 'Actions']"></x-admin.table>
+                    <x-admin.table :headers="['#', 'Name', 'Number', 'Operator', 'Status', 'Actions']"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
                 data: "operator"
             },
 
-            //CRUD.columnToggleStatus(),
+            CRUD.columnToggleStatus(),
             CRUD.columnActions(true, false),
         ];
 
