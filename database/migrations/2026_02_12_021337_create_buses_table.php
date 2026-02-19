@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('operators', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
+            $table->string('phone');
+            $table->string('pin');
             $table->enum('type', ['private', 'village', 'city', 'state', 'national', 'international'])->default('private');
             $table->timestamps();
+
+            $table->unique(['name', 'phone']);
         });
 
         Schema::create('buses', function (Blueprint $table) {

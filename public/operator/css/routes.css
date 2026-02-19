@@ -1,0 +1,66 @@
+/* Route Progress Bar */
+.route-card {
+    background: white;
+    border-radius: 20px;
+    border: none;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.timeline {
+    position: relative;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: #e9ecef;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.stop {
+    position: relative;
+    z-index: 2;
+    background: white;
+    border: 2px solid #0d6efd;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.stop.completed {
+    background: #0d6efd;
+}
+
+/* Substitution Button */
+.btn-substitute {
+    background: #fff5f5;
+    color: #dc3545;
+    border: 1px dashed #dc3545;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-substitute:hover {
+    background: #dc3545;
+    color: white;
+}
+
+/* Swap Visualizer */
+.swap-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 15px;
+}

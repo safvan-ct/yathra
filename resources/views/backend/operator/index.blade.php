@@ -32,7 +32,7 @@
 
 @push('scripts')
     <script>
-        CRUD.setResource("operator");
+        CRUD.setResource("bus-operator");
 
         const tableColumns = [{
                 data: "id"

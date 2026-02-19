@@ -7,3 +7,4 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/trip/{id}/{from}/{to}', [HomeController::class, 'showTrip'])->name('trip.show');
 
 require __DIR__ . '/admin.php';
+require __DIR__ . '/operator.php';

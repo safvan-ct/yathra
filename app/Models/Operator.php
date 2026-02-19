@@ -2,12 +2,14 @@
 namespace App\Models;
 
 use App\Enums\OperatorType;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Operator extends Model
+class Operator extends Authenticatable
 {
     protected $fillable = [
         'name',
+        'phone',
+        'pin',
         'type',
     ];
 

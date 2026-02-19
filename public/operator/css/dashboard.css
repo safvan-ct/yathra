@@ -1,0 +1,86 @@
+body {
+    margin-bottom: 70px;
+}
+
+/* Top Header */
+.dash-header {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 30px 20px 60px 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+/* Stat Cards */
+.stat-grid {
+    margin-top: -40px;
+    padding: 0 15px;
+}
+
+.stat-card {
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.icon-circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+
+/* Module Icons Colors */
+.bg-bus {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.bg-driver {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.bg-staff {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+
+/* Quick Actions */
+.action-btn {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.action-btn i {
+    display: block;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 992px) {
+    .container-custom {
+        max-width: 1100px;
+        margin: auto;
+    }
+}

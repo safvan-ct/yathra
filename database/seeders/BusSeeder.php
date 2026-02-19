@@ -15,16 +15,28 @@ class BusSeeder extends Seeder
         $operators = [
             [
                 'name'       => 'KSRTC',
+                'phone'      => '1234567890',
+                'pin'        => '1234',
                 'type'       => OperatorType::STATE,
                 'created_at' => $time,
                 'updated_at' => $time,
             ],
             [
-                'name'       => 'Pvt Ltd.',
+                'name'       => 'MRL Pvt Ltd.',
+                'phone'      => '1234567891',
+                'pin'        => '1234',
                 'type'       => OperatorType::PRIVATE,
                 'created_at' => $time,
                 'updated_at' => $time,
             ],
+            [
+                'name'       => 'Pvt Ltd.',
+                'phone'      => '1234567892',
+                'pin'        => '1234',
+                'type'       => OperatorType::PRIVATE,
+                'created_at' => $time,
+                'updated_at' => $time,
+            ]
         ];
 
         Operator::insert($operators);
@@ -47,7 +59,7 @@ class BusSeeder extends Seeder
                 'updated_at'  => $time,
             ],
             [
-                'operator_id' => Operator::where('name', 'Pvt Ltd.')->first()->id,
+                'operator_id' => Operator::where('name', 'MRL Pvt Ltd.')->first()->id,
                 'bus_number'  => 'KL 50 M 1023',
                 'bus_name'    => 'MRL',
                 'bus_color'   => 'info',

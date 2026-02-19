@@ -16,9 +16,9 @@ use App\Http\Controllers\Admin\Stop\StopController;
 use App\Http\Controllers\Admin\Trip\TripScheduleController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('login', [LoginController::class, 'create'])->name('login');
+// Route::get('login', [LoginController::class, 'create'])->name('login');
 
-Route::middleware('guest')->prefix('backend')->name('backend.')->group(function () {
+Route::middleware('guest:web')->prefix('backend')->name('backend.')->group(function () {
     Route::get('register', [RegisterController::class, 'create'])->name('register');
     Route::post('register', [RegisterController::class, 'store']);
 
@@ -29,11 +29,11 @@ Route::middleware('guest')->prefix('backend')->name('backend.')->group(function 
     Route::post('forgot-password', [PasswordResetController::class, 'store'])->name('password.email');
 });
 
-Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('backend.dashboard');
+Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth:web', 'verified'])->name('backend.dashboard');
 
 Route::get('stops', [StopController::class, 'search']);
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:web'])->group(function () {
     // District
     Route::get('districts', [DistrictController::class, 'search']);
     Route::prefix('district')->name('district.')->group(function () {
@@ -102,15 +102,15 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Operators
-    Route::get('operators', [OperatorController::class, 'search']);
-    Route::prefix('operator')->name('operator.')->group(function () {
+    Route::get('bus-operators', [OperatorController::class, 'search']);
+    Route::prefix('bus-operator')->name('bus-operator.')->group(function () {
         Route::get('/form/{id}', [OperatorController::class, 'form'])->name('form');
         Route::get('/datatable', [OperatorController::class, 'dataTable'])->name('datatable');
         Route::patch('/toggle-status/{operator}', [OperatorController::class, 'toggleStatus'])->name('toggle-status');
 
         Route::post('/import/confirm', [OperatorController::class, 'importConfirm'])->name('import.confirm');
     });
-    Route::resource('operator', OperatorController::class)->only(['index', 'store', 'update']);
+    Route::resource('bus-operator', OperatorController::class)->only(['index', 'store', 'update']);
 
     // Bus
     Route::get('buses', [BusController::class, 'search'])->name('buses.search');
