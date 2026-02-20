@@ -5,7 +5,7 @@
     - Bus owners can request for account
 
 - BUS
-    - Admin Can CRUD, Approve or Cancel (default in-active, active when have at least one active trip)
+    - Admin Can CRUD, Approve or Cancel
     - Bus owners can (add, edit, de-activate or activate)
 
 ## MODULE - 2 : STOPS

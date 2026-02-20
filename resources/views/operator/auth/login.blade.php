@@ -6,6 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Owner Login | {{ config('app.name') }}</title>
 
+    <meta name="title" content="Bus Timings | {{ config('app.name') }}">
+    <meta name="description" content="Bus Timings">
+    <meta name="keywords" content="Bus Timings">
+    <meta name="author" content="{{ config('app.name') }}">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Bus Timings">
+    <meta property="og:description" content="Bus Timings">
+    <meta property="og:image" content="{{ asset('img/logo.png') }}">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Bus Timings">
+    <meta property="twitter:description" content="Bus Timings">
+    <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
+
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon-16x16.png') }}">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/android-chrome-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('img/android-chrome-512x512.png') }}">
+    <link rel="manifest" href="{{ asset('img/site.webmanifest') }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
@@ -30,7 +57,7 @@
                 @endif
 
                 {{-- <form onsubmit="showOTPScreen(event)"> --}}
-                <form action="{{ route('operator.login') }}" method="POST">
+                <form action="{{ route('operator.login') }}" method="POST" id="form">
                     @csrf
 
                     {{-- <div class="mb-3">
@@ -46,8 +73,8 @@
                             <span class="input-group-text border-0 bg-light"
                                 style="border-radius: 12px 0 0 12px;">+91</span>
                             <input type="tel" class="form-control border-start-0" placeholder="00000 00000"
-                                style="border-radius: 0 12px 12px 0;" value="{{ old('phone', '1234567891') }}" required
-                                name="phone">
+                                style="border-radius: 0 12px 12px 0;" value="{{ old('phone') }}" required
+                                name="phone" max="10" autofocus>
                         </div>
 
                         @if ($errors->has('phone'))
@@ -59,21 +86,22 @@
                         <label class="form-label">PIN Number</label>
                         <div class="otp-input-container d-flex gap-2">
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
-                                name="l_1" value="{{ old('l_1', '1') }}">
+                                name="l_1" required value="{{ old('l_1') }}">
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
-                                name="l_2" value="{{ old('l_2', '0') }}">
+                                name="l_2" required value="{{ old('l_2') }}">
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
-                                name="l_3" value="{{ old('l_3', '1') }}">
+                                name="l_3" required value="{{ old('l_3') }}">
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
-                                name="l_4" value="{{ old('l_4', '0') }}">
+                                name="l_4" required value="{{ old('l_4') }}">
                         </div>
+
+                        <input type="hidden" name="pin" id="pin">
 
                         @if ($errors->has('pin'))
                             <x-admin.form-error :messages="$errors->get('pin')" class="mt-2" />
                         @endif
                     </div>
 
-                    <input type="hidden" name="pin" id="pin">
                     {{-- <button type="submit" class="btn btn-otp">Get OTP</button> --}}
 
                     <button type="submit" class="btn btn-otp">Verify & Login</button>
@@ -272,7 +300,7 @@
             setPinValue('register_pin', 'registerOtp');
         });
 
-        document.querySelector("form").addEventListener("submit", function() {
+        document.getElementById("form").addEventListener("submit", function() {
             setPinValue('pin', 'loginPin');
         });
 

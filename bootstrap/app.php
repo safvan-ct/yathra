@@ -23,6 +23,19 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return route('home');
         });
+
+        $middleware->redirectGuestsTo(function ($request) {
+
+            if ($request->is('operator/*')) {
+                return route('operator.login');
+            }
+
+            if ($request->is('backend/*')) {
+                return route('backend.login');
+            }
+
+            return route('backend.login');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

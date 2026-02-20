@@ -110,6 +110,10 @@ body {
     transform: scale(0.96);
 }
 
+.btn-otp:hover {
+    color: white !important;
+}
+
 .footer-links {
     text-align: center;
     margin-top: 10px;
