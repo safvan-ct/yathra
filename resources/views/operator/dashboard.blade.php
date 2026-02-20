@@ -11,7 +11,15 @@
         <div class="container-custom d-flex justify-content-between align-items-center">
             <div>
                 <h4 class="fw-bold mb-0">Hello, {{ Auth::guard('operator')->user()->name }} 👋</h4>
-                <p class="small opacity-75 mb-0">Fleet Status: <span class="badge bg-success">All Systems Normal</span>
+                <p class="small opacity-75 mb-0">
+                    Account Status:
+                    @if (Auth::guard('operator')->user()->auth_status == \App\Enums\OperatorAuthStatus::PENDING)
+                        <span class="badge bg-warning">Pending</span>
+                    @elseif (Auth::guard('operator')->user()->auth_status == \App\Enums\OperatorAuthStatus::APPROVED)
+                        <span class="badge bg-success">Approved</span>
+                    @else
+                        <span class="badge bg-danger">Rejected</span>
+                    @endif
                 </p>
             </div>
             <div class="position-relative">

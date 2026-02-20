@@ -41,26 +41,33 @@
 
                     <div class="mb-2">
                         <label class="form-label">Mobile Number</label>
+
                         <div class="input-group">
                             <span class="input-group-text border-0 bg-light"
                                 style="border-radius: 12px 0 0 12px;">+91</span>
                             <input type="tel" class="form-control border-start-0" placeholder="00000 00000"
-                                style="border-radius: 0 12px 12px 0;" value="1234567891" required name="mobile_number">
+                                style="border-radius: 0 12px 12px 0;" value="{{ old('phone', '1234567891') }}"
+                                required name="phone">
                         </div>
+
+                        @if ($errors->has('phone'))
+                            <x-admin.form-error :messages="$errors->get('phone')" class="mt-2" />
+                        @endif
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Bus Number</label>
+                        <label class="form-label">PIN Number</label>
                         <div class="otp-input-container d-flex gap-2">
-                            <input type="tel" class="form-control text-center otp-field" maxlength="1"
-                                value="1">
-                            <input type="tel" class="form-control text-center otp-field" maxlength="1"
-                                value="2">
-                            <input type="tel" class="form-control text-center otp-field" maxlength="1"
-                                value="3">
-                            <input type="tel" class="form-control text-center otp-field" maxlength="1"
-                                value="4">
+                            <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
+                                name="l_1" value="{{ old('l_1', '1') }}">
+                            <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
+                                name="l_2" value="{{ old('l_2', '2') }}">
+                            <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
+                                name="l_3" value="{{ old('l_3', '3') }}">
+                            <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
+                                name="l_4" value="{{ old('l_4', '4') }}">
                         </div>
+
                         @if ($errors->has('pin'))
                             <x-admin.form-error :messages="$errors->get('pin')" class="mt-2" />
                         @endif
@@ -104,25 +111,181 @@
             <div class="footer-links">
                 <p class="mb-0">
                     New partner?
-                    <a href="#" class="text-primary text-decoration-none fw-bold">Contact Admin</a>
+
+                    <a href="javascript:void(0);" class="text-primary text-decoration-none fw-bold"
+                        data-bs-toggle="modal" data-bs-target="#registerModal">
+                        Register
+                    </a>
                 </p>
             </div>
         </div>
     </div>
 
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="addBusModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 25px;">
+                <div class="modal-header text-white"
+                    style="background: var(--primary-gradient); border-radius: 25px 25px 0 0; padding: 25px;">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-white bg-opacity-25 rounded-2 p-2 me-3">
+                            <i class="bi bi-bus-front fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="modal-title fw-bold" id="addBusModalLabel">Register as Bus Operator</h5>
+                            <p class="small mb-0 opacity-75">Submit your details</p>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    <form action="{{ route('operator.register') }}" method="POST" id="registerForm">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary text-uppercase">
+                                Registeration Name
+                            </label>
+
+                            <input type="text" class="form-control form-control-lg border-2 shadow-sm"
+                                placeholder="e.g. KSRTC" style="border-radius: 12px; font-size: 1rem;" required
+                                name="name" id="name" value="{{ old('name') }}">
+
+                            @if ($errors->register->has('name'))
+                                <x-admin.form-error :messages="$errors->register->get('name')" class="mt-2" />
+                            @endif
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">Mobile Number</label>
+
+                            <div class="input-group">
+                                <span class="input-group-text border-0 bg-light"
+                                    style="border-radius: 12px 0 0 12px;">+91</span>
+                                <input type="tel" class="form-control border-start-0" placeholder="00000 00000"
+                                    style="border-radius: 0 12px 12px 0;" required name="phone"
+                                    value="{{ old('phone') }}">
+                            </div>
+
+                            @if ($errors->register->has('phone'))
+                                <x-admin.form-error :messages="$errors->register->get('phone')" class="mt-2" />
+                            @endif
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Login PIN Number</label>
+                            <div class="otp-input-container d-flex gap-2">
+                                <input type="tel" class="form-control text-center otp-field registerOtp"
+                                    max="1" name="r_1" value="{{ old('r_1') }}" required>
+                                <input type="tel" class="form-control text-center otp-field registerOtp"
+                                    max="1" name="r_2" value="{{ old('r_2') }}" required>
+                                <input type="tel" class="form-control text-center otp-field registerOtp"
+                                    max="1" name="r_3" value="{{ old('r_3') }}" required>
+                                <input type="tel" class="form-control text-center otp-field registerOtp"
+                                    max="1" name="r_4" value="{{ old('r_4') }}" required>
+                            </div>
+
+                            <input type="hidden" name="register_pin" id="register_pin">
+
+                            @if ($errors->register->has('register_pin'))
+                                <x-admin.form-error :messages="$errors->register->get('register_pin')" class="mt-2" />
+                            @endif
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Select Operator Type</label>
+
+                            <select name="type" class="form-select">
+                                @foreach (\App\Enums\OperatorType::cases() as $type)
+                                    <option value="{{ $type->value }}"
+                                        {{ $type->value == old('type', 'private') ? 'selected' : '' }}>
+                                        {{ ucfirst(strtolower($type->name)) }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @if ($errors->register->has('type'))
+                                <x-admin.form-error :messages="$errors->register->get('type')" class="mt-2" />
+                            @endif
+                        </div>
+
+                        <div class="d-grid gap-2 mt-2">
+                            <button type="submit" class="btn btn-lg text-white fw-bold py-3"
+                                style="background: var(--primary-gradient); border-radius: 15px; border: none; box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);">
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="success-icon-wrapper mb-3">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+
+                    <h4 class="fw-bold text-dark">Success!</h4>
+                    <p class="text-muted small px-3">
+                        {{ session('success') }}
+                    </p>
+
+                    <button type="button" class="btn btn-success-custom w-100 py-3 mt-2 rounded-3"
+                        data-bs-dismiss="modal">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    @if ($errors->register->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+                registerModal.show();
+            });
+        </script>
+    @endif
+
+    @session('success')
+        <script>
+            const successPopup = new bootstrap.Modal(document.getElementById('successModal'));
+            successPopup.show();
+        </script>
+    @endsession
+
     <script>
         let PIN = '';
-        document.querySelector("form").addEventListener("submit", function() {
 
+        document.getElementById("registerForm").addEventListener("submit", function() {
+            setPinValue('register_pin', 'registerOtp');
+        });
+
+        document.querySelector("form").addEventListener("submit", function() {
+            setPinValue('pin', 'loginPin');
+        });
+
+        function setPinValue(field, otpSelector = null) {
             if (PIN == "") {
-                document.querySelectorAll(".otp-field").forEach(function(input) {
+                document.querySelectorAll("." + otpSelector).forEach(function(input) {
                     PIN += input.value;
                 });
             }
 
-            document.getElementById("pin").value = PIN;
+            document.getElementById(field).value = PIN;
             PIN = "";
-        });
+        }
 
         function showOTPScreen(e) {
             e.preventDefault();
@@ -147,7 +310,7 @@
         //     }
         // }
 
-        document.querySelectorAll('.otp-field').forEach((input, index, inputs) => {
+        document.querySelectorAll('.loginPin').forEach((input, index, inputs) => {
 
             // Allow only numbers
             input.addEventListener('input', () => {

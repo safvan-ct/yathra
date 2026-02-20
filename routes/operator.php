@@ -5,9 +5,11 @@ use App\Http\Controllers\Operator\LoginController;
 use App\Http\Controllers\Operator\TripController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('login', [LoginController::class, 'create'])->name('login');
+// Route::get('login', [LoginController::class, 'create'])->name('login');
 
 Route::middleware('guest:operator')->prefix('operator')->name('operator.')->group(function () {
+    Route::post('register', [LoginController::class, 'register'])->name('register');
+
     Route::get('login', [LoginController::class, 'create'])->name('login');
     Route::post('login', [LoginController::class, 'store']);
 });

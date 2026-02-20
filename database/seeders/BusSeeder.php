@@ -2,10 +2,11 @@
 namespace Database\Seeders;
 
 use App\Enums\BusAuthStatus;
-use App\Enums\OperatorType;
+use App\Imports\OperatorsImport;
 use App\Models\Bus;
 use App\Models\Operator;
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BusSeeder extends Seeder
 {
@@ -13,34 +14,8 @@ class BusSeeder extends Seeder
     {
         $time = now();
 
-        $operators = [
-            [
-                'name'       => 'KSRTC',
-                'phone'      => '1234567890',
-                'pin'        => '1234',
-                'type'       => OperatorType::STATE,
-                'created_at' => $time,
-                'updated_at' => $time,
-            ],
-            [
-                'name'       => 'MRL Pvt Ltd.',
-                'phone'      => '1234567891',
-                'pin'        => '1234',
-                'type'       => OperatorType::PRIVATE,
-                'created_at' => $time,
-                'updated_at' => $time,
-            ],
-            [
-                'name'       => 'Pvt Ltd.',
-                'phone'      => '1234567892',
-                'pin'        => '1234',
-                'type'       => OperatorType::PRIVATE,
-                'created_at' => $time,
-                'updated_at' => $time,
-            ],
-        ];
-
-        Operator::insert($operators);
+        $operators = database_path('seeders/files/operators.txt');
+        Excel::import(new OperatorsImport(), $operators);
 
         $buses = [
             [

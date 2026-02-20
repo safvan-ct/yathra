@@ -1,0 +1,4 @@
+name,phone,pin,type
+KSRTC,1234567890,1111,state
+Pvt Ltd.,1234567891,1010,private
+MRL Pvt Ltd.,1234567892,1234,private

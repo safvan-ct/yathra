@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('pin');
             $table->enum('type', ['private', 'village', 'city', 'state', 'national', 'international'])->default('private');
+            $table->enum('auth_status', ['pending', 'approved', 'rejected', 'cancelled'])->default('pending');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 

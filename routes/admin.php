@@ -108,7 +108,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/datatable', [OperatorController::class, 'dataTable'])->name('datatable');
         Route::patch('/toggle-status/{operator}', [OperatorController::class, 'toggleStatus'])->name('toggle-status');
 
-        Route::post('/import/confirm', [OperatorController::class, 'importConfirm'])->name('import.confirm');
+        Route::post('/import/preview', [OperatorController::class, 'importPreview'])->name('import.preview');
+        Route::post('/import/{id}/confirm', [OperatorController::class, 'importConfirm'])->name('import.confirm');
     });
     Route::resource('bus-operator', OperatorController::class)->only(['index', 'store', 'update']);
 
