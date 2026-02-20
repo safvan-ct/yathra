@@ -1,6 +1,7 @@
 <?php
 namespace App\Imports;
 
+use App\Enums\BusAuthStatus;
 use App\Enums\OperatorAuthStatus;
 use App\Models\Bus;
 use App\Models\Operator;
@@ -25,7 +26,7 @@ class BusImport implements ToModel, WithHeadingRow
             'bus_name'    => $row['bus_name'],
             'bus_number'  => $row['bus_number'],
             'bus_color'   => $row['bus_color'],
-            'auth_status' => OperatorAuthStatus::APPROVED,
+            'auth_status' => BusAuthStatus::APPROVED,
         ]);
     }
 }
