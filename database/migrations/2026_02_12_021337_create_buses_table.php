@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreignId('operator_id')->constrained()->cascadeOnDelete();
 
             $table->string('bus_number')->unique();
+            $table->string('slug')->unique();
             $table->string('bus_name');
             $table->string('bus_color')->nullable();
             $table->enum('auth_status', ['pending', 'approved', 'rejected', 'cancelled'])->default('pending');

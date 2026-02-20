@@ -3,7 +3,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            Import Preview - {{ count($preview) }} Routes
+            Import Preview - {{ count($preview) }} Route Stops
         </div>
 
         <div class="card-body">

@@ -46,8 +46,8 @@
                             <span class="input-group-text border-0 bg-light"
                                 style="border-radius: 12px 0 0 12px;">+91</span>
                             <input type="tel" class="form-control border-start-0" placeholder="00000 00000"
-                                style="border-radius: 0 12px 12px 0;" value="{{ old('phone', '1234567891') }}"
-                                required name="phone">
+                                style="border-radius: 0 12px 12px 0;" value="{{ old('phone', '1234567891') }}" required
+                                name="phone">
                         </div>
 
                         @if ($errors->has('phone'))
@@ -61,11 +61,11 @@
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
                                 name="l_1" value="{{ old('l_1', '1') }}">
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
-                                name="l_2" value="{{ old('l_2', '2') }}">
+                                name="l_2" value="{{ old('l_2', '0') }}">
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
-                                name="l_3" value="{{ old('l_3', '3') }}">
+                                name="l_3" value="{{ old('l_3', '1') }}">
                             <input type="tel" class="form-control text-center otp-field loginPin" maxlength="1"
-                                name="l_4" value="{{ old('l_4', '4') }}">
+                                name="l_4" value="{{ old('l_4', '0') }}">
                         </div>
 
                         @if ($errors->has('pin'))

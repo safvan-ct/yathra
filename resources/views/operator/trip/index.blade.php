@@ -40,46 +40,50 @@
             ];
         @endphp
 
-        @foreach ($trips as $item)
-            <div class="schedule-card p-3">
-                <h6 class="mb-1 text-uppercase">
-                    <span class="fw-bold">Route: </span>{{ $item->routeDirection->name }}
-                    <span class="small text-muted">
-                        (R-{{ $item->routeDirection->route_pattern_id }}-{{ $item->routeDirection->id }})
-                    </span>
-                </h6>
+        <div class="row">
+            @foreach ($trips as $item)
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="schedule-card p-3">
+                        <h6 class="mb-1 text-uppercase text-black" style="font-size: 15px">
+                            {{ $item->routeDirection->name }}
+                            <i class="small text-muted">
+                                #F{{ $item->routeDirection->route_pattern_id }}T{{ $item->routeDirection->id }}
+                            </i>
+                        </h6>
 
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="time-badge">
-                        {{ \Carbon\Carbon::parse($item->departure_time)->format('g:i A') }} -
-                        {{ \Carbon\Carbon::parse($item->departure_time)->format('g:i A') }}
-                    </span>
-                    <p class="small text-muted mb-2">Bus: {{ $item->bus->bus_number }}</p>
-                </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="time-badge">
+                                {{ \Carbon\Carbon::parse($item->departure_time)->format('g:i A') }} -
+                                {{ \Carbon\Carbon::parse($item->departure_time)->format('g:i A') }}
+                            </span>
+                            <p class="small text-muted mb-2">Bus: {{ $item->bus->bus_number }}</p>
+                        </div>
 
-                <div class="mb-2">
-                    <label class="form-label small d-block mb-2 d-none">Running Days</label>
-                    <div class="d-flex justify-content-between">
+                        <div class="mb-2">
+                            <label class="form-label small d-block mb-2 d-none">Running Days</label>
+                            <div class="d-flex justify-content-between">
 
-                        @foreach ($days as $key => $day)
-                            <div class="day-selector">
-                                <input type="checkbox" class="btn-check"
-                                    {{ in_array($key, $item->days_of_week) ? 'checked' : '' }} readonly>
-                                <label
-                                    class="btn btn-outline-success day-btn {{ in_array($key, ['sun', 'sat']) ? 'text-danger' : '' }}">
-                                    {{ $day }}
-                                </label>
+                                @foreach ($days as $key => $day)
+                                    <div class="day-selector">
+                                        <input type="checkbox" class="btn-check"
+                                            {{ in_array($key, $item->days_of_week) ? 'checked' : '' }} readonly>
+                                        <label
+                                            class="btn btn-outline-success day-btn {{ in_array($key, ['sun', 'sat']) ? 'text-danger' : '' }}">
+                                            {{ $day }}
+                                        </label>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endforeach
+                        </div>
+
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-primary btn-sm flex-grow-1 border">Edit</button>
+                            <button class="btn btn-light btn-sm text-danger border"><i class="bi bi-trash"></i></button>
+                        </div>
                     </div>
                 </div>
-
-                <div class="d-flex gap-2 mt-3">
-                    <button class="btn btn-primary btn-sm flex-grow-1 border">Edit</button>
-                    <button class="btn btn-light btn-sm text-danger border"><i class="bi bi-trash"></i></button>
-                </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
 
     <div class="modal fade" id="addScheduleModal" tabindex="-1">

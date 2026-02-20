@@ -9,11 +9,11 @@
 
                 <div class="card-body">
                     <div class="mb-2 d-flex justify-content-end">
-                        <form action="{{ route('stop.import.confirm') }}" method="POST" enctype="multipart/form-data"
-                            class="d-inline border p-2 me-2 d-none">
+                        <form action="{{ route('bus.import.preview') }}" method="POST" enctype="multipart/form-data"
+                            class="d-inline border p-2 me-2">
                             @csrf
                             <input type="file" name="file" required>
-                            <button class="btn btn-success btn-sm">Import Bus</button>
+                            <button class="btn btn-success btn-sm">Import Preview</button>
                         </form>
 
                         <div class="d-inline border p-2">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <x-admin.table :headers="['#', 'Name', 'Number', 'Operator', 'Status', 'Actions']"></x-admin.table>
+                    <x-admin.table :headers="['#', 'Name', 'Number', 'Operator', 'Auth Status', 'Status', 'Actions']"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -45,6 +45,9 @@
             },
             {
                 data: "operator"
+            },
+            {
+                data: "auth_status"
             },
 
             CRUD.columnToggleStatus(),

@@ -9,6 +9,7 @@ class Bus extends Model
     protected $fillable = [
         'operator_id',
         'bus_number',
+        'slug',
         'bus_name',
         'bus_color',
         'auth_status',

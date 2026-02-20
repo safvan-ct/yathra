@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class BusService
 {
-    public function getOperatorBuseList($operatorId = null)
+    public function getBuseList($operatorId = null)
     {
         return Bus::select('id', 'bus_name', 'bus_number', 'bus_color', 'auth_status', 'is_active')
             ->when($operatorId, fn($query) => $query->where('operator_id', $operatorId))
@@ -16,6 +16,16 @@ class BusService
     public function find($id)
     {
         return Bus::findOrFail($id);
+    }
+
+    public function findOrFail($id)
+    {
+        return Bus::findOrFail($id);
+    }
+
+    public function dataTable()
+    {
+        return Bus::select('id', 'bus_name', 'bus_number', 'operator_id', 'auth_status', 'is_active')->with('operator:id,name');
     }
 
     public function store($data)

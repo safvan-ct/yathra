@@ -18,7 +18,7 @@ class TripController extends Controller
 
     public function index(Request $request)
     {
-        $buses = $this->busService->getOperatorBuseList(Auth::guard('operator')->user()->id);
+        $buses = $this->busService->getBuseList(Auth::guard('operator')->user()->id);
 
         $trips = [];
         $busId = $request->has('bus') ? $request->bus : (count($buses) == 1 ? $buses[0]->id : null);

@@ -16,11 +16,23 @@
         </button>
     </div>
 
+    @php
+        $colors = [
+            'info' => 'Blue',
+            'danger' => 'Red',
+            'success' => 'Green',
+        ];
+    @endphp
+
+    @if ($errors->has('operator_id'))
+        <x-admin.alert type="error" :message="$errors->first('operator_id')" />
+    @endif
+
     <div class="container mt-3">
         <div class="row pb-4 mb-5">
             @foreach ($buses as $item)
-                <div class="col-12 col-md-4">
-                    <div class="bus-card p-3">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="bus-card p-3 border-start border-3 border-{{ $item->bus_color }}">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div>
                                 <h6 class="fw-bold mb-0">{{ $item->bus_number }}</h6>
@@ -30,7 +42,8 @@
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-assign me-2" data-bs-toggle="modal" data-bs-target="#addBusModal"
                                     data-bus_name="{{ $item->bus_name }}" data-bus_id="{{ $item->id }}"
-                                    data-bus_number="{{ $item->bus_number }}" data-bus_color="{{ $item->bus_color }}">
+                                    data-bus_number="{{ $item->bus_number }}" data-bus_color="{{ $item->bus_color }}"
+                                    data-bus_status="{{ $item->is_active ? '1' : '0' }}">
                                     <i class="bi bi-pencil me-1"></i> Edit Bus
                                 </button>
 
@@ -48,14 +61,6 @@
                                 </div> --}}
                             </div>
                         </div>
-
-                        @php
-                            $colors = [
-                                'info' => 'Blue',
-                                'danger' => 'Red',
-                                'success' => 'Green',
-                            ];
-                        @endphp
 
                         <div class="row g-2 mt-2 bg-light rounded-3 p-2">
                             <div class="col-4">
@@ -111,24 +116,47 @@
                                 Number</label>
                             <input type="text" class="form-control form-control-lg border-2 shadow-sm"
                                 placeholder="e.g. KL 01 AB 1234" style="border-radius: 12px; font-size: 1rem;" required
-                                name="bus_number" id="bus_number" value="">
+                                name="bus_number" id="bus_number" value="{{ old('bus_number') }}">
+
+                            @if ($errors->has('bus_number'))
+                                <x-admin.form-error :messages="$errors->get('bus_number')" class="mt-2" />
+                            @elseif ($errors->has('slug'))
+                                <x-admin.form-error :messages="$errors->get('slug')" class="mt-2" />
+                            @endif
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-secondary text-uppercase">Bus Name</label>
                             <input type="text" class="form-control form-control-lg border-2 shadow-sm"
                                 placeholder="e.g. KSRTC" style="border-radius: 12px; font-size: 1rem;" required
-                                name="bus_name" id="bus_name">
+                                name="bus_name" id="bus_name" value="{{ old('bus_name') }}">
+
+                            @if ($errors->has('bus_name'))
+                                <x-admin.form-error :messages="$errors->get('bus_name')" class="mt-2" />
+                            @endif
                         </div>
 
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 mb-3">
                                 <label class="form-label small fw-bold text-secondary text-uppercase">Bus Color</label>
                                 <select class="form-select border-2 shadow-sm" style="border-radius: 12px; padding: 12px;"
                                     required name="bus_color" id="bus_color">
-                                    <option value="info">Blue</option>
-                                    <option value="danger">Red</option>
-                                    <option value="success">Green</option>
+                                    <option value="info" @selected(old('bus_color') == 'info')>Blue</option>
+                                    <option value="danger" @selected(old('bus_color') == 'danger')>Red</option>
+                                    <option value="success" @selected(old('bus_color') == 'success')>Green</option>
+                                </select>
+
+                                @if ($errors->has('bus_color'))
+                                    <x-admin.form-error :messages="$errors->get('bus_color')" class="mt-2" />
+                                @endif
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-secondary text-uppercase">Bus Status</label>
+                                <select class="form-select border-2 shadow-sm" style="border-radius: 12px; padding: 12px;"
+                                    required name="status" id="status">
+                                    <option value="1" @selected(old('status') == '1')>Active</option>
+                                    <option value="0" @selected(old('status') == '0')>Inactive</option>
                                 </select>
                             </div>
                         </div>
@@ -137,10 +165,6 @@
                             <button type="submit" class="btn btn-lg text-white fw-bold py-3"
                                 style="background: var(--primary-gradient); border-radius: 15px; border: none; box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);">
                                 Save & Add to List
-                            </button>
-                            <button type="button" class="btn btn-link text-muted text-decoration-none small"
-                                data-bs-dismiss="modal">
-                                Discard Changes
                             </button>
                         </div>
                     </form>
@@ -151,6 +175,15 @@
 @endsection
 
 @push('scripts')
+    @if ($errors->any() && !$errors->has('operator_id'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var registerModal = new bootstrap.Modal(document.getElementById('addBusModal'));
+                registerModal.show();
+            });
+        </script>
+    @endif
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
@@ -164,6 +197,7 @@
                 var busName = button.getAttribute('data-bus_name') ?? '';
                 var busNumber = button.getAttribute('data-bus_number') ?? '';
                 var busColor = button.getAttribute('data-bus_color') ?? '';
+                var busStatus = button.getAttribute('data-bus_status') ?? 0;
 
                 if (busId != 0) {
                     let url = "{{ route('operator.bus.update', ':id') }}".replace(':id', busId);
@@ -188,6 +222,7 @@
                     document.getElementById('bus_name').value = busName;
                     document.getElementById('bus_number').value = busNumber;
                     document.getElementById('bus_color').value = busColor;
+                    document.getElementById('status').value = busStatus;
                 }
             });
         });

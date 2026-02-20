@@ -14,7 +14,7 @@ class BusController extends Controller
 
     public function index()
     {
-        $buses = $this->busService->getOperatorBuseList(Auth::guard('operator')->user()->id);
+        $buses = $this->busService->getBuseList(Auth::guard('operator')->user()->id);
 
         return view('operator.bus.index', compact('buses'));
     }
@@ -24,9 +24,10 @@ class BusController extends Controller
         $this->busService->store([
             'operator_id' => Auth::guard('operator')->user()->id,
             'bus_name'    => $request->bus_name,
+            'slug'        => $request->slug,
             'bus_number'  => $request->bus_number,
             'bus_color'   => $request->bus_color,
-            'is_active'   => 1,
+            'is_active'   => $request->status ?? 0,
             'auth_status' => BusAuthStatus::PENDING,
         ]);
 
@@ -41,7 +42,13 @@ class BusController extends Controller
             return abort(403);
         }
 
-        $this->busService->update($bus, ['bus_name' => $request->bus_name, 'bus_number' => $request->bus_number, 'bus_color' => $request->bus_color]);
+        $this->busService->update($bus, [
+            'bus_name'   => $request->bus_name,
+            'bus_number' => $request->bus_number,
+            'slug'       => $request->slug,
+            'bus_color'  => $request->bus_color,
+            'is_active'  => $request->status ?? 0,
+        ]);
 
         return redirect()->route('operator.bus.index')->with('success', "{$bus->bus_name} ({$bus->bus_number}) have been updated successfully.");
     }

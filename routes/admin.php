@@ -120,9 +120,10 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/datatable', [BusController::class, 'dataTable'])->name('datatable');
         Route::patch('/toggle-status/{bus}', [BusController::class, 'toggleStatus'])->name('toggle-status');
 
-        Route::post('/import/confirm', [BusController::class, 'importConfirm'])->name('import.confirm');
+        Route::post('/import/preview', [BusController::class, 'importPreview'])->name('import.preview');
+        Route::post('/import/{id}/confirm', [BusController::class, 'importConfirm'])->name('import.confirm');
     });
-    Route::resource('bus', BusController::class)->only(['index', 'store', 'update']);
+    Route::resource('bus', BusController::class)->only(['index', 'store', 'update'])->parameters(['bus' => 'bus']);
 
     // Trip Schedule
     Route::get('trip-schedules', [TripScheduleController::class, 'search']);

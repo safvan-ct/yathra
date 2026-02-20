@@ -1,0 +1,10 @@
+operator_id,bus_number,bus_name,bus_color
+1,KL 15 K 1022,KSRTC,white
+2,KL 50 F 1025,Fathima,info
+3,KL 50 M 1023,MRL,info
+2,KL 50 S 1024,Shastha,info
+2,KL 50 G 1026,Gazal,info
+2,KL 50 MD 1027,Madheena,info
+2,KL 50 A 1028,Arya Mol,danger
+2,KL 50 AL 1029,Al-Ameen,info
+2,KL 50 SK 1030,Sundharikutty,info

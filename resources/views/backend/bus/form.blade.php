@@ -10,6 +10,35 @@
     <x-admin.input name="bus_name" label="Bus Name" class="col-12 col-lg-4" value="{{ $data->bus_name ?? '' }}" />
 
     <x-admin.input name="bus_number" label="Bus Number" class="col-12 col-lg-4" value="{{ $data->bus_number ?? '' }}" />
+
+    <div class="col-12 col-lg-4">
+        <label>Color</label>
+
+        <select name="bus_color" class="form-select">
+            <option value="">Select Color</option>
+            <option value="info" @selected($data?->bus_color == 'info')>Blue</option>
+            <option value="danger" @selected($data?->bus_color == 'danger')>Red</option>
+            <option value="success" @selected($data?->bus_color == 'success')>Green</option>
+            <option value="white" @selected($data?->bus_color == 'white')>White</option>
+        </select>
+    </div>
+
+    @if ($data)
+        <div class="col-12 col-lg-4">
+            <label>Auth Status</label>
+
+            <select name="auth_status" class="form-select">
+                <option value="">Select Auth Status</option>
+
+                @foreach (\App\Enums\OperatorAuthStatus::cases() as $type)
+                    <option value="{{ $type->value }}"
+                        {{ $data?->auth_status?->value == $type->value ? 'selected' : '' }}>
+                        {{ ucfirst(strtolower($type->name)) }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    @endif
 </div>
 
 <script>
@@ -52,7 +81,7 @@
 
                 if (value.length < 2) return;
 
-                const response = await fetch(`/operators?q=${value}`);
+                const response = await fetch(`/bus-operators?q=${value}`);
                 const data = await response.json();
 
                 choices.clearChoices();
