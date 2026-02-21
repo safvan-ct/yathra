@@ -1,6 +1,7 @@
 <?php
 namespace App\Imports;
 
+use App\Enums\AuthStatus;
 use App\Models\Bus;
 use App\Models\TripSchedule;
 use Illuminate\Support\Collection;
@@ -17,7 +18,7 @@ class TripSchedulesImport implements ToCollection, WithHeadingRow
         DB::transaction(function () use ($rows, $buses) {
 
             foreach ($rows as $row) {
-                if (! $row['route_direction_id'] || ! $row['bus_number'] || ! $row['departure_time'] || ! $row['days_of_week'] || ! $row['effective_from']) {
+                if (! $row['route_direction_id'] || ! $row['bus_number'] || ! $row['departure_time'] || ! $row['days_of_week'] || ! $row['arrival_time']) {
                     continue;
                 }
 
@@ -27,15 +28,15 @@ class TripSchedulesImport implements ToCollection, WithHeadingRow
                 $busId = $buses[$row['bus_number']];
 
                 TripSchedule::updateOrCreate([
-                    'route_direction_id' => $row['route_direction_id'],
-                    'bus_id'             => $busId,
-                    'departure_time'     => $row['departure_time'],
+                    'route_direction_id' => $row['route_direction_id'], 'bus_id' => $busId, 'departure_time' => $row['departure_time'],
                 ], [
-                    'route_direction_id' => $row['route_direction_id'],
-                    'bus_id'             => $busId,
-                    'departure_time'     => $row['departure_time'],
-                    'days_of_week'       => explode('|', $row['days_of_week']),
-                    'effective_from'     => $row['effective_from'],
+                    'route_direction_id'     => $row['route_direction_id'],
+                    'bus_id'                 => $busId,
+                    'departure_time'         => $row['departure_time'],
+                    'days_of_week'           => explode('|', $row['days_of_week']),
+                    'arrival_time'          => $row['arrival_time'],
+                    'time_between_stops_sec' => 75,
+                    'auth_status'            => AuthStatus::APPROVED->value,
                 ]);
             }
         });
