@@ -39,16 +39,10 @@ class RouteDirectionStopImport implements ToModel, WithHeadingRow
 
         $this->routeDirectionId = $routeDirection->id;
 
-        return RouteDirectionStop::updateOrCreate(
-            [
-                'route_direction_id' => $routeDirection->id,
-                'stop_id'            => $stop->id,
-            ],
-            [
-                'stop_order'                 => $row['stop_order'],
-                'minutes_from_previous_stop' => $minutes,
-                'default_offset_minutes'     => $currentOffset,
-            ]
-        );
+        return RouteDirectionStop::updateOrCreate(['route_direction_id' => $routeDirection->id, 'stop_id' => $stop->id], [
+            'stop_order'                 => $row['stop_order'],
+            'minutes_from_previous_stop' => $minutes,
+            'default_offset_minutes'     => $currentOffset,
+        ]);
     }
 }

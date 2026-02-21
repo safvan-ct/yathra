@@ -25,7 +25,7 @@ route_direction_id,bus_number,departure_time,arrival_time,days_of_week
 3,KL 50 MD 1027,19:35,20:20,mon|tue|wed|thu|fri|sat
 3,KL 15 K 1022,20:50,21:35,mon|tue|wed|thu|fri|sat
 4,KL 50 MD 1027,06:50,07:35,mon|tue|wed|thu|fri|sat
-4,KL 50 M 1023,08:15,09:00mon|tue|wed|thu|fri|sat
+4,KL 50 M 1023,08:15,09:00,mon|tue|wed|thu|fri|sat
 4,KL 50 A 1028,11:35,12:20,mon|tue|wed|thu|fri|sat
 4,KL 50 AL 1029,13:30,14:15,mon|tue|wed|thu|fri|sat
 4,KL 50 M 1023,13:55,14:40,mon|tue|wed|thu|fri|sat

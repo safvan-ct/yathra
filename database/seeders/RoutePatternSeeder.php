@@ -3,7 +3,6 @@ namespace Database\Seeders;
 
 use App\Imports\RouteDirectionImport;
 use App\Imports\RouteDirectionStopImport;
-use App\Imports\RoutePatternImport;
 use Illuminate\Database\Seeder;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -14,8 +13,8 @@ class RoutePatternSeeder extends Seeder
      */
     public function run(): void
     {
-        $routes = database_path('seeders/files/route.txt');
-        Excel::import(new RoutePatternImport(), $routes);
+        // $routes = database_path('seeders/files/route.txt');
+        // Excel::import(new RoutePatternImport(), $routes);
 
         $directions = database_path('seeders/files/route-directions.txt');
         Excel::import(new RouteDirectionImport(), $directions);

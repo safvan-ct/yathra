@@ -1,6 +1,5 @@
-route_pattern_code,name,direction
-S-10031-S-10001,,up
-S-10031-S-10001,,down
-S-10031-S-10007,,up
-S-10031-S-10007,,down
-
+origin_code,destination_code
+S-10031,S-10001
+S-10001,S-10031
+S-10031,S-10007
+S-10007,S-10031

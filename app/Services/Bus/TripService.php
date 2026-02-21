@@ -22,6 +22,17 @@ class TripService
                 return ['status' => false, 'message' => 'Trip already exist.'];
             }
 
+            $exists = TripSchedule::where('bus_id', $data['bus_id'])
+                ->where(function ($query) use ($data) {
+                    $query->where('departure_time', '<=', $data['arrival_time'])->where('arrival_time', '>=', $data['departure_time']);
+                })
+                ->when($tripId, fn($query) => $query->where('id', '!=', $tripId))
+                ->exists();
+
+            if ($exists) {
+                return ['status' => false, 'message' => 'Trip time already exist.'];
+            }
+
             $checkRouteExist = RouteDirection::select('id')
                 ->where('origin_stop_id', $data['origin_stop_id'])
                 ->where('destination_stop_id', $data['destination_stop_id'])

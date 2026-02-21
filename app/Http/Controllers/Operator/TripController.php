@@ -34,7 +34,10 @@ class TripController extends Controller
     {
         $request->merge(['auth_status' => AuthStatus::PENDING->value]);
 
-        $this->tripService->checkRouteAndCreate($request->all());
+        $response = $this->tripService->checkRouteAndCreate($request->all());
+        if (! $response['status']) {
+            return redirect()->back()->with('error', $response['message']);
+        }
 
         return redirect()->route('operator.trip.index')->with('success', 'The new trip have been added to your list successfully.');
     }

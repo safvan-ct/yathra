@@ -34,7 +34,7 @@ class TripSchedulesImport implements ToCollection, WithHeadingRow
                     'bus_id'                 => $busId,
                     'departure_time'         => $row['departure_time'],
                     'days_of_week'           => explode('|', $row['days_of_week']),
-                    'arrival_time'          => $row['arrival_time'],
+                    'arrival_time'           => $row['arrival_time'],
                     'time_between_stops_sec' => 75,
                     'auth_status'            => AuthStatus::APPROVED->value,
                 ]);
