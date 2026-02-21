@@ -31,7 +31,7 @@ Route::middleware('guest:web')->prefix('backend')->name('backend.')->group(funct
 
 Route::get('/backend/dashboard', [DashboardController::class, 'index'])->middleware(['auth:web', 'verified'])->name('backend.dashboard');
 
-Route::get('stops', [StopController::class, 'search']);
+Route::get('stops', [StopController::class, 'search'])->name('stops.search');
 
 Route::middleware(['auth:web'])->group(function () {
     // District

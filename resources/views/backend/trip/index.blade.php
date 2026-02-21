@@ -63,7 +63,7 @@
                         </button>
                     </div>
 
-                    <x-admin.table :headers="['#', 'Direction', 'Bus', 'Departure', 'Days', 'Status', 'Actions']"></x-admin.table>
+                    <x-admin.table :headers="['#', 'Direction', 'Bus', 'Departure', 'Days', 'Auth Status', 'Status', 'Actions']"></x-admin.table>
                 </div>
             </div>
         </div>
@@ -89,17 +89,16 @@
             {
                 data: "days_of_week",
                 render: function(data, type, row) {
-
                     if (!data || data.length === 0) {
                         return '-';
                     }
 
-                    return data.map(day =>
-                        `<span class="badge bg-secondary me-1">
-                ${day.toUpperCase()}
-            </span>`
-                    ).join('');
+                    return data.map(day => `<span class="badge bg-secondary me-1">${day.toUpperCase()}</span>`)
+                        .join('');
                 }
+            },
+            {
+                data: "auth_status"
             },
 
             CRUD.columnToggleStatus(),

@@ -1,6 +1,7 @@
 <?php
 namespace App\Imports;
 
+use App\Enums\AuthStatus;
 use App\Models\RouteDirection;
 use App\Models\RoutePattern;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -31,6 +32,7 @@ class RouteDirectionImport implements ToModel, WithHeadingRow
                 'direction'           => $row['direction'],
                 'origin_stop_id'      => $origin,
                 'destination_stop_id' => $dest,
+                'auth_status'         => AuthStatus::APPROVED->value,
             ],
             []
         );

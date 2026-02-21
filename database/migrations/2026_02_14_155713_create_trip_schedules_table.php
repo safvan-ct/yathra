@@ -14,12 +14,20 @@ return new class extends Migration
         Schema::create('trip_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('route_direction_id')->constrained();
+
             $table->foreignId('bus_id')->constrained();
             $table->time('departure_time');
-            $table->json('days_of_week'); // ["mon","tue","wed"]
-            $table->date('effective_from');
+            $table->time('arrival_time');
+            $table->json('days_of_week');
+
+            $table->string('time_between_stops_sec')->default(90);
+
+            $table->date('effective_from')->nullable();
             $table->date('effective_to')->nullable();
+
+            $table->enum('auth_status', ['pending', 'approved', 'rejected', 'cancelled'])->default('pending');
             $table->boolean('is_active')->default(true);
+
             $table->timestamps();
 
             $table->unique(['route_direction_id', 'bus_id', 'departure_time'], 'unique_ts_identity');

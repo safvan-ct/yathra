@@ -44,22 +44,21 @@ return new class extends Migration
         Schema::create('route_directions', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('route_pattern_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('route_pattern_id')->nullable()->constrained();
 
             $table->string('name', 120)->default('');
-            $table->string('direction', 120); // UP / DOWN
+            $table->string('direction', 120)->default('up'); // UP / DOWN
 
             $table->foreignId('origin_stop_id')->constrained('stops');
             $table->foreignId('destination_stop_id')->constrained('stops');
+
+            $table->enum('auth_status', ['pending', 'approved', 'rejected', 'cancelled'])->default('pending');
 
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
 
-            $table->unique(['route_pattern_id', 'name', 'direction'], 'unique_rd_identity');
-            $table->unique(['origin_stop_id', 'destination_stop_id'], 'unique_rd2_identity');
-
-            $table->index(['route_pattern_id', 'direction']);
+            $table->unique(['origin_stop_id', 'destination_stop_id'], 'unique_rd_identity');
         });
 
         Schema::create('route_direction_stops', function (Blueprint $table) {

@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Enums\AuthStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class RouteDirection extends Model
@@ -11,7 +12,12 @@ class RouteDirection extends Model
         'direction',
         'origin_stop_id',
         'destination_stop_id',
+        'auth_status',
         'is_active',
+    ];
+
+    protected $casts = [
+        'auth_status' => AuthStatus::class,
     ];
 
     public function routePattern()
